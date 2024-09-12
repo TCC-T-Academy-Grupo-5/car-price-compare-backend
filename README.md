@@ -209,8 +209,8 @@ application/json
 
 ##### query Parameters
 
-| name  | stringExamples:name=john -name=j -name=doe -get user by name or lastname |
-| ----- | ------------------------------------------------------------ |
+| name  | stringExamples:name=john -name=j -name=doe -get user by name or lastname    |
+|-------|-----------------------------------------------------------------------------|
 | email | stringExamples:email=johndoe@email.com -email=@email.com -get user by email |
 
 ### Responses
@@ -232,23 +232,27 @@ Names starting with "j"names by email domainNames starting with "j"
 
 Expand allCollapse all
 
-```
+```json
 [
-{
-"name": "John doe",
-"last_name": "Green",
-"email": "johndoe@email.com",
-"cellphone": "819999999"},
-{
-"name": "Joana",
-"last_name": "Green",
-"email": "joanagreen@email.com",
-"cellphone": "819999919"},
-{
-"name": "Joao da",
-"last_name": "Silva",
-"email": "joaozinho@email.com",
-"cellphone": "879995454"}]
+  {
+    "name": "John doe",
+    "last_name": "Green",
+    "email": "johndoe@email.com",
+    "cellphone": "819999999"
+  },
+  {
+    "name": "Joana",
+    "last_name": "Green",
+    "email": "joanagreen@email.com",
+    "cellphone": "819999919"
+  },
+  {
+    "name": "Joao da",
+    "last_name": "Silva",
+    "email": "joaozinho@email.com",
+    "cellphone": "879995454"
+  }
+]
 ```
 
 ## /user/{id}
@@ -256,7 +260,7 @@ Expand allCollapse all
 ##### path Parameters
 
 | idrequired | stringExamples:http://localhost:8080/api/v1/user/151548433 -user id |
-| ---------- | ------------------------------------------------------------ |
+|------------|---------------------------------------------------------------------|
 
 ### Responses
 
@@ -276,12 +280,13 @@ Content type
 
 application/json
 
-```
+```json
 {
 "name": "John doe",
 "last_name": "Green",
 "email": "johndoe@email.com",
-"cellphone": "819999999"}
+"cellphone": "819999999"
+}
 ```
 
 ## /user/{id}/favorites
@@ -289,12 +294,12 @@ application/json
 ##### path Parameters
 
 | idrequired | stringExamples:http://localhost:8080/api/v1/user/91491949 -user id |
-| ---------- | ------------------------------------------------------------ |
+|------------|--------------------------------------------------------------------|
 
 ##### query Parameters
 
 | order | stringExamples:order=asc -Query ordered by asc or des        |
-| ----- | ------------------------------------------------------------ |
+|-------|--------------------------------------------------------------|
 | limit | stringExamples:limit=20 -Results limited by a specific value |
 
 ### Responses
@@ -313,41 +318,45 @@ application/json
 
 Expand allCollapse all
 
-```
+```json
 [
-{
-"id": "123e4567-e89b-12d3-a456-426614174000",
-"model": "Corolla",
-"brand": "Toyota",
-"maxSpeed": 220,
-"fuel": "Gasoline",
-"tankCapacity": 55,
-"color": "Red",
-"year": 2022,
-"currentFipePrice": 90000,
-"type": "car"},
-{
-"id": "550e8400-e29b-41d4-a716-446655440000",
-"model": "Civic",
-"brand": "Honda",
-"maxSpeed": 180,
-"fuel": "Gasoline",
-"tankCapacity": 50,
-"color": "Blue",
-"year": 2021,
-"currentFipePrice": 120000,
-"type": "car"},
-{
-"id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-"model": "Altima",
-"brand": "Nissan",
-"maxSpeed": 200,
-"fuel": "Gasoline",
-"tankCapacity": 60,
-"color": "Black",
-"year": 2023,
-"currentFipePrice": 250000,
-"type": "car"}]
+  {
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "model": "Corolla",
+    "brand": "Toyota",
+    "maxSpeed": 220,
+    "fuel": "Gasoline",
+    "tankCapacity": 55,
+    "color": "Red",
+    "year": 2022,
+    "currentFipePrice": 90000,
+    "type": "car"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "model": "Civic",
+    "brand": "Honda",
+    "maxSpeed": 180,
+    "fuel": "Gasoline",
+    "tankCapacity": 50,
+    "color": "Blue",
+    "year": 2021,
+    "currentFipePrice": 120000,
+    "type": "car"
+  },
+  {
+    "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "model": "Altima",
+    "brand": "Nissan",
+    "maxSpeed": 200,
+    "fuel": "Gasoline",
+    "tankCapacity": 60,
+    "color": "Black",
+    "year": 2023,
+    "currentFipePrice": 250000,
+    "type": "car"
+  }
+]
 ```
 
 ## /user/{id}/favorites
@@ -355,7 +364,7 @@ Expand allCollapse all
 ##### path Parameters
 
 | idrequired | stringExamples:http://localhost:8080/api/v1/user/91491949 -user id |
-| ---------- | ------------------------------------------------------------ |
+|------------|--------------------------------------------------------------------|
 
 ##### Request Body schema: application/json
 
@@ -375,9 +384,10 @@ Content type
 
 application/json
 
-```
+```json
 {
-"vehicle_id": "918181515"}
+  "vehicle_id": "918181515"
+}
 ```
 
 ### Response samples
@@ -390,9 +400,10 @@ Content type
 
 application/json
 
-```
+```json
 {
-"message": "Vehicle added to favorites"}
+  "message": "Vehicle added to favorites"
+}
 ```
 
 ## /user/{id}/favorites
@@ -400,11 +411,11 @@ application/json
 ##### path Parameters
 
 | idrequired | stringExamples:http://localhost:8080/api/v1/user/91491949 -user id |
-| ---------- | ------------------------------------------------------------ |
+|------------|--------------------------------------------------------------------|
 
 ##### query Parameters
 
 | favorite_idrequired | stringExamples:favorite_id=2929399 -remove vehicle from favorites, using the favorite's id |
-| ------------------- | ------------------------------------------------------------ |
+|---------------------|--------------------------------------------------------------------------------------------|
 
 ### Responses
