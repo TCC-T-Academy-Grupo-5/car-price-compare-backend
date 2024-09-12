@@ -9,37 +9,24 @@
 
 ## Notifications
 
-<style>
-    .url-path {
-        background-color: #11171AFF;
-        color: #fff;
-        border-radius: 4px;
-        height: 30px;
-        width: max-content;
-        padding: 20px 20px;
-    }
-
-    button {
-        border:none;
-        border-radius: 2px;
-        color: #fff;
-        font-weight: 800;
-        padding: 2px 8px;
-        margin-right:12px;
-        filter: brightness(110%);
-    }
-    button.get, button.success { background-color:#166534; }
-    button.post { background-color:#1e40af; }
-    button.put { background-color:#854d0e; }
-    button.delete, button.error { background-color:#991b1b; }
-    .flex { display:flex; align-items:center; }
-    .subtitle { padding:16px 0 0 0; }
-</style>
-
-<h3 class="url-path flex">
-    <button class="method get">GET</button> 
-    <span>/user/{id}/notifications</span>
-</h3>
+<div style="display:flex; align-items:center;">
+    <h4 style="
+        display: flex;
+        align-items: center;
+        padding: 16px 0 0 0;
+    ">
+        <button style="
+            border: none;
+            border-radius: 2px;
+            color: #fff;
+            font-weight: 800;
+            padding: 2px 8px;
+            margin-right: 12px;
+            filter: brightness(110%);
+            background-color: #166534;
+        ">200</button> Response Example:
+    </h4>
+</div>
 Retrieve notifications associated with a specific user.
 
 ### Path Parameters:
@@ -69,7 +56,24 @@ Retrieve notifications associated with a specific user.
 
 ### Response Codes:
 
-<h4 class="flex subtitle"><button class="success">200</button> Response Example:</h4>
+<div style="display:flex; align-items:center;">
+    <h4 style="
+        display: flex;
+        align-items: center;
+        padding: 16px 0 0 0;
+    ">
+        <button style="
+            border: none;
+            border-radius: 2px;
+            color: #fff;
+            font-weight: 800;
+            padding: 2px 8px;
+            margin-right: 12px;
+            filter: brightness(110%);
+            background-color: #166534;
+        ">200</button> Response Example:
+    </h4>
+</div>
 
 ```json
 [
@@ -109,7 +113,13 @@ Retrieve notifications associated with a specific user.
 
 ```
 
-<h4 class="flex subtitle"><button class="error">404</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
+        404
+    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -118,7 +128,12 @@ Retrieve notifications associated with a specific user.
 }
 ```
 
-<h4 class="flex subtitle"><button class="error">500</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
+        500    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -129,9 +144,8 @@ Retrieve notifications associated with a specific user.
 
 ---
 
-<h3 class="url-path flex">
-    <button class="method post">POST</button> 
-    <span>/user/{id}/notifications</span>
+<h3 style="background-color: #11171A; color: #fff; border-radius: 4px; padding: 20px;"> 
+    <button style="background-color:#854d0e; color: #fff; padding: 2px 8px; border-radius: 2px;">POST</button> <span>/user/{user_id}/notifications</span>
 </h3>
 Create a new notification associated with a user.
 
@@ -158,7 +172,24 @@ Create a new notification associated with a user.
 
 ```
 
-<h4 class="flex subtitle"><button class="success">201</button> Response Example:</h4>
+<div style="display:flex; align-items:center;">
+    <h4 style="
+        display: flex;
+        align-items: center;
+        padding: 16px 0 0 0;
+    ">
+        <button style="
+            border: none;
+            border-radius: 2px;
+            color: #fff;
+            font-weight: 800;
+            padding: 2px 8px;
+            margin-right: 12px;
+            filter: brightness(110%);
+            background-color: #166534;
+        ">201</button> Response Example:
+    </h4>
+</div>
 
 ```json
 {
@@ -166,7 +197,13 @@ Create a new notification associated with a user.
 }
 ```
 
-<h4 class="flex subtitle"><button class="error">404</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
+        404
+    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -175,7 +212,8 @@ Create a new notification associated with a user.
 }
 ```
 
-<h4 class="flex subtitle"><button class="error">400</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">400</button> Response Example:</h4>
 
 ```json
 {
@@ -184,7 +222,12 @@ Create a new notification associated with a user.
 }
 ```
 
-<h4 class="flex subtitle"><button class="error">500</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
+        500    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -195,8 +238,8 @@ Create a new notification associated with a user.
 
 ---
 
-<h3 id="delete-userid-notification" class="url-path flex">
-    <button class="method delete">DELETE</button> 
+<h3 style="background-color: #11171A; color: #fff; border-radius: 4px; padding: 20px;"> 
+    <button style="background-color:#991b1b; color: #fff; padding: 2px 8px; border-radius: 2px;">delete</button>
     <span>/user/{id}/notifications/{notification_id}</span>
 </h3>
 Delete a specific notification associated with a user.
@@ -210,7 +253,8 @@ Delete a specific notification associated with a user.
 
 ### Response Codes:
 
-<h4 class="flex subtitle"><button class="success">204</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#166534;">204</button> Response Example:</h4>
 
 ```json
 {
@@ -218,7 +262,13 @@ Delete a specific notification associated with a user.
 }
 ```
 
-<h4 class="flex subtitle"><button class="error">404</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
+        404
+    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -227,7 +277,12 @@ Delete a specific notification associated with a user.
 }
 ```
 
-<h4 class="flex subtitle"><button class="error">500</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
+        500    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -240,8 +295,8 @@ Delete a specific notification associated with a user.
 
 ## Users
 
-<h3 class="url-path flex">
-    <button class="method get">GET</button> <span>/user</span>
+<h3 style="background-color: #11171A; color: #fff; border-radius: 4px; padding: 20px;"> 
+    <button style="background-color:#166534; color: #fff; padding: 2px 8px; border-radius: 2px;">GET</button> <span>/user</span>
 </h3>
 
 Retrieve user information based on query parameters.
@@ -264,7 +319,24 @@ Retrieve user information based on query parameters.
 
 ### Response Codes:
 
-<h4 class="flex subtitle"><button class="success">200</button> Response Example:</h4>
+<div style="display:flex; align-items:center;">
+    <h4 style="
+        display: flex;
+        align-items: center;
+        padding: 16px 0 0 0;
+    ">
+        <button style="
+            border: none;
+            border-radius: 2px;
+            color: #fff;
+            font-weight: 800;
+            padding: 2px 8px;
+            margin-right: 12px;
+            filter: brightness(110%);
+            background-color: #166534;
+        ">200</button> Response Example:
+    </h4>
+</div>
 
 ```json
 [
@@ -289,7 +361,13 @@ Retrieve user information based on query parameters.
 ]
 ```
 
-<h4 class="flex subtitle"><button class="error">401</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
+        401
+    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -298,7 +376,13 @@ Retrieve user information based on query parameters.
 }
 ```
 
-<h4 class="flex subtitle"><button class="error">404</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
+        404
+    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -307,7 +391,12 @@ Retrieve user information based on query parameters.
 }
 ```
 
-<h4 class="flex subtitle"><button class="error">500</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
+        500    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -316,7 +405,10 @@ Retrieve user information based on query parameters.
 }
 ```
 
-## 6. GET /user/{id}/favorites
+<h3 style="background-color: #11171A; color: #fff; border-radius: 4px; padding: 20px;"> 
+    <button style="background-color:#166534; color: #fff; padding: 2px 8px; border-radius: 2px;">GET</button> 
+    <span>/user/{id}/favorites</span>
+</h3>
 
 Retrieve a user's list of favorite vehicles.
 
@@ -335,7 +427,24 @@ Retrieve a user's list of favorite vehicles.
 
 ### Responses:
 
-<h4 class="flex subtitle"><button class="success">200</button> Response Example:</h4>
+<div style="display:flex; align-items:center;">
+    <h4 style="
+        display: flex;
+        align-items: center;
+        padding: 16px 0 0 0;
+    ">
+        <button style="
+            border: none;
+            border-radius: 2px;
+            color: #fff;
+            font-weight: 800;
+            padding: 2px 8px;
+            margin-right: 12px;
+            filter: brightness(110%);
+            background-color: #166534;
+        ">200</button> Response Example:
+    </h4>
+</div>
 
 ```json
 [
@@ -379,7 +488,13 @@ Retrieve a user's list of favorite vehicles.
 ```
 
 ]
-<h4 class="flex subtitle"><button class="error">401</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
+        401
+    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -388,7 +503,13 @@ Retrieve a user's list of favorite vehicles.
 }
 ```
 
-<h4 class="flex subtitle"><button class="error">404</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
+        404
+    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -397,7 +518,12 @@ Retrieve a user's list of favorite vehicles.
 }
 ```
 
-<h4 class="flex subtitle"><button class="error">500</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
+        500    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -410,8 +536,8 @@ Retrieve a user's list of favorite vehicles.
 
 ## Vehicles
 
-<h3 class="url-path flex">
-    <button class="method get">GET</button> 
+<h3 style="background-color: #11171A; color: #fff; border-radius: 4px; padding: 20px;"> 
+    <button style="background-color:#166534; color: #fff; padding: 2px 8px; border-radius: 2px;">GET</button> 
     <span>/vehicle</span>
 </h3>
 
@@ -434,7 +560,24 @@ Retrieve a list of vehicles based on various filters.
 
 ### Response Codes:
 
-<h4 class="flex subtitle"><button class="success">200</button> Response Example:</h4>
+<div style="display:flex; align-items:center;">
+    <h4 style="
+        display: flex;
+        align-items: center;
+        padding: 16px 0 0 0;
+    ">
+        <button style="
+            border: none;
+            border-radius: 2px;
+            color: #fff;
+            font-weight: 800;
+            padding: 2px 8px;
+            margin-right: 12px;
+            filter: brightness(110%);
+            background-color: #166534;
+        ">200</button> Response Example:
+    </h4>
+</div>
 
 ```json
 [
@@ -465,7 +608,13 @@ Retrieve a list of vehicles based on various filters.
 ]
 ```
 
-<h4 class="flex subtitle"><button class="error">404</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
+        404    
+    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -475,7 +624,13 @@ Retrieve a list of vehicles based on various filters.
 
 ```
 
-<h4 class="flex subtitle"><button class="error">500</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
+        500    
+    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -484,8 +639,8 @@ Retrieve a list of vehicles based on various filters.
 }
 ```
 
-<h3 class="url-path flex">
-    <button class="method get">GET</button>
+<h3 style="background-color: #11171A; color: #fff; border-radius: 4px; padding: 20px;"> 
+    <button style="background-color:#166534; color: #fff; padding: 2px 8px; border-radius: 2px;">GET</button>
     <span>/vehicles/{vehicle_id}</span>
 </h3>
 
@@ -499,7 +654,13 @@ Retrieve detailed information about a specific vehicle.
 
 ### Response Codes:
 
-<h4 class="flex subtitle"><button class="success">200</button> Success Response:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#166534;">
+        200
+    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -516,7 +677,13 @@ Retrieve detailed information about a specific vehicle.
 }
 ```
 
-<h4 class="flex subtitle"><button class="error">404</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
+        404
+    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -526,7 +693,12 @@ Retrieve detailed information about a specific vehicle.
 
 ```
 
-<h4 class="flex subtitle"><button class="error">500</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
+        500    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -535,9 +707,13 @@ Retrieve detailed information about a specific vehicle.
 }
 ```
 
-<h3 class="url-path flex">
-    <button class="method get">POST</button> <span>/vehicle</span>
+<h3 style="background-color: #11171AFF; color: #fff; border-radius: 4px; padding: 20px; width: max-content; height: 30px; display: flex; align-items: center;">
+    <button style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#854d0e;">
+        POST
+    </button>
+    <span>/vehicle</span>
 </h3>
+
 Create a new vehicle.
 
 ### Request Body:
@@ -557,7 +733,24 @@ Create a new vehicle.
 ### Response Codes:
 
 
-<h4 class="flex subtitle"><button class="success">201</button> Response Example:</h4>
+<div style="display:flex; align-items:center;">
+    <h4 style="
+        display: flex;
+        align-items: center;
+        padding: 16px 0 0 0;
+    ">
+        <button style="
+            border: none;
+            border-radius: 2px;
+            color: #fff;
+            font-weight: 800;
+            padding: 2px 8px;
+            margin-right: 12px;
+            filter: brightness(110%);
+            background-color: #166534;
+        ">201</button> Response Example:
+    </h4>
+</div>
 
 ```json
 {
@@ -574,7 +767,12 @@ Create a new vehicle.
 }
 ```
 
-<h4 class="flex subtitle"><button class="error">500</button> Response Example:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
+        500    </button>
+    Response Example:
+</h4>
+
 
 ```json
 {
@@ -587,8 +785,8 @@ Create a new vehicle.
 
 ## Auth
 
-<h3 class="url-path flex">
-    <button class="method get">POST</button> <span>/auth/register</span>
+<h3 style="background-color: #11171A; color: #fff; border-radius: 4px; padding: 20px;"> 
+    <button style="background-color:#854d0e; color: #fff; padding: 2px 8px; border-radius: 2px;">POST</button> <span>/auth/register</span>
 </h3>
 
 #### Request Body (application/json):
@@ -603,7 +801,8 @@ Create a new vehicle.
 
 ### Response Codes:
 
-<h4 class="flex subtitle"><button class="success">201</button> Success Response:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#166534;">201</button> Success Response:</h4>
 
 ```json
 {
@@ -612,7 +811,8 @@ Create a new vehicle.
 }
 ```
 
-<h4 class="flex subtitle"><button class="error">409</button> Conflict Response:</h4>
+<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
+    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">409</button> Conflict Response:</h4>
 
 ```json
 {
