@@ -9,24 +9,10 @@
 
 ## Notifications
 
-<div style="display:flex; align-items:center;">
-    <h4 style="
-        display: flex;
-        align-items: center;
-        padding: 16px 0 0 0;
-    ">
-        <button style="
-            border: none;
-            border-radius: 2px;
-            color: #fff;
-            font-weight: 800;
-            padding: 2px 8px;
-            margin-right: 12px;
-            filter: brightness(110%);
-            background-color: #166534;
-        ">200</button> Response Example:
-    </h4>
-</div>
+```http request
+GET /user/{id}/notifications
+```
+
 Retrieve notifications associated with a specific user.
 
 ### Path Parameters:
@@ -56,24 +42,7 @@ Retrieve notifications associated with a specific user.
 
 ### Response Codes:
 
-<div style="display:flex; align-items:center;">
-    <h4 style="
-        display: flex;
-        align-items: center;
-        padding: 16px 0 0 0;
-    ">
-        <button style="
-            border: none;
-            border-radius: 2px;
-            color: #fff;
-            font-weight: 800;
-            padding: 2px 8px;
-            margin-right: 12px;
-            filter: brightness(110%);
-            background-color: #166534;
-        ">200</button> Response Example:
-    </h4>
-</div>
+- **200 OK**: Success
 
 ```json
 [
@@ -113,13 +82,7 @@ Retrieve notifications associated with a specific user.
 
 ```
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
-        404
-    </button>
-    Response Example:
-</h4>
-
+- **404 Not Found**: Resource not found
 
 ```json
 {
@@ -127,13 +90,8 @@ Retrieve notifications associated with a specific user.
   "message": "Check the ID and try again"
 }
 ```
-
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
-        500    </button>
-    Response Example:
-</h4>
-
+- 
+- **500 Internal Server Error**: An error occurred on the server
 
 ```json
 {
@@ -144,9 +102,10 @@ Retrieve notifications associated with a specific user.
 
 ---
 
-<h3 style="background-color: #11171A; color: #fff; border-radius: 4px; padding: 20px;"> 
-    <button style="background-color:#854d0e; color: #fff; padding: 2px 8px; border-radius: 2px;">POST</button> <span>/user/{user_id}/notifications</span>
-</h3>
+```http request
+GET /user/{user_id}/notifications
+```
+
 Create a new notification associated with a user.
 
 ### Request Body (application/json):
@@ -171,25 +130,7 @@ Create a new notification associated with a user.
 }
 
 ```
-
-<div style="display:flex; align-items:center;">
-    <h4 style="
-        display: flex;
-        align-items: center;
-        padding: 16px 0 0 0;
-    ">
-        <button style="
-            border: none;
-            border-radius: 2px;
-            color: #fff;
-            font-weight: 800;
-            padding: 2px 8px;
-            margin-right: 12px;
-            filter: brightness(110%);
-            background-color: #166534;
-        ">201</button> Response Example:
-    </h4>
-</div>
+- **201 Created**: Resource created successfully
 
 ```json
 {
@@ -197,13 +138,7 @@ Create a new notification associated with a user.
 }
 ```
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
-        404
-    </button>
-    Response Example:
-</h4>
-
+- **404 Not Found**: Resource not found
 
 ```json
 {
@@ -212,8 +147,7 @@ Create a new notification associated with a user.
 }
 ```
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">400</button> Response Example:</h4>
+- **400 Bad Request**: The request could not be understood or was missing required parameters
 
 ```json
 {
@@ -222,12 +156,7 @@ Create a new notification associated with a user.
 }
 ```
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
-        500    </button>
-    Response Example:
-</h4>
-
+- **500 Internal Server Error**: An error occurred on the server
 
 ```json
 {
@@ -238,10 +167,10 @@ Create a new notification associated with a user.
 
 ---
 
-<h3 style="background-color: #11171A; color: #fff; border-radius: 4px; padding: 20px;"> 
-    <button style="background-color:#991b1b; color: #fff; padding: 2px 8px; border-radius: 2px;">delete</button>
-    <span>/user/{id}/notifications/{notification_id}</span>
-</h3>
+```http request
+DELETE /user/{id}/notifications/{notification_id}
+```
+
 Delete a specific notification associated with a user.
 
 ### Path Parameters:
@@ -253,8 +182,7 @@ Delete a specific notification associated with a user.
 
 ### Response Codes:
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#166534;">204</button> Response Example:</h4>
+- **204 No Content**: The request was successful, but there is no content to send in the response.
 
 ```json
 {
@@ -262,13 +190,7 @@ Delete a specific notification associated with a user.
 }
 ```
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
-        404
-    </button>
-    Response Example:
-</h4>
-
+- **404 Not Found**: Resource not found
 
 ```json
 {
@@ -276,13 +198,7 @@ Delete a specific notification associated with a user.
   "message": "User or notification ID not found."
 }
 ```
-
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
-        500    </button>
-    Response Example:
-</h4>
-
+- **500 Internal Server Error**: An error occurred on the server
 
 ```json
 {
@@ -295,9 +211,9 @@ Delete a specific notification associated with a user.
 
 ## Users
 
-<h3 style="background-color: #11171A; color: #fff; border-radius: 4px; padding: 20px;"> 
-    <button style="background-color:#166534; color: #fff; padding: 2px 8px; border-radius: 2px;">GET</button> <span>/user</span>
-</h3>
+```http request
+GET /user 
+```
 
 Retrieve user information based on query parameters.
 
@@ -319,24 +235,7 @@ Retrieve user information based on query parameters.
 
 ### Response Codes:
 
-<div style="display:flex; align-items:center;">
-    <h4 style="
-        display: flex;
-        align-items: center;
-        padding: 16px 0 0 0;
-    ">
-        <button style="
-            border: none;
-            border-radius: 2px;
-            color: #fff;
-            font-weight: 800;
-            padding: 2px 8px;
-            margin-right: 12px;
-            filter: brightness(110%);
-            background-color: #166534;
-        ">200</button> Response Example:
-    </h4>
-</div>
+- **200 OK**: Success
 
 ```json
 [
@@ -361,13 +260,7 @@ Retrieve user information based on query parameters.
 ]
 ```
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
-        401
-    </button>
-    Response Example:
-</h4>
-
+- **401 Unauthorized**: Authentication failed or user does not have permissions for the requested operation.
 
 ```json
 {
@@ -376,12 +269,7 @@ Retrieve user information based on query parameters.
 }
 ```
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
-        404
-    </button>
-    Response Example:
-</h4>
+- **404 Not Found**: Resource not found
 
 
 ```json
@@ -391,12 +279,7 @@ Retrieve user information based on query parameters.
 }
 ```
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
-        500    </button>
-    Response Example:
-</h4>
-
+- **500 Internal Server Error**: An error occurred on the server
 
 ```json
 {
@@ -405,11 +288,9 @@ Retrieve user information based on query parameters.
 }
 ```
 
-<h3 style="background-color: #11171A; color: #fff; border-radius: 4px; padding: 20px;"> 
-    <button style="background-color:#166534; color: #fff; padding: 2px 8px; border-radius: 2px;">GET</button> 
-    <span>/user/{id}/favorites</span>
-</h3>
-
+```http request
+GET /user/{id}/favorites
+```
 Retrieve a user's list of favorite vehicles.
 
 ### Path Parameters:
@@ -427,24 +308,7 @@ Retrieve a user's list of favorite vehicles.
 
 ### Responses:
 
-<div style="display:flex; align-items:center;">
-    <h4 style="
-        display: flex;
-        align-items: center;
-        padding: 16px 0 0 0;
-    ">
-        <button style="
-            border: none;
-            border-radius: 2px;
-            color: #fff;
-            font-weight: 800;
-            padding: 2px 8px;
-            margin-right: 12px;
-            filter: brightness(110%);
-            background-color: #166534;
-        ">200</button> Response Example:
-    </h4>
-</div>
+- **200 OK**: Success
 
 ```json
 [
@@ -488,12 +352,7 @@ Retrieve a user's list of favorite vehicles.
 ```
 
 ]
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
-        401
-    </button>
-    Response Example:
-</h4>
+- **401 Unauthorized**: Authentication failed or user does not have permissions for the requested operation.
 
 
 ```json
@@ -503,12 +362,7 @@ Retrieve a user's list of favorite vehicles.
 }
 ```
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
-        404
-    </button>
-    Response Example:
-</h4>
+- **404 Not Found**: Resource not found
 
 
 ```json
@@ -518,11 +372,8 @@ Retrieve a user's list of favorite vehicles.
 }
 ```
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
-        500    </button>
-    Response Example:
-</h4>
+- **500 Internal Server Error**: An error occurred on the server
+
 
 
 ```json
@@ -536,11 +387,9 @@ Retrieve a user's list of favorite vehicles.
 
 ## Vehicles
 
-<h3 style="background-color: #11171A; color: #fff; border-radius: 4px; padding: 20px;"> 
-    <button style="background-color:#166534; color: #fff; padding: 2px 8px; border-radius: 2px;">GET</button> 
-    <span>/vehicle</span>
-</h3>
-
+```http request
+GET /vehicle 
+```
 Retrieve a list of vehicles based on various filters.
 
 ### Query Parameters:
@@ -560,24 +409,7 @@ Retrieve a list of vehicles based on various filters.
 
 ### Response Codes:
 
-<div style="display:flex; align-items:center;">
-    <h4 style="
-        display: flex;
-        align-items: center;
-        padding: 16px 0 0 0;
-    ">
-        <button style="
-            border: none;
-            border-radius: 2px;
-            color: #fff;
-            font-weight: 800;
-            padding: 2px 8px;
-            margin-right: 12px;
-            filter: brightness(110%);
-            background-color: #166534;
-        ">200</button> Response Example:
-    </h4>
-</div>
+- **200 OK**: Success
 
 ```json
 [
@@ -608,13 +440,7 @@ Retrieve a list of vehicles based on various filters.
 ]
 ```
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
-        404    
-    </button>
-    Response Example:
-</h4>
-
+- **404 Not Found**: Resource not found
 
 ```json
 {
@@ -624,13 +450,7 @@ Retrieve a list of vehicles based on various filters.
 
 ```
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
-        500    
-    </button>
-    Response Example:
-</h4>
-
+- **500 Internal Server Error**: An error occurred on the server
 
 ```json
 {
@@ -639,10 +459,9 @@ Retrieve a list of vehicles based on various filters.
 }
 ```
 
-<h3 style="background-color: #11171A; color: #fff; border-radius: 4px; padding: 20px;"> 
-    <button style="background-color:#166534; color: #fff; padding: 2px 8px; border-radius: 2px;">GET</button>
-    <span>/vehicles/{vehicle_id}</span>
-</h3>
+```http request
+GET /vehicles/{vehicle_id}</span>
+```
 
 Retrieve detailed information about a specific vehicle.
 
@@ -654,13 +473,7 @@ Retrieve detailed information about a specific vehicle.
 
 ### Response Codes:
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#166534;">
-        200
-    </button>
-    Response Example:
-</h4>
-
+- **200 OK**: Success
 
 ```json
 {
@@ -677,12 +490,7 @@ Retrieve detailed information about a specific vehicle.
 }
 ```
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
-        404
-    </button>
-    Response Example:
-</h4>
+- **404 Not Found**: Resource not found
 
 
 ```json
@@ -693,11 +501,8 @@ Retrieve detailed information about a specific vehicle.
 
 ```
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
-        500    </button>
-    Response Example:
-</h4>
+- **500 Internal Server Error**: An error occurred on the server
+
 
 
 ```json
@@ -707,12 +512,9 @@ Retrieve detailed information about a specific vehicle.
 }
 ```
 
-<h3 style="background-color: #11171AFF; color: #fff; border-radius: 4px; padding: 20px; width: max-content; height: 30px; display: flex; align-items: center;">
-    <button style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#854d0e;">
-        POST
-    </button>
-    <span>/vehicle</span>
-</h3>
+```http request
+POST /vehicle
+```
 
 Create a new vehicle.
 
@@ -732,25 +534,7 @@ Create a new vehicle.
 
 ### Response Codes:
 
-
-<div style="display:flex; align-items:center;">
-    <h4 style="
-        display: flex;
-        align-items: center;
-        padding: 16px 0 0 0;
-    ">
-        <button style="
-            border: none;
-            border-radius: 2px;
-            color: #fff;
-            font-weight: 800;
-            padding: 2px 8px;
-            margin-right: 12px;
-            filter: brightness(110%);
-            background-color: #166534;
-        ">201</button> Response Example:
-    </h4>
-</div>
+- **201 Created**: Resource created successfully
 
 ```json
 {
@@ -767,12 +551,7 @@ Create a new vehicle.
 }
 ```
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">
-        500    </button>
-    Response Example:
-</h4>
-
+- **500 Internal Server Error**: An error occurred on the server
 
 ```json
 {
@@ -785,9 +564,9 @@ Create a new vehicle.
 
 ## Auth
 
-<h3 style="background-color: #11171A; color: #fff; border-radius: 4px; padding: 20px;"> 
-    <button style="background-color:#854d0e; color: #fff; padding: 2px 8px; border-radius: 2px;">POST</button> <span>/auth/register</span>
-</h3>
+```http request
+POST /auth/register
+```
 
 #### Request Body (application/json):
 
@@ -801,8 +580,7 @@ Create a new vehicle.
 
 ### Response Codes:
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#166534;">201</button> Success Response:</h4>
+- **201 Created**: Resource created successfully
 
 ```json
 {
@@ -811,8 +589,7 @@ Create a new vehicle.
 }
 ```
 
-<h4 class="flex subtitle" style="display:flex; align-items:center; padding:16px 0 0 0;">
-    <button class="error" style="border:none; border-radius:2px; color:#fff; font-weight:800; padding:2px 8px; margin-right:12px; filter:brightness(110%); background-color:#991b1b;">409</button> Conflict Response:</h4>
+- **409 Conflict**
 
 ```json
 {
@@ -821,3 +598,6 @@ Create a new vehicle.
 }
 ```
 [Go to Top](#top)
+
+
+
