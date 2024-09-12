@@ -1,55 +1,46 @@
-# Notifications
 
-## user/{id}/notifications
+# API Documentation Endpoints
 
-Get notifications associated with user
+## Tabela de Conteúdos:
+- [1. GET /user/{id}/notifications](#1-get-useridnotifications)
+- [2. POST /user/{id}/notifications](#2-post-useridnotifications)
+- [3. DELETE /user/{id}/notifications/{notificationId}](#3-delete-useridnotificationsnotificationid)
+- [4. GET /user](#4-get-user)
+- [5. GET /user/{id}](#5-get-userid)
+- [6. GET/POST /user/{id}/favorites](#6-getpost-useridfavorites)
+- [7. GET /vehicles](#7-get-vehicles)
+- [8. GET /vehicles/{vehicleId}](#8-get-vehiclesvehicleid)
+- [9. POST /auth/register](#9-post-authregister)
+- [10. POST /auth/login](#10-post-authlogin)
 
-##### path Parameters
+## 1. **GET** /user/{id}/notifications
 
-| idrequired | stringExamples:"550e8400-e29b-41d4-a716-446655440000" -The ID of the user |
-|------------|---------------------------------------------------------------------------|
+Retrieve notifications associated with a specific user.
 
-### Responses
+### Path Parameters:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `id`      | string | The UUID of the user. |
 
-##### Response Schema: application/json
+### Response Schema (application/json):
+| Field              | Type    | Description                                                |
+|--------------------|---------|------------------------------------------------------------|
+| `notificationId`   | string  | The UUID of the notification.                              |
+| `userEmail`        | string  | The email of the associated user.                          |
+| `model`            | string  | The vehicle model.                                         |
+| `brand`            | string  | The vehicle brand.                                         |
+| `year`             | integer | The year of the vehicle.                                   |
+| `timestamp`        | string  | When the notification was created.                         |
+| `status`           | string  | The status of the notification.                            |
+| `currentMinPrice`  | integer | The current minimum price for the vehicle.                 |
+| `currentFipePrice` | integer | The current FIPE price for the vehicle.                    |
 
-| notificationId   | stringThe UUID of the notification                       |
-|------------------|----------------------------------------------------------|
-| userEmail        | stringThe email of the associated user                   |
-| model            | stringThe vehicle model                                  |
-| brand            | stringThe vehicle brand                                  |
-| year             | integer <int32>The year of the vehicle                   |
-| timestamp        | string <date-time>When the notification was created      |
-| status           | stringThe status of the notification                     |
-| currentMinPrice  | integer <int32>The current minimum price for the vehicle |
-| currentFipePrice | integer <int32>The current FIPE price for the vehicle    |
+### Response Codes:
+- **200** - OK
+- **404** - Not Found
+- **500** - Internal Server Error
 
-##### Response Schema: application/json
-
-| error   | stringThe error description  |
-|---------|------------------------------|
-| message | stringAdditional information |
-
-##### Response Schema: application/json
-
-| error   | stringThe error description  |
-|---------|------------------------------|
-| message | stringAdditional information |
-
-get/user/{id}/notifications
-
-### Response samples
-
-- 200
-- 404
-- 500
-
-Content type
-
-application/json
-
-Expand allCollapse all
-
+### Response Example:
 ```json
 [
   {
@@ -62,80 +53,35 @@ Expand allCollapse all
     "fipePrice": 50000,
     "timestamp": "2024-09-04T14:30:00Z",
     "status": "sent"
-  },
-  {
-    "notificationId": "550e8400-e29b-41d4-a716-446655440001",
-    "userEmail": "user2@email.com",
-    "model": "Civic",
-    "brand": "Honda",
-    "year": 2020,
-    "currentPrice": 38000,
-    "fipePrice": 42000,
-    "timestamp": "2024-09-04T15:00:00Z",
-    "status": "sent"
-  },
-  {
-    "notificationId": "550e8400-e29b-41d4-a716-446655440002",
-    "userEmail": "user3@email.com",
-    "model": "Focus",
-    "brand": "Ford",
-    "year": 2022,
-    "currentPrice": 32000,
-    "fipePrice": 35000,
-    "timestamp": "2024-09-04T15:30:00Z",
-    "status": "sent"
   }
 ]
 ```
 
-## user/{id}/notifications
+---
 
-Associate a user with a new notification for a vehicle price
+## 2. **POST** /user/{id}/notifications
 
-##### path Parameters
+Create a new notification associated with a user.
 
-| idrequired | stringExamples:"550e8400-e29b-41d4-a716-446655440000" -The ID of the user |
-|------------|---------------------------------------------------------------------------|
+### Path Parameters:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `id`      | string | The UUID of the user. |
 
-##### Request Body schema: application/json
+### Request Body (application/json):
+| Field  | Type    | Description            |
+|--------|---------|------------------------|
+| `model`| string  | The vehicle model.     |
+| `brand`| string  | The vehicle brand.     |
+| `year` | integer | The year of the vehicle.|
 
-Vehicle information for new notification
+### Response Codes:
+- **201** - Created
+- **404** - Not Found
+- **500** - Internal Server Error
 
-| model | stringThe model of the vehicle         |
-|-------|----------------------------------------|
-| brand | stringThe brand of the vehicle         |
-| year  | integer <int32>The year of the vehicle |
-
-### Responses
-
-##### Response Schema: application/json
-
-| message | string |
-|---------|--------|
-
-##### Response Schema: application/json
-
-| error   | stringThe error description  |
-|---------|------------------------------|
-| message | stringAdditional information |
-
-##### Response Schema: application/json
-
-| error   | stringThe error description  |
-|---------|------------------------------|
-| message | stringAdditional information |
-
-post/user/{id}/notifications
-
-### Request samples
-
-- Payload
-
-Content type
-
-application/json
-
-```bash
+### Request Example:
+```json
 {
   "model": "Corolla",
   "brand": "Toyota",
@@ -143,95 +89,58 @@ application/json
 }
 ```
 
-### Response samples
-
-- 201
-- 404
-- 500
-
-Content type
-
-application/json
-
-```bash
+### Response Example:
+```json
 {
   "message": "Notification created successfully."
 }
 ```
 
-## /user/{id}/notifications/{notificationId}
+---
 
-Delete a notification
+## 3. **DELETE** /user/{id}/notifications/{notificationId}
 
-##### path Parameters
+Delete a notification for a user.
 
-| idrequired             | anyThe Id of the user         |
-|------------------------|-------------------------------|
-| notificationIdrequired | anyThe Id of the notification |
+### Path Parameters:
+| Parameter         | Type   | Description                              |
+|-------------------|--------|------------------------------------------|
+| `id`              | string | The UUID of the user.                    |
+| `notificationId`  | string | The UUID of the notification to delete.  |
 
-### Responses
+### Response Codes:
+- **200** - OK
+- **404** - Not Found
+- **500** - Internal Server Error
 
-delete/user/{id}/notifications/{notificationId}
-
-### Response samples
-
-- 200
-- 404
-- 500
-
-Content type
-
-application/json
-
-```bash
+### Response Example:
+```json
 {
-  "message": "Notification deleted successfully"
+  "message": "Notification deleted successfully."
 }
 ```
 
-# user
+---
 
-## /user
+## 4. **GET** /user
 
-##### query Parameters
+Retrieve a list of users by name or email.
 
-| name  | stringExamples:name=john -name=j -name=doe -get user by name or lastname    |
-|-------|-----------------------------------------------------------------------------|
-| email | stringExamples:email=johndoe@email.com -email=@email.com -get user by email |
+### Query Parameters:
+| Parameter | Type   | Description                            |
+|-----------|--------|----------------------------------------|
+| `name`    | string | Search users by first or last name.    |
+| `email`   | string | Search users by email.                 |
 
-### Responses
+### Response Schema (application/json):
+| Field      | Type   | Description         |
+|------------|--------|---------------------|
+| `name`     | string | The user's first name.|
+| `last_name`| string | The user's last name. |
+| `email`    | string | The user's email.     |
+| `cellphone`| string | The user's cellphone. |
 
-[//]: # (TODO!!!!!!!!!!!)
-
-# user
-
-## /user
-
-##### query Parameters
-
-| name  | stringExamples:name=john -name=j -name=doe -get user by name or lastname    |
-|-------|-----------------------------------------------------------------------------|
-| email | stringExamples:email=johndoe@email.com -email=@email.com -get user by email |
-
-### Responses
-
-get/user
-
-### Response samples
-
-- 200
-- 401
-
-Content type
-
-application/json
-
-Example
-
-Names starting with "j"names by email domainNames starting with "j"
-
-Expand allCollapse all
-
+### Response Example:
 ```json
 [
   {
@@ -239,183 +148,103 @@ Expand allCollapse all
     "last_name": "Green",
     "email": "johndoe@email.com",
     "cellphone": "819999999"
-  },
-  {
-    "name": "Joana",
-    "last_name": "Green",
-    "email": "joanagreen@email.com",
-    "cellphone": "819999919"
-  },
-  {
-    "name": "Joao da",
-    "last_name": "Silva",
-    "email": "joaozinho@email.com",
-    "cellphone": "879995454"
   }
 ]
 ```
 
-## /user/{id}
+---
 
-##### path Parameters
+## 5. **GET** /user/{id}
 
-| idrequired | stringExamples:http://localhost:8080/api/v1/user/151548433 -user id |
-|------------|---------------------------------------------------------------------|
+Retrieve details for a specific user.
 
-### Responses
+### Path Parameters:
+| Parameter | Type   | Description          |
+|-----------|--------|----------------------|
+| `id`      | string | The UUID of the user. |
 
-##### Response Schema: application/json
-
-string
-
-get/user/{id}
-
-### Response samples
-
-- 200
-- 401
-- 404
-
-Content type
-
-application/json
-
+### Response Example:
 ```json
 {
-"name": "John doe",
-"last_name": "Green",
-"email": "johndoe@email.com",
-"cellphone": "819999999"
+  "name": "John doe",
+  "last_name": "Green",
+  "email": "johndoe@email.com",
+  "cellphone": "819999999"
 }
 ```
 
-## /user/{id}/favorites
+---
 
-##### path Parameters
+## 6. **GET/POST** /user/{id}/favorites
 
-| idrequired | stringExamples:http://localhost:8080/api/v1/user/91491949 -user id |
-|------------|--------------------------------------------------------------------|
+Manage user's favorite vehicles.
 
-##### query Parameters
+### Query Parameters (GET):
+| Parameter | Type   | Description                        |
+|-----------|--------|------------------------------------|
+| `order`   | string | Order results (asc/desc).          |
+| `limit`   | string | Limit the number of results.       |
 
-| order | stringExamples:order=asc -Query ordered by asc or des        |
-|-------|--------------------------------------------------------------|
-| limit | stringExamples:limit=20 -Results limited by a specific value |
-
-### Responses
-
-get/user/{id}/favorites
-
-### Response samples
-
-- 200
-- 401
-- 404
-
-Content type
-
-application/json
-
-Expand allCollapse all
-
-```json
-[
-  {
-    "id": "123e4567-e89b-12d3-a456-426614174000",
-    "model": "Corolla",
-    "brand": "Toyota",
-    "maxSpeed": 220,
-    "fuel": "Gasoline",
-    "tankCapacity": 55,
-    "color": "Red",
-    "year": 2022,
-    "currentFipePrice": 90000,
-    "type": "car"
-  },
-  {
-    "id": "550e8400-e29b-41d4-a716-446655440000",
-    "model": "Civic",
-    "brand": "Honda",
-    "maxSpeed": 180,
-    "fuel": "Gasoline",
-    "tankCapacity": 50,
-    "color": "Blue",
-    "year": 2021,
-    "currentFipePrice": 120000,
-    "type": "car"
-  },
-  {
-    "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-    "model": "Altima",
-    "brand": "Nissan",
-    "maxSpeed": 200,
-    "fuel": "Gasoline",
-    "tankCapacity": 60,
-    "color": "Black",
-    "year": 2023,
-    "currentFipePrice": 250000,
-    "type": "car"
-  }
-]
-```
-
-## /user/{id}/favorites
-
-##### path Parameters
-
-| idrequired | stringExamples:http://localhost:8080/api/v1/user/91491949 -user id |
-|------------|--------------------------------------------------------------------|
-
-##### Request Body schema: application/json
-
-add a vehicle to favorites
-
-string
-
-### Responses
-
-post/user/{id}/favorites
-
-### Request samples
-
-- Payload
-
-Content type
-
-application/json
-
-```json
-{
-  "vehicle_id": "918181515"
-}
-```
-
-### Response samples
-
-- 201
-- 400
-- 401
-
-Content type
-
-application/json
-
+### Response Example (POST):
 ```json
 {
   "message": "Vehicle added to favorites"
 }
 ```
 
-## /user/{id}/favorites
+---
 
-##### path Parameters
+## 7. **GET** /vehicles
 
-| idrequired | stringExamples:http://localhost:8080/api/v1/user/91491949 -user id |
-|------------|--------------------------------------------------------------------|
+Retrieve a list of vehicles filtered by various parameters.
 
-##### query Parameters
+### Query Parameters:
+| Parameter     | Type     | Description                                        |
+|---------------|----------|----------------------------------------------------|
+| `brand`       | string   | Filters vehicles by their manufacturer or brand.   |
+| `model`       | string   | Filters vehicles by their model name.              |
+| `afterYear`   | integer  | Filters vehicles released after the specified year.|
+| `beforeYear`  | integer  | Filters vehicles released before the specified year.|
+| `minHorsePower`| integer | Filters vehicles with engine output >= the specified horse power.|
+| `maxHorsePower`| integer | Filters vehicles with engine output <= the specified horse power.|
+| `minPrice`    | number   | Filters vehicles with price >= the specified price.|
+| `maxPrice`    | number   | Filters vehicles with price <= the specified price.|
 
-| favorite_idrequired | stringExamples:favorite_id=2929399 -remove vehicle from favorites, using the favorite's id |
-|---------------------|--------------------------------------------------------------------------------------------|
+---
 
-### Responses
+## 8. **GET** /vehicles/{vehicleId}
+
+Retrieve details for a specific vehicle by ID.
+
+### Path Parameters:
+| Parameter   | Type   | Description              |
+|-------------|--------|--------------------------|
+| `vehicleId` | string | The UUID of the vehicle.  |
+
+---
+
+## 9. **POST** /auth/register
+
+Register a new user.
+
+### Request Example:
+```json
+{
+  "username": "new_user",
+  "password": "password123"
+}
+```
+
+---
+
+## 10. **POST** /auth/login
+
+Login with user credentials.
+
+### Request Example:
+```json
+{
+  "username": "new_user",
+  "password": "password123"
+}
+```
