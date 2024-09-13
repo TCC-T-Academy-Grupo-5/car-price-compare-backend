@@ -1,4 +1,11 @@
-<h1><a id="top"></a>API Documentation Endpoints</h1>
+# 🚙 Car Price Compare API 🛻
+
+![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
+
+<h2><a id="top"></a>API Documentation Endpoints</h1> 
 
 ## Table of Content:
 
