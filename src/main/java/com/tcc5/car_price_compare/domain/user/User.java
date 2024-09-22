@@ -1,5 +1,8 @@
 package com.tcc5.car_price_compare.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tcc5.car_price_compare.domain.user.features.Notification;
+import com.tcc5.car_price_compare.domain.user.features.Rating;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -35,6 +38,14 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private UserStatusEnum status;
+
+    @OneToMany(mappedBy = "users")
+    @JsonIgnore
+    private List<Notification> notifications;
+
+    @OneToMany(mappedBy = "users")
+    @JsonIgnore
+    private List<Rating> ratings;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
