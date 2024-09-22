@@ -1,8 +1,8 @@
 package com.tcc5.car_price_compare.controllers;
 
-import com.tcc5.car_price_compare.domain.user.AuthenticationDTO;
-import com.tcc5.car_price_compare.domain.user.LoginResponseDTO;
-import com.tcc5.car_price_compare.domain.user.RegisterDTO;
+import com.tcc5.car_price_compare.domain.user.dto.AuthenticationDTO;
+import com.tcc5.car_price_compare.domain.user.dto.LoginResponseDTO;
+import com.tcc5.car_price_compare.domain.user.dto.RegisterDTO;
 import com.tcc5.car_price_compare.domain.user.User;
 import com.tcc5.car_price_compare.infra.security.TokenService;
 import com.tcc5.car_price_compare.repositories.UserRepository;
@@ -42,9 +42,9 @@ public class AuthenticationController {
         if(this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(data.login(), encryptedPassword, data.role());
+        //User newUser = new User(data.login(), encryptedPassword, data.role());
 
-        this.repository.save(newUser);
+       // this.repository.save(newUser);
 
         return ResponseEntity.ok().build();
     }

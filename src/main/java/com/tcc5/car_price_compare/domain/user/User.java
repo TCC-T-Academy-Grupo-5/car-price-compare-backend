@@ -9,8 +9,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Table(name = "users")
 @Entity(name = "users")
@@ -21,16 +23,18 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-    private String login;
+    private UUID id;
+    private String first_name;
+    private String last_name;
+    private String email;
     private String password;
+    private String cellphone;
+    private LocalDateTime created_at;
+    private LocalDateTime updated_at;
     private UserRole role;
 
-    public User(String login, String password, UserRole role){
-        this.login = login;
-        this.password = password;
-        this.role = role;
-    }
+    @Enumerated(EnumType.STRING)
+    private UserStatusEnum status;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -40,7 +44,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return login;
+        return getFirst_name() + " " + getLast_name();
     }
 
     @Override
@@ -60,6 +64,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.status == UserStatusEnum.ACTIVE;
     }
 }
