@@ -1,0 +1,34 @@
+package com.tcc5.car_price_compare.domain.vehicle;
+
+import com.tcc5.car_price_compare.domain.shared.GenericTimestamp;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "year")
+public class Year extends GenericTimestamp {
+
+    @Id
+    private String id;
+
+    @NotBlank
+    private String name;
+
+    @NotBlank
+    private String urlPathName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "model_id")
+    private Model model;
+
+    @OneToOne(mappedBy = "year", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Vehicle vehicle;
+}
