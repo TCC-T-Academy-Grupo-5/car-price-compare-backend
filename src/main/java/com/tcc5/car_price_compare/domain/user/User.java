@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -27,8 +28,10 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private String first_name;
-    private String last_name;
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
     private String email;
     private String password;
     private String cellphone;
@@ -47,6 +50,19 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<Rating> ratings;
 
+    public User (String firstName, String lastName, String email, String password, String cellphone){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.cellphone = cellphone;
+        this.created_at = LocalDateTime.now();
+        this.updated_at = LocalDateTime.now();
+        this.role = UserRole.USER;
+        this.status = UserStatusEnum.ACTIVE;
+        this.notifications = new ArrayList<>();
+        this.ratings = new ArrayList<>();
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
@@ -55,7 +71,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return getFirst_name() + " " + getLast_name();
+        return getFirstName() + " " + getLastName();
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.tcc5.car_price_compare.domain.vehicle;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tcc5.car_price_compare.domain.price.FipePrice;
+import com.tcc5.car_price_compare.domain.price.StorePrice;
 import com.tcc5.car_price_compare.domain.user.features.Favorites;
 import com.tcc5.car_price_compare.domain.user.features.Rating;
 import jakarta.persistence.*;
@@ -49,4 +50,8 @@ public class Vehicle {
     @OneToMany(mappedBy = "vehicle")
     @JsonIgnore
     private List<Favorites> favorites;
+
+    @OneToMany(mappedBy = "vehicle")
+    @JsonIgnore
+    private List<StorePrice> storePrices;
 }
