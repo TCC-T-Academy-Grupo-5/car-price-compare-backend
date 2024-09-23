@@ -36,17 +36,29 @@ public class FipeDataImporter implements CommandLineRunner {
 
     private final BrandJsonDtoToBrandConverter brandJsonDtoToBrandConverter;
 
-    @Value("${fipe.data.brands.url}")
+    @Value("${fipe.data.brands.baseurl}")
     private String brandsUrl;
 
-    @Value("${fipe.data.models.url}")
+    @Value("${fipe.data.brands.numpages}")
+    private int brandsNumPages;
+
+    @Value("${fipe.data.models.baseurl}")
     private String modelsUrl;
 
-    @Value("${fipe.data.years.url}")
+    @Value("${fipe.data.models.numpages}")
+    private int modelsNumPages;
+
+    @Value("${fipe.data.years.baseurl}")
     private String yearsUrl;
 
-    @Value("${fipe.data.vehicles.url}")
+    @Value("${fipe.data.years.numpages}")
+    private int yearsNumPages;
+
+    @Value("${fipe.data.vehicles.baseurl}")
     private String vehiclesUrl;
+
+    @Value("${fipe.data.vehicles.numpages}")
+    private int vehiclesNumPages;
 
     public FipeDataImporter(BrandRepository brandRepository,
             ModelRepository modelRepository,
