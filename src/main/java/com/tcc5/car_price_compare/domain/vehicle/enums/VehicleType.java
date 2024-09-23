@@ -14,4 +14,14 @@ public enum VehicleType {
     public String getDescription() {
         return description;
     }
+
+    public static VehicleType fromValue(int value) {
+        for (VehicleType vehicleType : VehicleType.values()) {
+            if (vehicleType.ordinal() == value) {
+                return vehicleType;
+            }
+        }
+
+        throw new IllegalArgumentException("Invalid value: " + value);
+    }
 }
