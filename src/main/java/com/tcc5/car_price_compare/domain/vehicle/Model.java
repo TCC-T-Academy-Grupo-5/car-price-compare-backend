@@ -1,7 +1,6 @@
 package com.tcc5.car_price_compare.domain.vehicle;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tcc5.car_price_compare.domain.shared.GenericTimestamp;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
