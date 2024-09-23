@@ -16,7 +16,7 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    ProductRepository repository;
+    private ProductRepository repository;
 
     @PostMapping
     public ResponseEntity postProduct(@RequestBody @Valid ProductRequestDTO body){
