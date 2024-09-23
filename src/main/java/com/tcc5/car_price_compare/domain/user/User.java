@@ -1,6 +1,7 @@
 package com.tcc5.car_price_compare.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tcc5.car_price_compare.domain.user.dto.RegisterDTO;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
 import com.tcc5.car_price_compare.domain.user.features.Rating;
 import jakarta.persistence.*;
@@ -92,5 +93,15 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.status == UserStatusEnum.ACTIVE;
+    }
+
+    public static User fromDto(RegisterDTO registerDTO, String encryptedPass){
+        User user = new User();
+        user.firstName = registerDTO.firstName();
+        user.lastName = registerDTO.lastName();
+        user.email = registerDTO.email();
+        user.password = encryptedPass;
+        user.cellphone = registerDTO.cellphone();
+        return user;
     }
 }
