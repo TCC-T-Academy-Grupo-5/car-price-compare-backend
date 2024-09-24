@@ -2,6 +2,7 @@ package com.tcc5.car_price_compare.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tcc5.car_price_compare.domain.user.dto.RegisterDTO;
+import com.tcc5.car_price_compare.domain.user.features.Favorites;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
 import com.tcc5.car_price_compare.domain.user.features.Rating;
 import jakarta.persistence.*;
@@ -43,13 +44,17 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserStatusEnum status;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Notification> notifications;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Rating> ratings;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Favorites> favorites;
 
     public User (String firstName, String lastName, String email, String password, String cellphone){
         this.firstName = firstName;
