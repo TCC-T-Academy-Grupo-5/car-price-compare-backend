@@ -1,6 +1,6 @@
 package com.tcc5.car_price_compare.domain.vehicle;
 
-import com.tcc5.car_price_compare.domain.shared.GenericTimestamp;
+import com.tcc5.car_price_compare.domain.shared.TimestampedEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "vehicle")
-public class Vehicle extends GenericTimestamp {
+public class Vehicle extends TimestampedEntity {
 
     @Id
     private String id;

@@ -1,7 +1,7 @@
 package com.tcc5.car_price_compare.domain.vehicle;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.tcc5.car_price_compare.domain.shared.GenericTimestamp;
+import com.tcc5.car_price_compare.domain.shared.TimestampedEntity;
 import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "brand")
-public class Brand extends GenericTimestamp {
+public class Brand extends TimestampedEntity {
 
     @Id
     private String id;
