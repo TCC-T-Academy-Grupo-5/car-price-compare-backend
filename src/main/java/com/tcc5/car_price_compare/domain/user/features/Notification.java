@@ -5,16 +5,14 @@ import com.tcc5.car_price_compare.domain.user.enums.NotificationType;
 import com.tcc5.car_price_compare.domain.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
 @Table(name = "notification")
 @Entity(name = "notification")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
