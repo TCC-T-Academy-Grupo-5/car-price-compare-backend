@@ -1,8 +1,10 @@
 package com.tcc5.car_price_compare.domain.user.features;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tcc5.car_price_compare.domain.shared.TimestampedEntity;
+import com.tcc5.car_price_compare.domain.user.enums.NotificationType;
 import com.tcc5.car_price_compare.domain.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -16,15 +18,19 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Notification {
+public class Notification extends TimestampedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private String body;
+    @NotNull
+    @Enumerated(EnumType.ORDINAL)
+    private NotificationType notificationType;
 
-    @ManyToOne
+    @NotNull
+    private Double currentFipePrice;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
 }
