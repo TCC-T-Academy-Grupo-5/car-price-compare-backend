@@ -1,6 +1,7 @@
 package com.tcc5.car_price_compare.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tcc5.car_price_compare.domain.shared.TimestampedEntity;
 import com.tcc5.car_price_compare.domain.user.dto.RegisterDTO;
 import com.tcc5.car_price_compare.domain.user.features.Favorites;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
@@ -14,7 +15,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class User implements UserDetails {
+public class User extends TimestampedEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -37,14 +37,12 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private String cellphone;
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
     private UserRole role;
 
     @Enumerated(EnumType.STRING)
     private UserStatusEnum status;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Notification> notifications;
 
@@ -62,8 +60,6 @@ public class User implements UserDetails {
         this.email = email;
         this.password = password;
         this.cellphone = cellphone;
-        this.created_at = LocalDateTime.now();
-        this.updated_at = LocalDateTime.now();
         this.role = UserRole.USER;
         this.status = UserStatusEnum.ACTIVE;
         this.notifications = new ArrayList<>();
