@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: 'car_price_compare'
+    username: 'alex'
+    password: '0989'
