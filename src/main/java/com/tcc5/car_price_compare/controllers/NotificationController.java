@@ -1,7 +1,7 @@
 package com.tcc5.car_price_compare.controllers;
 
 import com.tcc5.car_price_compare.domain.user.converters.NotificationRequestDtoToNotificationConverter;
-import com.tcc5.car_price_compare.domain.user.dto.NotificationRequestDto;
+import com.tcc5.car_price_compare.domain.user.dto.NotificationRequestDTO;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
 import com.tcc5.car_price_compare.services.NotificationService;
 import jakarta.validation.Valid;
@@ -25,7 +25,7 @@ public class NotificationController {
     }
 
     @PostMapping
-    public ResponseEntity<Notification> createNotification(@RequestBody @Valid NotificationRequestDto notificationRequestDto) {
+    public ResponseEntity<Notification> createNotification(@RequestBody @Valid NotificationRequestDTO notificationRequestDto) {
         Notification notification = this.notificationRequestDtoToNotificationConverter.convert(notificationRequestDto);
 
         return ResponseEntity.ok(this.notificationService.save(notification));
