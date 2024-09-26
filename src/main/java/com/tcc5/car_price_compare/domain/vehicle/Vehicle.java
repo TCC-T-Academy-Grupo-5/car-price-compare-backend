@@ -1,12 +1,17 @@
 package com.tcc5.car_price_compare.domain.vehicle;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tcc5.car_price_compare.domain.shared.TimestampedEntity;
+import com.tcc5.car_price_compare.domain.user.features.Notification;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,4 +30,8 @@ public class Vehicle extends TimestampedEntity {
     @OneToOne
     @JoinColumn(name = "year_id")
     private Year year;
+
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Notification> notifications = new ArrayList<>();
 }
