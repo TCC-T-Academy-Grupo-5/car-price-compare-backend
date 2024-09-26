@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -22,7 +23,7 @@ import java.util.List;
 public class Vehicle extends TimestampedEntity {
 
     @Id
-    private String id;
+    private UUID id;
 
     @NotBlank
     private String fipeCode;

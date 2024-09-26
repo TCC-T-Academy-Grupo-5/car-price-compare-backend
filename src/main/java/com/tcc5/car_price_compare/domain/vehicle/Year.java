@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Entity
 @Getter
 @Setter
@@ -17,7 +19,7 @@ import lombok.Setter;
 public class Year extends TimestampedEntity {
 
     @Id
-    private String id;
+    private UUID id;
 
     @NotBlank
     private String name;

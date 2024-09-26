@@ -10,6 +10,8 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class NotificationRequestDtoToNotificationConverter implements Converter<NotificationRequestDTO, Notification> {
 
@@ -22,7 +24,7 @@ public class NotificationRequestDtoToNotificationConverter implements Converter<
     @Override
     public Notification convert(NotificationRequestDTO source) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Vehicle vehicle = this.vehicleRepository.findById(String.valueOf(source.vehicleId()))
+        Vehicle vehicle = this.vehicleRepository.findById(source.vehicleId())
                 .orElseThrow(() -> new VehicleNotFoundException(source.vehicleId()));
 
         Notification notification = new Notification();
