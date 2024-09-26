@@ -3,6 +3,7 @@ package com.tcc5.car_price_compare.domain.user.features;
 import com.tcc5.car_price_compare.domain.shared.TimestampedEntity;
 import com.tcc5.car_price_compare.domain.user.enums.NotificationType;
 import com.tcc5.car_price_compare.domain.user.User;
+import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -31,4 +32,8 @@ public class Notification extends TimestampedEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vehicle_id")
+    private Vehicle vehicle;
 }
