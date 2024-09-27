@@ -2,17 +2,17 @@ package com.tcc5.car_price_compare.domain.user.converters;
 
 import com.tcc5.car_price_compare.domain.user.dto.NotificationResponseDTO;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
-import com.tcc5.car_price_compare.domain.vehicle.converters.VehicleToVehicleDTOConverter;
+import com.tcc5.car_price_compare.services.ConversionService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
 public class NotificationToNotificationResponseDTOConverter implements Converter<Notification, NotificationResponseDTO> {
 
-    private final VehicleToVehicleDTOConverter vehicleToVehicleDTOConverter;
+    private final ConversionService conversionService;
 
-    public NotificationToNotificationResponseDTOConverter(VehicleToVehicleDTOConverter vehicleToVehicleDTOConverter) {
-        this.vehicleToVehicleDTOConverter = vehicleToVehicleDTOConverter;
+    public NotificationToNotificationResponseDTOConverter(ConversionService conversionService) {
+        this.conversionService = conversionService;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class NotificationToNotificationResponseDTOConverter implements Converter
                 source.getNotificationType(),
                 source.getNotificationStatus(),
                 source.getCurrentFipePrice(),
-                this.vehicleToVehicleDTOConverter.convert(source.getVehicle())
+                this.conversionService.convertToVehicleDTO(source.getVehicle())
         );
     }
 }
