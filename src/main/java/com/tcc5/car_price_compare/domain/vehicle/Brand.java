@@ -1,6 +1,6 @@
 package com.tcc5.car_price_compare.domain.vehicle;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tcc5.car_price_compare.domain.shared.TimestampedEntity;
 import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
 import jakarta.persistence.*;
@@ -35,6 +35,6 @@ public class Brand extends TimestampedEntity {
     private VehicleType vehicleType;
 
     @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonIgnore
     private List<Model> models = new ArrayList<>();
 }
