@@ -1,7 +1,9 @@
 package com.tcc5.car_price_compare.controllers;
 
-import com.tcc5.car_price_compare.domain.user.converters.NotificationRequestDtoToNotificationConverter;
+import com.tcc5.car_price_compare.domain.user.converters.NotificationRequestDTOToNotificationConverter;
+import com.tcc5.car_price_compare.domain.user.converters.NotificationToNotificationResponseDTOConverter;
 import com.tcc5.car_price_compare.domain.user.dto.NotificationRequestDTO;
+import com.tcc5.car_price_compare.domain.user.dto.NotificationResponseDTO;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
 import com.tcc5.car_price_compare.services.NotificationService;
 import jakarta.validation.Valid;
@@ -16,18 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class NotificationController {
 
     private final NotificationService notificationService;
-    private final NotificationRequestDtoToNotificationConverter notificationRequestDtoToNotificationConverter;
+    private final NotificationRequestDTOToNotificationConverter notificationRequestDtoToNotificationConverter;
+    private final NotificationToNotificationResponseDTOConverter notificationToNotificationResponseDTOConverter;
 
     public NotificationController(NotificationService notificationService,
-            NotificationRequestDtoToNotificationConverter notificationRequestDtoToNotificationConverter) {
+            NotificationRequestDTOToNotificationConverter notificationRequestDtoToNotificationConverter,
+            NotificationToNotificationResponseDTOConverter notificationToNotificationResponseDTOConverter) {
         this.notificationService = notificationService;
         this.notificationRequestDtoToNotificationConverter = notificationRequestDtoToNotificationConverter;
+        this.notificationToNotificationResponseDTOConverter = notificationToNotificationResponseDTOConverter;
     }
 
     @PostMapping
-    public ResponseEntity<Notification> createNotification(@RequestBody @Valid NotificationRequestDTO notificationRequestDto) {
+    public ResponseEntity<NotificationResponseDTO> createNotification(@RequestBody @Valid NotificationRequestDTO notificationRequestDto) {
         Notification notification = this.notificationRequestDtoToNotificationConverter.convert(notificationRequestDto);
+        NotificationResponseDTO notificationResponseDTO = this.notificationToNotificationResponseDTOConverter
+                .convert(this.notificationService.save(notification));
 
-        return ResponseEntity.ok(this.notificationService.save(notification));
+        return ResponseEntity.ok(notificationResponseDTO);
     }
 }
