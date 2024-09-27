@@ -4,20 +4,18 @@ import com.tcc5.car_price_compare.domain.user.User;
 import com.tcc5.car_price_compare.domain.user.dto.NotificationRequestDTO;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
-import com.tcc5.car_price_compare.domain.vehicle.VehicleNotFoundException;
+import com.tcc5.car_price_compare.domain.vehicle.exceptions.VehicleNotFoundException;
 import com.tcc5.car_price_compare.repositories.vehicle.VehicleRepository;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
-public class NotificationRequestDtoToNotificationConverter implements Converter<NotificationRequestDTO, Notification> {
+public class NotificationRequestDTOToNotificationConverter implements Converter<NotificationRequestDTO, Notification> {
 
     private final VehicleRepository vehicleRepository;
 
-    public NotificationRequestDtoToNotificationConverter(VehicleRepository vehicleRepository) {
+    public NotificationRequestDTOToNotificationConverter(VehicleRepository vehicleRepository) {
         this.vehicleRepository = vehicleRepository;
     }
 
