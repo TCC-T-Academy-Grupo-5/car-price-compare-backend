@@ -1,6 +1,5 @@
 package com.tcc5.car_price_compare.domain.vehicle;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.tcc5.car_price_compare.domain.shared.TimestampedEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -32,7 +31,6 @@ public class Model extends TimestampedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id")
-    @JsonBackReference
     private Brand brand;
 
     @OneToMany(mappedBy = "model", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
