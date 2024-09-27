@@ -2,6 +2,7 @@ package com.tcc5.car_price_compare.domain.user.converters;
 
 import com.tcc5.car_price_compare.domain.user.User;
 import com.tcc5.car_price_compare.domain.user.dto.NotificationRequestDTO;
+import com.tcc5.car_price_compare.domain.user.enums.NotificationStatus;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import com.tcc5.car_price_compare.domain.vehicle.exceptions.VehicleNotFoundException;
@@ -27,6 +28,7 @@ public class NotificationRequestDTOToNotificationConverter implements Converter<
 
         Notification notification = new Notification();
         notification.setNotificationType(source.notificationType());
+        notification.setNotificationStatus(NotificationStatus.PENDING);
         notification.setCurrentFipePrice(source.currentFipePrice());
         notification.setUser(user);
         notification.setVehicle(vehicle);

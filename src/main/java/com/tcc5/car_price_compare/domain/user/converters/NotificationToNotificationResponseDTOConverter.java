@@ -19,7 +19,8 @@ public class NotificationToNotificationResponseDTOConverter implements Converter
     public NotificationResponseDTO convert(Notification source) {
         return new NotificationResponseDTO(
                 source.getId(),
-                source.getNotificationType().getDescription(),
+                source.getNotificationType(),
+                source.getNotificationStatus(),
                 source.getCurrentFipePrice(),
                 this.vehicleToVehicleDTOConverter.convert(source.getVehicle())
         );

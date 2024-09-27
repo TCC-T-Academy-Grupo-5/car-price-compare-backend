@@ -1,6 +1,7 @@
 package com.tcc5.car_price_compare.domain.user.features;
 
 import com.tcc5.car_price_compare.domain.shared.TimestampedEntity;
+import com.tcc5.car_price_compare.domain.user.enums.NotificationStatus;
 import com.tcc5.car_price_compare.domain.user.enums.NotificationType;
 import com.tcc5.car_price_compare.domain.user.User;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
@@ -25,6 +26,10 @@ public class Notification extends TimestampedEntity {
     @NotNull
     @Enumerated(EnumType.ORDINAL)
     private NotificationType notificationType;
+
+    @NotNull
+    @Enumerated(EnumType.ORDINAL)
+    private NotificationStatus notificationStatus;
 
     @NotNull
     private Double currentFipePrice;
