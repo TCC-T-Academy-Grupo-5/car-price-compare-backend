@@ -103,6 +103,8 @@ public class User extends TimestampedEntity implements UserDetails {
         user.email = registerDTO.email();
         user.password = encryptedPass;
         user.cellphone = registerDTO.cellphone();
+        user.status = UserStatusEnum.ACTIVE;
+        user.role = UserRole.USER;
         return user;
     }
 }
