@@ -48,7 +48,13 @@ public class ConversionService {
      * @return The corresponding notification response DTO
      */
     public NotificationResponseDTO convertToNotificationResponseDTO(Notification notification) {
-        return this.notificationToNotificationResponseDTOConverter.convert(notification);
+        NotificationResponseDTO notificationResponseDTO = this.notificationToNotificationResponseDTOConverter.convert(notification);
+        VehicleDTO vehicleDTO = this.convertToVehicleDTO(notification.getVehicle());
+
+        assert notificationResponseDTO != null;
+        notificationResponseDTO.setVehicle(vehicleDTO);
+
+        return notificationResponseDTO;
     }
 
     /**
