@@ -12,4 +12,14 @@ public enum NotificationType {
     NotificationType(String description) {
         this.description = description;
     }
+
+    public static NotificationType fromValue(int value) {
+        for (NotificationType type : NotificationType.values()) {
+            if (type.ordinal() == value) {
+                return type;
+            }
+        }
+
+        throw new IllegalArgumentException("Invalid value for notification type: " + value);
+    }
 }
