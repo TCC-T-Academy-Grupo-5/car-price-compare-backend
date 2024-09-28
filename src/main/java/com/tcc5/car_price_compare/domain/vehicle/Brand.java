@@ -1,7 +1,7 @@
 package com.tcc5.car_price_compare.domain.vehicle;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.tcc5.car_price_compare.domain.shared.GenericTimestamp;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tcc5.car_price_compare.domain.shared.TimestampedEntity;
 import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -19,10 +20,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "brand")
-public class Brand extends GenericTimestamp {
+public class Brand extends TimestampedEntity {
 
     @Id
-    private String id;
+    private UUID id;
 
     @NotBlank
     private String name;
@@ -34,6 +35,6 @@ public class Brand extends GenericTimestamp {
     private VehicleType vehicleType;
 
     @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonIgnore
     private List<Model> models = new ArrayList<>();
 }

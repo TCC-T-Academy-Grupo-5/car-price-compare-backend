@@ -1,5 +1,8 @@
 package com.tcc5.car_price_compare.domain.vehicle.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum VehicleType {
     CAR("cars"),
     MOTORCYCLE("motorcycles"),
@@ -9,10 +12,6 @@ public enum VehicleType {
 
     VehicleType(String description) {
         this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public static VehicleType fromValue(int value) {
