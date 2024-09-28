@@ -269,7 +269,7 @@ Add a vehicle to the current user's favorites. If the vehicle is already registe
 ```
 
 - **400 Bad Request**: The request could ot be understood or was missing required parameters
-- 
+
 ```json
 {
   "vehicleId": "não deve ser nulo"
@@ -277,7 +277,7 @@ Add a vehicle to the current user's favorites. If the vehicle is already registe
 ```
 
 - **409 Conflict**: The request conflicts with the current state of the server.
--
+
 ```json
 {
   "error": "Operation could not be completed due to a data integrity violation"
