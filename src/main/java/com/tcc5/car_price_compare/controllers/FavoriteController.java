@@ -5,6 +5,8 @@ import com.tcc5.car_price_compare.domain.user.dto.FavoriteResponseDTO;
 import com.tcc5.car_price_compare.domain.user.features.Favorite;
 import com.tcc5.car_price_compare.services.ConversionService;
 import com.tcc5.car_price_compare.services.FavoriteService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,12 +26,11 @@ public class FavoriteController {
     }
 
     @PostMapping
-    public ResponseEntity<FavoriteResponseDTO> addFavorite(@RequestBody FavoriteRequestDTO favoriteDTO) {
+    public ResponseEntity<FavoriteResponseDTO> addFavorite(@RequestBody @Valid FavoriteRequestDTO favoriteDTO) {
         Favorite favoriteToSave = this.conversionService.convertToFavoriteEntity(favoriteDTO);
         FavoriteResponseDTO favoriteResponseDTO = this.conversionService
                 .convertToFavoriteResponseDTO(this.favoriteService.save(favoriteToSave));
 
-        // TODO: validate favorite uniqueness; there shouldn't be two favorites with the same user and vehicle
-        return ResponseEntity.ok(favoriteResponseDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(favoriteResponseDTO);
     }
 }
