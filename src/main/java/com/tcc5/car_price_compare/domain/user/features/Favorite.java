@@ -9,7 +9,9 @@ import lombok.*;
 
 import java.util.UUID;
 
-@Table(name = "favorite")
+@Table(name = "favorite", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "vehicle_id"})
+})
 @Entity(name = "favorite")
 @Getter
 @Setter

@@ -3,6 +3,7 @@ package com.tcc5.car_price_compare.infra.exception;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.tcc5.car_price_compare.domain.vehicle.exceptions.VehicleNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -20,10 +21,9 @@ public class ExceptionHandlerAdvice {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
-        Throwable cause = ex.getCause();
         Map<String, String> errors = new HashMap<>();
 
-        if (cause instanceof MismatchedInputException mismatchedInputException) {
+        if (ex.getCause() instanceof MismatchedInputException mismatchedInputException) {
             List<JsonMappingException.Reference> path = mismatchedInputException.getPath();
             if (!path.isEmpty()) {
                 String fieldName = path.getFirst().getFieldName();
@@ -54,5 +54,12 @@ public class ExceptionHandlerAdvice {
         Map<String, String> errors = new HashMap<>();
         errors.put("vehicleId", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errors);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, String>> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", "Operation could not be completed due to a data integrity violation");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errors);
     }
 }
