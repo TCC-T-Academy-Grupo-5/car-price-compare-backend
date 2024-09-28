@@ -10,9 +10,7 @@ public class FavoriteToFavoriteResponseDTO implements Converter<Favorite, Favori
     @Override
     public FavoriteResponseDTO convert(Favorite source) {
         return FavoriteResponseDTO.builder()
-                .id(source.getId())
-                .createdAt(source.getCreatedAt())
-                .updatedAt(source.getUpdatedAt())
+                .favoriteId(source.getId())
                 .build();
     }
 }
