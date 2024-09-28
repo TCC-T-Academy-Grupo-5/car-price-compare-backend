@@ -7,7 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-public abstract class GenericTimestamp {
+public abstract class TimestampedEntity {
 
     @CreationTimestamp
     protected LocalDateTime createdAt;

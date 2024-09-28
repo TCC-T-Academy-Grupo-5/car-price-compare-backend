@@ -1,30 +1,44 @@
 package com.tcc5.car_price_compare.domain.user.features;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tcc5.car_price_compare.domain.shared.TimestampedEntity;
+import com.tcc5.car_price_compare.domain.user.enums.NotificationStatus;
+import com.tcc5.car_price_compare.domain.user.enums.NotificationType;
 import com.tcc5.car_price_compare.domain.user.User;
+import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.util.UUID;
 
 @Table(name = "notification")
 @Entity(name = "notification")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Notification {
+public class Notification extends TimestampedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private String body;
+    @NotNull
+    @Enumerated(EnumType.ORDINAL)
+    private NotificationType notificationType;
 
-    @ManyToOne
+    @NotNull
+    @Enumerated(EnumType.ORDINAL)
+    private NotificationStatus notificationStatus;
+
+    @NotNull
+    private Double currentFipePrice;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vehicle_id")
+    private Vehicle vehicle;
 }
