@@ -2,6 +2,7 @@ package com.tcc5.car_price_compare.domain.shared;
 
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
