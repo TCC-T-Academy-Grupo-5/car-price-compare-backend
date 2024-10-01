@@ -1,5 +1,6 @@
 package com.tcc5.car_price_compare.domain.vehicle;
 
+import com.tcc5.car_price_compare.domain.price.FipePrice;
 import com.tcc5.car_price_compare.domain.shared.GenericTimestamp;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -25,4 +26,8 @@ public class Vehicle extends GenericTimestamp {
     @OneToOne
     @JoinColumn(name = "year_id")
     private Year year;
+
+    @OneToOne
+    @JoinColumn(name = "price")
+    private FipePrice fipePrice;
 }
