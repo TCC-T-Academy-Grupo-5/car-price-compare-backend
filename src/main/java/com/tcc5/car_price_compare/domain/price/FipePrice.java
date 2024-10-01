@@ -3,16 +3,14 @@ package com.tcc5.car_price_compare.domain.price;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
 @Table(name = "fipe_price")
 @Entity(name = "FipePrice")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
