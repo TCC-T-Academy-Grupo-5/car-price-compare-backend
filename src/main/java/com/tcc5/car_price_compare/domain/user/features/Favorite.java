@@ -1,23 +1,24 @@
 package com.tcc5.car_price_compare.domain.user.features;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tcc5.car_price_compare.domain.shared.TimestampedEntity;
 import com.tcc5.car_price_compare.domain.user.User;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
-@Table(name = "favorites")
-@Entity(name = "favorites")
+@Table(name = "favorite", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "vehicle_id"})
+})
+@Entity(name = "favorite")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Favorites {
+public class Favorite extends TimestampedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

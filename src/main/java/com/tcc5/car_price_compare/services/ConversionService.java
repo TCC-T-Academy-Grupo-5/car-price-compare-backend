@@ -1,9 +1,15 @@
 package com.tcc5.car_price_compare.services;
 
+
+import com.tcc5.car_price_compare.domain.user.converters.FavoriteRequestDTOToFavoriteConverter;
+import com.tcc5.car_price_compare.domain.user.converters.FavoriteToFavoriteResponseDTO;
 import com.tcc5.car_price_compare.domain.user.converters.NotificationRequestDTOToNotificationConverter;
 import com.tcc5.car_price_compare.domain.user.converters.NotificationToNotificationResponseDTOConverter;
+import com.tcc5.car_price_compare.domain.user.dto.FavoriteRequestDTO;
+import com.tcc5.car_price_compare.domain.user.dto.FavoriteResponseDTO;
 import com.tcc5.car_price_compare.domain.user.dto.NotificationRequestDTO;
 import com.tcc5.car_price_compare.domain.user.dto.NotificationResponseDTO;
+import com.tcc5.car_price_compare.domain.user.features.Favorite;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import com.tcc5.car_price_compare.domain.vehicle.converters.VehicleToVehicleDTOConverter;
@@ -23,12 +29,20 @@ public class ConversionService {
 
     private final VehicleToVehicleDTOConverter vehicleToVehicleDTOConverter;
 
+    private final FavoriteRequestDTOToFavoriteConverter favoriteRequestDTOToFavoriteConverter;
+
+    private final FavoriteToFavoriteResponseDTO favoriteToFavoriteResponseDTO;
+
     public ConversionService(NotificationRequestDTOToNotificationConverter notificationRequestDTOToNotificationConverter,
             NotificationToNotificationResponseDTOConverter notificationToNotificationResponseDTOConverter,
-            VehicleToVehicleDTOConverter vehicleToVehicleDTOConverter) {
+            VehicleToVehicleDTOConverter vehicleToVehicleDTOConverter,
+            FavoriteRequestDTOToFavoriteConverter favoriteRequestDTOToFavoriteConverter,
+            FavoriteToFavoriteResponseDTO favoriteToFavoriteResponseDTO) {
         this.notificationRequestDTOToNotificationConverter = notificationRequestDTOToNotificationConverter;
         this.notificationToNotificationResponseDTOConverter = notificationToNotificationResponseDTOConverter;
         this.vehicleToVehicleDTOConverter = vehicleToVehicleDTOConverter;
+        this.favoriteRequestDTOToFavoriteConverter = favoriteRequestDTOToFavoriteConverter;
+        this.favoriteToFavoriteResponseDTO = favoriteToFavoriteResponseDTO;
     }
 
     /**
@@ -51,8 +65,9 @@ public class ConversionService {
         NotificationResponseDTO notificationResponseDTO = this.notificationToNotificationResponseDTOConverter.convert(notification);
         VehicleDTO vehicleDTO = this.convertToVehicleDTO(notification.getVehicle());
 
-        assert notificationResponseDTO != null;
-        notificationResponseDTO.setVehicle(vehicleDTO);
+        if (notificationResponseDTO != null) {
+            notificationResponseDTO.setVehicle(vehicleDTO);
+        }
 
         return notificationResponseDTO;
     }
@@ -65,5 +80,32 @@ public class ConversionService {
      */
     public VehicleDTO convertToVehicleDTO(Vehicle vehicle) {
         return this.vehicleToVehicleDTOConverter.convert(vehicle);
+    }
+
+    /**
+     * Converts a FavoriteRequestDTO object to a Favorite entity.
+     *
+     * @param favoriteRequestDTO The favorite request DTO to be converted
+     * @return The corresponding Favorite entity
+     */
+    public Favorite convertToFavoriteEntity(FavoriteRequestDTO favoriteRequestDTO) {
+        return this.favoriteRequestDTOToFavoriteConverter.convert(favoriteRequestDTO);
+    }
+
+    /**
+     * Converts a Favorite entity to a FavoriteResponseDTO object.
+     *
+     * @param favorite The Notification entity to be converted
+     * @return The corresponding favorite response DTO
+     */
+    public FavoriteResponseDTO convertToFavoriteResponseDTO(Favorite favorite) {
+        FavoriteResponseDTO favoriteResponseDTO = this.favoriteToFavoriteResponseDTO.convert(favorite);
+        VehicleDTO vehicleDTO = this.convertToVehicleDTO(favorite.getVehicle());
+
+        if (favoriteResponseDTO != null) {
+            favoriteResponseDTO.setVehicle(vehicleDTO);
+        }
+
+        return favoriteResponseDTO;
     }
 }

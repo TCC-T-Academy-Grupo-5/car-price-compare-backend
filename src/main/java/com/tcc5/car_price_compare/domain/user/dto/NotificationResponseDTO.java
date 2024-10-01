@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public final class NotificationResponseDTO {
-    private UUID id;
+    private UUID notificationId;
     private NotificationType notificationType;
     private NotificationStatus notificationStatus;
     private Double currentFipePrice;
