@@ -1,7 +1,9 @@
 package com.tcc5.car_price_compare.repositories.vehicle;
 
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface VehicleRepository extends JpaRepository<Vehicle, String> {
+public interface VehicleRepository extends JpaRepository<Vehicle, String>, JpaSpecificationExecutor<Vehicle> {
 }
