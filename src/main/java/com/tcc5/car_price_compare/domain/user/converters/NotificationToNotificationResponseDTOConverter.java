@@ -11,7 +11,7 @@ public class NotificationToNotificationResponseDTOConverter implements Converter
     @Override
     public NotificationResponseDTO convert(Notification source) {
         return NotificationResponseDTO.builder()
-                .id(source.getId())
+                .notificationId(source.getId())
                 .notificationType(source.getNotificationType())
                 .notificationStatus(source.getNotificationStatus())
                 .currentFipePrice(source.getCurrentFipePrice())
