@@ -8,6 +8,8 @@ import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import com.tcc5.car_price_compare.domain.vehicle.Year;
 import com.tcc5.car_price_compare.domain.vehicle.dto.*;
 import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
+import com.tcc5.car_price_compare.domain.vehicle.exceptions.BrandNotFoundException;
+import com.tcc5.car_price_compare.domain.vehicle.exceptions.ModelNotFoundException;
 import com.tcc5.car_price_compare.repositories.price.FipePriceRepository;
 import com.tcc5.car_price_compare.repositories.vehicle.BrandRepository;
 import com.tcc5.car_price_compare.repositories.vehicle.ModelRepository;
@@ -108,24 +110,14 @@ public class VehicleService {
 
         BeanUtils.copyProperties(vehicleDTO, vehicle);
 
-        var model = modelRepository.findByName(vehicleDTO.model());
-        var brand = brandRepository.findByName(vehicleDTO.brand());
-
-        Year year = new Year();
-
-        if (model.isEmpty()) throw new RuntimeException("Model not valid");
-        if (brand.isEmpty()) throw new RuntimeException("Brand not valid");
-
-        year.setId(UUID.randomUUID());
-        year.setName(vehicleDTO.year());
-        year.setVehicle(vehicle);
-        year.setModel(model.get());
-        year.setUrlPathName(vehicleDTO.year().replace(" ", "-"));
+        Model model = getModelByName(vehicleDTO.model());
+        Brand brand = getBrandByName(vehicleDTO.brand());
+        Year year = yearConfig(vehicleDTO.year(), vehicle, model);
 
         vehicle.setId(UUID.randomUUID());
         vehicle.setYear(year);
-        vehicle.getYear().setModel(model.get());
-        vehicle.getYear().getModel().setBrand(brand.get());
+        vehicle.getYear().setModel(model);
+        vehicle.getYear().getModel().setBrand(brand);
         vehicle.getYear().getModel().getBrand().setVehicleType(VehicleType.fromValue(vehicleDTO.carType()));
 
         addYear(year);
@@ -135,8 +127,35 @@ public class VehicleService {
         return convertToVehicleResponse(vehicle);
     }
 
-    public void addYear(Year year){
-        yearRepository.save(year);
+    public Brand getBrandByName(String name){
+        var brand = brandRepository.findByName(name);
+
+        if (brand.isEmpty()) throw new BrandNotFoundException(name);
+
+        return brand.get();
     }
 
+    public Model getModelByName(String name){
+        var model = modelRepository.findByName(name);
+
+        if (model.isEmpty()) throw new ModelNotFoundException(name);
+
+        return model.get();
+    }
+
+    private Year yearConfig(String yearString, Vehicle vehicle, Model model){
+        Year year = new Year();
+
+        year.setId(UUID.randomUUID());
+        year.setName(yearString);
+        year.setVehicle(vehicle);
+        year.setModel(model);
+        year.setUrlPathName(yearString.replace(" ", "-"));
+
+        return year;
+    }
+
+    private void addYear(Year year) {
+        yearRepository.save(year);
+    }
 }
