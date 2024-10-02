@@ -1,4 +1,8 @@
 package com.tcc5.car_price_compare.domain.vehicle.dto;
 
-public record VehicleDTO (String fipeCode, String year, Double fipePrice, String model, String brand, Integer carType) {
+import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
+
+import java.util.UUID;
+
+public record VehicleDTO(UUID vehicleId, String fipeCode, String year, String model, String brand, VehicleType vehicleType) {
 }
