@@ -7,6 +7,8 @@ import com.tcc5.car_price_compare.repositories.vehicle.ModelRepository;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class YearJsonDtoToYearConverter implements Converter<YearJsonDto, Year> {
     private final ModelRepository modelRepository;
@@ -17,12 +19,12 @@ public class YearJsonDtoToYearConverter implements Converter<YearJsonDto, Year> 
 
     @Override
     public Year convert(YearJsonDto source) {
-        Model model = this.modelRepository.findById(source.model_id()).orElseThrow(() -> {
+        Model model = this.modelRepository.findById(UUID.fromString(source.model_id())).orElseThrow(() -> {
             return new RuntimeException("Error converting YearJsonDto to Year: no model with id " + source.model_id());
         });
 
         Year year = new Year();
-        year.setId(source.id());
+        year.setId(UUID.fromString(source.id()));
         year.setName(source.name());
         year.setUrlPathName(source.url_path_name());
         year.setModel(model);

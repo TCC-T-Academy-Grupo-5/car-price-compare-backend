@@ -5,11 +5,12 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
 
-<h2><a id="top"></a>API Documentation Endpoints</h1> 
+<h2><a id="top"></a>API Documentation Endpoints</h1>
 
 ## Table of Content:
 
 - [Notifications](#notifications)
+- [Favorites](#favorites)
 - [Users](#users)
 - [Vehicles](#vehicles)
 - [Auth](#auth)
@@ -97,7 +98,8 @@ Retrieve notifications associated with a specific user.
   "message": "Check the ID and try again"
 }
 ```
-- 
+
+-
 - **500 Internal Server Error**: An error occurred on the server
 
 ```json
@@ -137,6 +139,7 @@ Create a new notification associated with a user.
 }
 
 ```
+
 - **201 Created**: Resource created successfully
 
 ```json
@@ -205,6 +208,7 @@ Delete a specific notification associated with a user.
   "message": "User or notification ID not found."
 }
 ```
+
 - **500 Internal Server Error**: An error occurred on the server
 
 ```json
@@ -214,6 +218,80 @@ Delete a specific notification associated with a user.
 }
 ```
 
+---
+
+## Favorites
+
+```http request
+POST /user/favorites
+```
+
+Add a vehicle to the current user's favorites. If the vehicle is already registered as a favorite for the user, the response will be **409 Conflict**
+
+### Request body (application/json):
+
+| Field       | Type   | Required | Description                                               |
+|-------------|--------|----------|-----------------------------------------------------------|
+| `vehicleId` | string | TRUE     | The ID of the vehicle to be added to the user's favorites |
+
+### Response Codes:
+
+### Request Example:
+
+```json
+{
+    "vehicleId": "934f716e-88fa-428d-aa29-a0f0ee861eb8"
+}
+```
+
+- **201 Created**: Resource created successfully
+
+```json
+{
+  "favoriteId": "558ac18b-3818-41a8-84d6-68bb4a94cf62",
+  "vehicle": {
+    "vehicleId": "934f716e-88fa-428d-aa29-a0f0ee861eb8",
+    "fipeCode": "516041-3",
+    "year": "1989",
+    "model": "NL-10 340 4x2 2p (diesel)",
+    "brand": "Volvo",
+    "vehicleType": "TRUCK"
+  }
+}
+```
+
+- **404 Not Found**: Resource not found
+
+```json
+{
+    "error": "Vehicle id 934f716e-88fa-428d-aa29-a0f0ee861eb7 not found"
+}
+```
+
+- **400 Bad Request**: The request could ot be understood or was missing required parameters
+
+```json
+{
+  "vehicleId": "não deve ser nulo"
+}
+```
+
+- **409 Conflict**: The request conflicts with the current state of the server.
+
+```json
+{
+  "error": "Operation could not be completed due to a data integrity violation"
+}
+```
+
+- **500 Internal Server Error**: An error occurred on the server
+
+```json
+{
+  "error": "Internal Server Error",
+  "message": "An unexpected error occurred while processing the request."
+}
+```
 ---
 
 ## Users
@@ -278,7 +356,6 @@ Retrieve user information based on query parameters.
 
 - **404 Not Found**: Resource not found
 
-
 ```json
 {
   "error": "Not Found",
@@ -298,6 +375,7 @@ Retrieve user information based on query parameters.
 ```http request
 GET /user/{id}/favorites
 ```
+
 Retrieve a user's list of favorite vehicles.
 
 ### Path Parameters:
@@ -359,8 +437,8 @@ Retrieve a user's list of favorite vehicles.
 ```
 
 ]
-- **401 Unauthorized**: Authentication failed or user does not have permissions for the requested operation.
 
+- **401 Unauthorized**: Authentication failed or user does not have permissions for the requested operation.
 
 ```json
 {
@@ -371,7 +449,6 @@ Retrieve a user's list of favorite vehicles.
 
 - **404 Not Found**: Resource not found
 
-
 ```json
 {
   "error": "Not Found",
@@ -380,8 +457,6 @@ Retrieve a user's list of favorite vehicles.
 ```
 
 - **500 Internal Server Error**: An error occurred on the server
-
-
 
 ```json
 {
@@ -397,6 +472,7 @@ Retrieve a user's list of favorite vehicles.
 ```http request
 GET /vehicle 
 ```
+
 Retrieve a list of vehicles based on various filters.
 
 ### Query Parameters:
@@ -499,7 +575,6 @@ Retrieve detailed information about a specific vehicle.
 
 - **404 Not Found**: Resource not found
 
-
 ```json
 {
   "error": "Not Found",
@@ -509,8 +584,6 @@ Retrieve detailed information about a specific vehicle.
 ```
 
 - **500 Internal Server Error**: An error occurred on the server
-
-
 
 ```json
 {
@@ -604,6 +677,7 @@ POST /auth/register
   "message": "The email address 'johndoe@email.com' already exists."
 }
 ```
+
 [Go to Top](#top)
 
 

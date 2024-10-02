@@ -7,6 +7,8 @@ import com.tcc5.car_price_compare.repositories.vehicle.BrandRepository;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class ModelJsonDtoToModelConverter implements Converter<ModelJsonDto, Model> {
 
@@ -18,12 +20,12 @@ public class ModelJsonDtoToModelConverter implements Converter<ModelJsonDto, Mod
 
     @Override
     public Model convert(ModelJsonDto source) {
-        Brand brand = this.brandRepository.findById(source.brand_id()).orElseThrow(() -> {
+        Brand brand = this.brandRepository.findById(UUID.fromString(source.brand_id())).orElseThrow(() -> {
             return new RuntimeException("Error converting ModelJsonDto to Model: no brand with id " + source.brand_id());
         });
 
         Model model = new Model();
-        model.setId(source.id());
+        model.setId(UUID.fromString(source.id()));
         model.setName(source.name());
         model.setUrlPathName(source.url_path_name());
         model.setBrand(brand);
