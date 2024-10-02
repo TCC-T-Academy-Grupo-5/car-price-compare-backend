@@ -3,9 +3,9 @@ package com.tcc5.car_price_compare.controllers;
 import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponse;
 import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
+import com.tcc5.car_price_compare.domain.vehicle.dto.AddVehicleDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.BrandDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.ModelDTO;
-import com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO;
 import com.tcc5.car_price_compare.services.VehicleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class VehicleController {
     }
 
     @PostMapping()
-    public ResponseEntity<VehicleResponse> addVehicle(@RequestBody @Valid VehicleDTO vehicleDTO){
+    public ResponseEntity<VehicleResponse> addVehicle(@RequestBody @Valid AddVehicleDTO vehicleDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.addVehicle(vehicleDTO));
     }
 
