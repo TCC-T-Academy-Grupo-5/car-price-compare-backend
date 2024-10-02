@@ -6,9 +6,9 @@ import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import com.tcc5.car_price_compare.domain.vehicle.Year;
+import com.tcc5.car_price_compare.domain.vehicle.dto.AddVehicleDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.BrandDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.ModelDTO;
-import com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO;
 import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
 import com.tcc5.car_price_compare.repositories.price.FipePriceRepository;
 import com.tcc5.car_price_compare.repositories.vehicle.BrandRepository;
@@ -105,7 +105,7 @@ public class VehicleService {
     }
 
 
-    public VehicleResponse addVehicle(VehicleDTO vehicleDTO) {
+    public VehicleResponse addVehicle(AddVehicleDTO vehicleDTO) {
         Vehicle vehicle = new Vehicle();
 
         BeanUtils.copyProperties(vehicleDTO, vehicle);
@@ -118,13 +118,13 @@ public class VehicleService {
         if (model.isEmpty()) throw new RuntimeException("Model not valid");
         if (brand.isEmpty()) throw new RuntimeException("Brand not valid");
 
-        year.setId(UUID.randomUUID().toString());
+        year.setId(UUID.randomUUID());
         year.setName(vehicleDTO.year());
         year.setVehicle(vehicle);
         year.setModel(model.get());
         year.setUrlPathName(vehicleDTO.year().replace(" ", "-"));
 
-        vehicle.setId(UUID.randomUUID().toString());
+        vehicle.setId(UUID.randomUUID());
         vehicle.setYear(year);
         vehicle.getYear().setModel(model.get());
         vehicle.getYear().getModel().setBrand(brand.get());
