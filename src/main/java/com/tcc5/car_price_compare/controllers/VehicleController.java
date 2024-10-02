@@ -1,6 +1,6 @@
 package com.tcc5.car_price_compare.controllers;
 
-import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponse;
+import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponseDTO;
 import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.dto.AddVehicleDTO;
@@ -22,7 +22,7 @@ public class VehicleController {
     private VehicleService service;
 
     @GetMapping
-    public ResponseEntity<Page<VehicleResponse>> getVehicles(
+    public ResponseEntity<Page<VehicleResponseDTO>> getVehicles(
             @RequestParam(value = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
             @RequestParam(value = "model", required = false) String model,
@@ -36,7 +36,7 @@ public class VehicleController {
     }
 
     @PostMapping()
-    public ResponseEntity<VehicleResponse> addVehicle(@RequestBody @Valid AddVehicleDTO vehicleDTO){
+    public ResponseEntity<VehicleResponseDTO> addVehicle(@RequestBody @Valid AddVehicleDTO vehicleDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.addVehicle(vehicleDTO));
     }
 

@@ -1,7 +1,7 @@
 package com.tcc5.car_price_compare.services;
 
 import com.tcc5.car_price_compare.domain.price.FipePrice;
-import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponse;
+import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponseDTO;
 import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
@@ -49,7 +49,7 @@ public class VehicleService {
     @Autowired
     private FipePriceRepository fipePriceRepository;
 
-    public Page<VehicleResponse> getVehicles(Integer pageNumber, Integer pageSize, String model, String brand, Double fipePrice, Integer type, String year) {
+    public Page<VehicleResponseDTO> getVehicles(Integer pageNumber, Integer pageSize, String model, String brand, Double fipePrice, Integer type, String year) {
         Specification<Vehicle> spec = Specification
                 .where(VehicleSpecification.hasModel(model))
                 .and(VehicleSpecification.hasBrand(brand))
@@ -65,22 +65,22 @@ public class VehicleService {
         return vehicleToList(vehicles);
     }
 
-    private Page<VehicleResponse> vehicleToList(Page<Vehicle> vehicles){
-        List<VehicleResponse> vehicleResponses = vehicles.stream()
+    private Page<VehicleResponseDTO> vehicleToList(Page<Vehicle> vehicles){
+        List<VehicleResponseDTO> vehicleResponses = vehicles.stream()
                 .map(this::convertToVehicleResponse)
                 .collect(Collectors.toList());
 
         return new PageImpl<>(vehicleResponses, PageRequest.of(vehicles.getNumber(), vehicles.getSize()), vehicles.getTotalElements());
     }
 
-    private VehicleResponse convertToVehicleResponse(Vehicle vehicle) {
+    private VehicleResponseDTO convertToVehicleResponse(Vehicle vehicle) {
         Year year = vehicle.getYear();
         Model model = year.getModel();
         Brand brand = model.getBrand();
         VehicleType vehicleType = brand.getVehicleType();
         FipePrice fipePrice = vehicle.getFipePrice();
 
-        return new VehicleResponse(vehicle.getId(), model.getName(), brand.getName(), fipePrice == null ? 0 : fipePrice.getPrice(), vehicleType.name(), year.getName().split(" ")[0]);
+        return new VehicleResponseDTO(vehicle.getId(), model.getName(), brand.getName(), fipePrice == null ? 0 : fipePrice.getPrice(), vehicleType.name(), year.getName().split(" ")[0]);
     }
 
     public Brand addBrand(BrandDTO brandDTO) {
@@ -105,7 +105,7 @@ public class VehicleService {
     }
 
 
-    public VehicleResponse addVehicle(AddVehicleDTO vehicleDTO) {
+    public VehicleResponseDTO addVehicle(AddVehicleDTO vehicleDTO) {
         Vehicle vehicle = new Vehicle();
 
         BeanUtils.copyProperties(vehicleDTO, vehicle);
