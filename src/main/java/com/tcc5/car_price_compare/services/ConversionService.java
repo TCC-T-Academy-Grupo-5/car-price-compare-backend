@@ -11,8 +11,14 @@ import com.tcc5.car_price_compare.domain.request.user.NotificationRequestDTO;
 import com.tcc5.car_price_compare.domain.response.user.NotificationResponseDTO;
 import com.tcc5.car_price_compare.domain.user.features.Favorite;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
+import com.tcc5.car_price_compare.domain.vehicle.Brand;
+import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
+import com.tcc5.car_price_compare.domain.vehicle.converters.BrandToBrandDTOConverter;
+import com.tcc5.car_price_compare.domain.vehicle.converters.ModelToModelDTOConverter;
 import com.tcc5.car_price_compare.domain.vehicle.converters.VehicleToVehicleDTOConverter;
+import com.tcc5.car_price_compare.domain.vehicle.dto.BrandDTO;
+import com.tcc5.car_price_compare.domain.vehicle.dto.ModelDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO;
 import org.springframework.stereotype.Service;
 
@@ -33,16 +39,24 @@ public class ConversionService {
 
     private final FavoriteToFavoriteResponseDTO favoriteToFavoriteResponseDTO;
 
+    private final BrandToBrandDTOConverter brandToBrandDTOConverter;
+
+    private final ModelToModelDTOConverter modelToModelDTOConverter;
+
     public ConversionService(NotificationRequestDTOToNotificationConverter notificationRequestDTOToNotificationConverter,
             NotificationToNotificationResponseDTOConverter notificationToNotificationResponseDTOConverter,
             VehicleToVehicleDTOConverter vehicleToVehicleDTOConverter,
             FavoriteRequestDTOToFavoriteConverter favoriteRequestDTOToFavoriteConverter,
-            FavoriteToFavoriteResponseDTO favoriteToFavoriteResponseDTO) {
+            FavoriteToFavoriteResponseDTO favoriteToFavoriteResponseDTO,
+            BrandToBrandDTOConverter brandToBrandDTOConverter,
+            ModelToModelDTOConverter modelToModelDTOConverter) {
         this.notificationRequestDTOToNotificationConverter = notificationRequestDTOToNotificationConverter;
         this.notificationToNotificationResponseDTOConverter = notificationToNotificationResponseDTOConverter;
         this.vehicleToVehicleDTOConverter = vehicleToVehicleDTOConverter;
         this.favoriteRequestDTOToFavoriteConverter = favoriteRequestDTOToFavoriteConverter;
         this.favoriteToFavoriteResponseDTO = favoriteToFavoriteResponseDTO;
+        this.brandToBrandDTOConverter = brandToBrandDTOConverter;
+        this.modelToModelDTOConverter = modelToModelDTOConverter;
     }
 
     /**
@@ -107,5 +121,25 @@ public class ConversionService {
         }
 
         return favoriteResponseDTO;
+    }
+
+    /**
+     * Converts a Brand entity to a BrandDTO object.
+     *
+     * @param brand The Brand entity to be converted
+     * @return The corresponding brand DTO
+     */
+    public BrandDTO convertToBrandDTO(Brand brand) {
+        return this.brandToBrandDTOConverter.convert(brand);
+    }
+
+    /**
+     * Converts a Model entity to a ModelDTO object.
+     *
+     * @param model The Model entity to be converted
+     * @return The corresponding model DTO
+     */
+    public ModelDTO convertToModelDTO(Model model) {
+        return this.modelToModelDTOConverter.convert(model);
     }
 }
