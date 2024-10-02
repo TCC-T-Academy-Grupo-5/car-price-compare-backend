@@ -3,9 +3,7 @@ package com.tcc5.car_price_compare.controllers;
 import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponseDTO;
 import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
-import com.tcc5.car_price_compare.domain.vehicle.dto.AddVehicleDTO;
-import com.tcc5.car_price_compare.domain.vehicle.dto.BrandDTO;
-import com.tcc5.car_price_compare.domain.vehicle.dto.ModelDTO;
+import com.tcc5.car_price_compare.domain.vehicle.dto.*;
 import com.tcc5.car_price_compare.services.VehicleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +39,13 @@ public class VehicleController {
     }
 
     @PostMapping("/brand")
-    public ResponseEntity<Brand> addBrand(@RequestBody @Valid BrandDTO brandDTO){
+    public ResponseEntity<Brand> addBrand(@RequestBody @Valid AddBrandDTO brandDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.addBrand(brandDTO));
 
     }
 
     @PostMapping("/model")
-    public ResponseEntity<Model> addModel(@RequestBody @Valid ModelDTO modelDTO){
+    public ResponseEntity<Model> addModel(@RequestBody @Valid AddModelDTO modelDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.addModel(modelDTO));
     }
 }

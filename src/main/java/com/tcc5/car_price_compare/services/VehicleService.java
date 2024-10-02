@@ -6,9 +6,7 @@ import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import com.tcc5.car_price_compare.domain.vehicle.Year;
-import com.tcc5.car_price_compare.domain.vehicle.dto.AddVehicleDTO;
-import com.tcc5.car_price_compare.domain.vehicle.dto.BrandDTO;
-import com.tcc5.car_price_compare.domain.vehicle.dto.ModelDTO;
+import com.tcc5.car_price_compare.domain.vehicle.dto.*;
 import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
 import com.tcc5.car_price_compare.repositories.price.FipePriceRepository;
 import com.tcc5.car_price_compare.repositories.vehicle.BrandRepository;
@@ -83,7 +81,7 @@ public class VehicleService {
         return new VehicleResponseDTO(vehicle.getId(), model.getName(), brand.getName(), fipePrice == null ? 0 : fipePrice.getPrice(), vehicleType.name(), year.getName().split(" ")[0]);
     }
 
-    public Brand addBrand(BrandDTO brandDTO) {
+    public Brand addBrand(AddBrandDTO brandDTO) {
         Brand brand = new Brand();
 
         BeanUtils.copyProperties(brandDTO, brand);
@@ -91,7 +89,7 @@ public class VehicleService {
         return brandRepository.save(brand);
     }
 
-    public Model addModel(ModelDTO modelDTO) {
+    public Model addModel(AddModelDTO modelDTO) {
         Model model = new Model();
 
         BeanUtils.copyProperties(modelDTO, model);
