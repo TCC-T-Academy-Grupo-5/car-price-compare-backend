@@ -38,10 +38,32 @@ public class VehicleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.addVehicle(vehicleDTO));
     }
 
+    @GetMapping("/brand")
+    public ResponseEntity<Page<BrandDTO>> getBrands(
+            @RequestParam(value = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "vehicleType", required = false) Integer type
+            ){
+
+        return ResponseEntity.status(HttpStatus.OK).body(service.getBrands(pageNumber, pageSize, name, type));
+    }
+
     @PostMapping("/brand")
     public ResponseEntity<Brand> addBrand(@RequestBody @Valid AddBrandDTO brandDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.addBrand(brandDTO));
 
+    }
+
+    @GetMapping("/model")
+    public ResponseEntity<Page<ModelDTO>> getModels(
+            @RequestParam(value = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "brand", required = false) String brand
+    ){
+
+        return ResponseEntity.status(HttpStatus.OK).body(service.getModels(pageNumber, pageSize, name, brand));
     }
 
     @PostMapping("/model")

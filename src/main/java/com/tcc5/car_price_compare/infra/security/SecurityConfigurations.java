@@ -38,6 +38,8 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/vehicle").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/vehicle/brand").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/vehicle/model").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/vehicle/brand").permitAll()
+                        .requestMatchers(HttpMethod.GET , "/vehicle/model").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user/notifications").authenticated()
                         .requestMatchers(HttpMethod.POST, "/user/favorites").authenticated()
                         .anyRequest().authenticated()

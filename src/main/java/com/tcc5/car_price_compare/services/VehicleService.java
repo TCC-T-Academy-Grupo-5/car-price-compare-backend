@@ -6,6 +6,7 @@ import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import com.tcc5.car_price_compare.domain.vehicle.Year;
+import com.tcc5.car_price_compare.domain.vehicle.converters.BrandToBrandDTOConverter;
 import com.tcc5.car_price_compare.domain.vehicle.dto.*;
 import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
 import com.tcc5.car_price_compare.domain.vehicle.exceptions.BrandNotFoundException;
@@ -15,6 +16,8 @@ import com.tcc5.car_price_compare.repositories.vehicle.BrandRepository;
 import com.tcc5.car_price_compare.repositories.vehicle.ModelRepository;
 import com.tcc5.car_price_compare.repositories.vehicle.VehicleRepository;
 import com.tcc5.car_price_compare.repositories.vehicle.YearRepository;
+import com.tcc5.car_price_compare.specifications.BrandSpecification;
+import com.tcc5.car_price_compare.specifications.ModelSpecification;
 import com.tcc5.car_price_compare.specifications.VehicleSpecification;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -33,6 +37,9 @@ import java.util.stream.Collectors;
 public class VehicleService {
 
     //TODO: add price into addVehicle
+
+    @Autowired
+    private ConversionService conversionService;
 
     @Autowired
     private VehicleRepository vehicleRepository;
@@ -58,7 +65,6 @@ public class VehicleService {
                 .and(VehicleSpecification.hasYear(year));
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-
 
         Page<Vehicle> vehicles = vehicleRepository.findAll(spec, pageable);
 
@@ -135,12 +141,40 @@ public class VehicleService {
         return brand.get();
     }
 
+    public Page<BrandDTO> getBrands(Integer pageNumber, Integer pageSize, String name, Integer type) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        Specification<Brand> spec = Specification
+                .where(BrandSpecification.hasBrand(name))
+                .and(BrandSpecification.hasType(type));
+
+        Page<Brand> pagedBrands = brandRepository.findAll(spec, pageable);
+
+        List<BrandDTO> brandDTOs = brandsListToBrandDTO(pagedBrands.getContent());
+
+        return new PageImpl<>(brandDTOs, pageable, pagedBrands.getTotalElements());
+    }
+
     public Model getModelByName(String name){
         var model = modelRepository.findByName(name);
 
         if (model.isEmpty()) throw new ModelNotFoundException(name);
 
         return model.get();
+    }
+
+    public Page<ModelDTO> getModels(Integer pageNumber, Integer pageSize, String name, String brand) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        Specification<Model> spec = Specification
+                .where(ModelSpecification.hasModel(name))
+                .and(ModelSpecification.hasBrand(brand));
+
+        Page<Model> models = modelRepository.findAll(spec, pageable);
+
+        List<ModelDTO> modelDTOS = modelsListToModelDTO(models.getContent());
+
+        return new PageImpl<>(modelDTOS, PageRequest.of(models.getNumber(), models.getSize()), models.getTotalElements());
     }
 
     private Year yearConfig(String yearString, Vehicle vehicle, Model model){
@@ -157,5 +191,25 @@ public class VehicleService {
 
     private void addYear(Year year) {
         yearRepository.save(year);
+    }
+
+    private List<BrandDTO> brandsListToBrandDTO(List<Brand> brands){
+        List<BrandDTO> brandsDto = new ArrayList<>();
+
+        for (Brand b : brands) {
+            brandsDto.add(conversionService.convertToBrandDTO(b));
+        }
+
+        return brandsDto;
+    }
+
+    private List<ModelDTO> modelsListToModelDTO(List<Model> models) {
+        List<ModelDTO> modelsDto = new ArrayList<>();
+
+        for (Model m : models){
+            modelsDto.add(conversionService.convertToModelDTO(m));
+        }
+
+        return modelsDto;
     }
 }
