@@ -5,10 +5,10 @@ import com.tcc5.car_price_compare.domain.user.converters.FavoriteRequestDTOToFav
 import com.tcc5.car_price_compare.domain.user.converters.FavoriteToFavoriteResponseDTO;
 import com.tcc5.car_price_compare.domain.user.converters.NotificationRequestDTOToNotificationConverter;
 import com.tcc5.car_price_compare.domain.user.converters.NotificationToNotificationResponseDTOConverter;
-import com.tcc5.car_price_compare.domain.user.dto.FavoriteRequestDTO;
-import com.tcc5.car_price_compare.domain.user.dto.FavoriteResponseDTO;
-import com.tcc5.car_price_compare.domain.user.dto.NotificationRequestDTO;
-import com.tcc5.car_price_compare.domain.user.dto.NotificationResponseDTO;
+import com.tcc5.car_price_compare.domain.request.user.FavoriteRequestDTO;
+import com.tcc5.car_price_compare.domain.response.user.FavoriteResponseDTO;
+import com.tcc5.car_price_compare.domain.request.user.NotificationRequestDTO;
+import com.tcc5.car_price_compare.domain.response.user.NotificationResponseDTO;
 import com.tcc5.car_price_compare.domain.user.features.Favorite;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
