@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/user/favorites")
 public class FavoriteController {
@@ -30,7 +32,17 @@ public class FavoriteController {
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
             @RequestParam(value = "vehicleType", required = false) Integer vehicleType
     ) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.favoriteService.getFavorites(pageNumber, pageSize, vehicleType));
+        Page<FavoriteResponseDTO> favorites = this.favoriteService.getFavorites(pageNumber, pageSize, vehicleType)
+                .map(this.conversionService::convertToFavoriteResponseDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(favorites);
+    }
+
+    @GetMapping("/{favoriteId}")
+    public ResponseEntity<FavoriteResponseDTO> getFavoriteById(@PathVariable UUID favoriteId) {
+        FavoriteResponseDTO favoriteResponseDTO = this.conversionService
+                .convertToFavoriteResponseDTO(this.favoriteService.getFavoriteById(favoriteId));
+        return ResponseEntity.status(HttpStatus.OK).body(favoriteResponseDTO);
     }
 
     @PostMapping
