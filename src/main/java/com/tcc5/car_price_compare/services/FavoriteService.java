@@ -57,4 +57,8 @@ public class FavoriteService {
                 })
                 .orElseThrow(() -> new FavoriteNotFoundException(favoriteId));
     }
+
+    public void delete(UUID favoriteId) {
+        this.favoriteRepository.delete(this.findById(favoriteId));
+    }
 }

@@ -3,7 +3,6 @@ package com.tcc5.car_price_compare.controllers;
 import com.tcc5.car_price_compare.domain.request.user.FavoriteRequestDTO;
 import com.tcc5.car_price_compare.domain.response.user.FavoriteResponseDTO;
 import com.tcc5.car_price_compare.domain.user.features.Favorite;
-import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
 import com.tcc5.car_price_compare.services.ConversionService;
 import com.tcc5.car_price_compare.services.FavoriteService;
 import jakarta.validation.Valid;
@@ -62,5 +61,11 @@ public class FavoriteController {
         FavoriteResponseDTO favoriteResponseDTO = this.conversionService.convertToFavoriteResponseDTO(updatedFavorite);
 
         return ResponseEntity.status(HttpStatus.OK).body(favoriteResponseDTO);
+    }
+
+    @DeleteMapping("/{favoriteId}")
+    public ResponseEntity<?> deleteFavorite(@PathVariable UUID favoriteId) {
+        this.favoriteService.delete(favoriteId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
