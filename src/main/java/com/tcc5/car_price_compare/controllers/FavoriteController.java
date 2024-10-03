@@ -32,7 +32,7 @@ public class FavoriteController {
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
             @RequestParam(value = "vehicleType", required = false) Integer vehicleType
     ) {
-        Page<FavoriteResponseDTO> favorites = this.favoriteService.getFavorites(pageNumber, pageSize, vehicleType)
+        Page<FavoriteResponseDTO> favorites = this.favoriteService.findAll(pageNumber, pageSize, vehicleType)
                 .map(this.conversionService::convertToFavoriteResponseDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(favorites);
@@ -41,7 +41,7 @@ public class FavoriteController {
     @GetMapping("/{favoriteId}")
     public ResponseEntity<FavoriteResponseDTO> getFavoriteById(@PathVariable UUID favoriteId) {
         FavoriteResponseDTO favoriteResponseDTO = this.conversionService
-                .convertToFavoriteResponseDTO(this.favoriteService.getFavoriteById(favoriteId));
+                .convertToFavoriteResponseDTO(this.favoriteService.findById(favoriteId));
         return ResponseEntity.status(HttpStatus.OK).body(favoriteResponseDTO);
     }
 
@@ -52,5 +52,15 @@ public class FavoriteController {
                 .convertToFavoriteResponseDTO(this.favoriteService.save(favoriteToSave));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(favoriteResponseDTO);
+    }
+
+    @PutMapping("/{favoriteId}")
+    public ResponseEntity<FavoriteResponseDTO> updateFavorite(@PathVariable UUID favoriteId,
+            @RequestBody @Valid FavoriteRequestDTO favoriteRequestDTO) {
+        Favorite update = this.conversionService.convertToFavoriteEntity(favoriteRequestDTO);
+        Favorite updatedFavorite = this.favoriteService.update(favoriteId, update);
+        FavoriteResponseDTO favoriteResponseDTO = this.conversionService.convertToFavoriteResponseDTO(updatedFavorite);
+
+        return ResponseEntity.status(HttpStatus.OK).body(favoriteResponseDTO);
     }
 }

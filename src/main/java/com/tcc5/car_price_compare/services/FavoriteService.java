@@ -23,7 +23,7 @@ public class FavoriteService {
         this.favoriteRepository = favoriteRepository;
     }
 
-    public Page<Favorite> getFavorites(Integer pageNumber, Integer pageSize, Integer vehicleType) {
+    public Page<Favorite> findAll(Integer pageNumber, Integer pageSize, Integer vehicleType) {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Specification<Favorite> spec = Specification
@@ -35,11 +35,26 @@ public class FavoriteService {
         return this.favoriteRepository.findAll(spec, pageable);
     }
 
-    public Favorite getFavoriteById(UUID favoriteId) {
-        return this.favoriteRepository.findById(favoriteId).orElseThrow(() -> new FavoriteNotFoundException(favoriteId));
+    public Favorite findById(UUID favoriteId) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return this.favoriteRepository
+                .findByIdAndUser(favoriteId, currentUser)
+                .orElseThrow(() -> new FavoriteNotFoundException(favoriteId));
     }
 
     public Favorite save(Favorite favorite) {
         return this.favoriteRepository.save(favorite);
+    }
+
+    public Favorite update(UUID favoriteId, Favorite favorite) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return this.favoriteRepository.findByIdAndUser(favoriteId, currentUser)
+                .map(oldFavorite -> {
+                    oldFavorite.setVehicle(favorite.getVehicle());
+                    return this.favoriteRepository.save(oldFavorite);
+                })
+                .orElseThrow(() -> new FavoriteNotFoundException(favoriteId));
     }
 }
