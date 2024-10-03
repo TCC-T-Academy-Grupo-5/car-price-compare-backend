@@ -3,15 +3,14 @@ package com.tcc5.car_price_compare.controllers;
 import com.tcc5.car_price_compare.domain.request.user.FavoriteRequestDTO;
 import com.tcc5.car_price_compare.domain.response.user.FavoriteResponseDTO;
 import com.tcc5.car_price_compare.domain.user.features.Favorite;
+import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
 import com.tcc5.car_price_compare.services.ConversionService;
 import com.tcc5.car_price_compare.services.FavoriteService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user/favorites")
@@ -23,6 +22,15 @@ public class FavoriteController {
     public FavoriteController(FavoriteService favoriteService, ConversionService conversionService) {
         this.favoriteService = favoriteService;
         this.conversionService = conversionService;
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<FavoriteResponseDTO>> getFavorites(
+            @RequestParam(value = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+            @RequestParam(value = "vehicleType", required = false) Integer vehicleType
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.favoriteService.getFavorites(pageNumber, pageSize, vehicleType));
     }
 
     @PostMapping
