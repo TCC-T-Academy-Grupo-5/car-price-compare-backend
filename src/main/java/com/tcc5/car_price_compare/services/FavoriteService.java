@@ -1,7 +1,7 @@
 package com.tcc5.car_price_compare.services;
 
-import com.tcc5.car_price_compare.domain.response.user.FavoriteResponseDTO;
 import com.tcc5.car_price_compare.domain.user.User;
+import com.tcc5.car_price_compare.domain.user.exceptions.FavoriteNotFoundException;
 import com.tcc5.car_price_compare.domain.user.features.Favorite;
 import com.tcc5.car_price_compare.repositories.FavoriteRepository;
 import com.tcc5.car_price_compare.specifications.FavoriteSpecification;
@@ -12,19 +12,18 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class FavoriteService {
 
     private final FavoriteRepository favoriteRepository;
 
-    private final ConversionService conversionService;
-
-    public FavoriteService(FavoriteRepository favoriteRepository, ConversionService conversionService) {
+    public FavoriteService(FavoriteRepository favoriteRepository) {
         this.favoriteRepository = favoriteRepository;
-        this.conversionService = conversionService;
     }
 
-    public Page<FavoriteResponseDTO> getFavorites(Integer pageNumber, Integer pageSize, Integer vehicleType) {
+    public Page<Favorite> getFavorites(Integer pageNumber, Integer pageSize, Integer vehicleType) {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Specification<Favorite> spec = Specification
@@ -33,7 +32,11 @@ public class FavoriteService {
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
-        return this.favoriteRepository.findAll(spec, pageable).map(this.conversionService::convertToFavoriteResponseDTO);
+        return this.favoriteRepository.findAll(spec, pageable);
+    }
+
+    public Favorite getFavoriteById(UUID favoriteId) {
+        return this.favoriteRepository.findById(favoriteId).orElseThrow(() -> new FavoriteNotFoundException(favoriteId));
     }
 
     public Favorite save(Favorite favorite) {
