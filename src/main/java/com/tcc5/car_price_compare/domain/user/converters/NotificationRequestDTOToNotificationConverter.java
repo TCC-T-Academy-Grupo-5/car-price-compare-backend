@@ -1,7 +1,7 @@
 package com.tcc5.car_price_compare.domain.user.converters;
 
 import com.tcc5.car_price_compare.domain.user.User;
-import com.tcc5.car_price_compare.domain.user.dto.NotificationRequestDTO;
+import com.tcc5.car_price_compare.domain.request.user.NotificationRequestDTO;
 import com.tcc5.car_price_compare.domain.user.enums.NotificationStatus;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;

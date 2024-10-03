@@ -1,4 +1,4 @@
-package com.tcc5.car_price_compare.domain.user.dto;
+package com.tcc5.car_price_compare.domain.request.user;
 
 import jakarta.validation.constraints.NotNull;
 

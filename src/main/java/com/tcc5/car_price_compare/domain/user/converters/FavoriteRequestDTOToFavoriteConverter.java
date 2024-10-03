@@ -1,7 +1,7 @@
 package com.tcc5.car_price_compare.domain.user.converters;
 
 import com.tcc5.car_price_compare.domain.user.User;
-import com.tcc5.car_price_compare.domain.user.dto.FavoriteRequestDTO;
+import com.tcc5.car_price_compare.domain.request.user.FavoriteRequestDTO;
 import com.tcc5.car_price_compare.domain.user.features.Favorite;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import com.tcc5.car_price_compare.domain.vehicle.exceptions.VehicleNotFoundException;
