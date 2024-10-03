@@ -2,6 +2,7 @@ package com.tcc5.car_price_compare.services;
 
 import com.tcc5.car_price_compare.domain.price.FipePrice;
 import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponseDTO;
+import com.tcc5.car_price_compare.domain.statistic.enums.EntityType;
 import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
@@ -11,6 +12,7 @@ import com.tcc5.car_price_compare.domain.vehicle.dto.*;
 import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
 import com.tcc5.car_price_compare.domain.vehicle.exceptions.BrandNotFoundException;
 import com.tcc5.car_price_compare.domain.vehicle.exceptions.ModelNotFoundException;
+import com.tcc5.car_price_compare.domain.vehicle.exceptions.VehicleNotFoundException;
 import com.tcc5.car_price_compare.repositories.price.FipePriceRepository;
 import com.tcc5.car_price_compare.repositories.vehicle.BrandRepository;
 import com.tcc5.car_price_compare.repositories.vehicle.ModelRepository;
@@ -30,6 +32,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -56,6 +59,9 @@ public class VehicleService {
     @Autowired
     private FipePriceRepository fipePriceRepository;
 
+    @Autowired
+    private StatisticService statisticService;
+
     public Page<VehicleResponseDTO> getVehicles(Integer pageNumber, Integer pageSize, String model, String brand, Double fipePrice, Integer type, String year) {
         Specification<Vehicle> spec = Specification
                 .where(VehicleSpecification.hasModel(model))
@@ -68,25 +74,29 @@ public class VehicleService {
 
         Page<Vehicle> vehicles = vehicleRepository.findAll(spec, pageable);
 
+        sendModelStatistics(model);
+        sendBrandStatistic(brand);
+
         return vehicleToList(vehicles);
+    }
+
+    public VehicleResponseDTO getVehicleById(String id) {
+        UUID uuid = UUID.fromString(id);
+        var vehicle = vehicleRepository.findById(uuid);
+
+        if (vehicle.isEmpty()) throw new VehicleNotFoundException(uuid);
+
+        sendVehicleStatistic(id);
+
+        return conversionService.convertToVehicleResponse(vehicle.get());
     }
 
     private Page<VehicleResponseDTO> vehicleToList(Page<Vehicle> vehicles){
         List<VehicleResponseDTO> vehicleResponses = vehicles.stream()
-                .map(this::convertToVehicleResponse)
+                .map(v -> conversionService.convertToVehicleResponse(v))
                 .collect(Collectors.toList());
 
         return new PageImpl<>(vehicleResponses, PageRequest.of(vehicles.getNumber(), vehicles.getSize()), vehicles.getTotalElements());
-    }
-
-    private VehicleResponseDTO convertToVehicleResponse(Vehicle vehicle) {
-        Year year = vehicle.getYear();
-        Model model = year.getModel();
-        Brand brand = model.getBrand();
-        VehicleType vehicleType = brand.getVehicleType();
-        FipePrice fipePrice = vehicle.getFipePrice();
-
-        return new VehicleResponseDTO(vehicle.getId(), model.getName(), brand.getName(), fipePrice == null ? 0 : fipePrice.getPrice(), vehicleType.name(), year.getName().split(" ")[0]);
     }
 
     public Brand addBrand(AddBrandDTO brandDTO) {
@@ -130,7 +140,7 @@ public class VehicleService {
 
         vehicleRepository.save(vehicle);
 
-        return convertToVehicleResponse(vehicle);
+        return conversionService.convertToVehicleResponse(vehicle);
     }
 
     public Brand getBrandByName(String name){
@@ -151,6 +161,8 @@ public class VehicleService {
         Page<Brand> pagedBrands = brandRepository.findAll(spec, pageable);
 
         List<BrandDTO> brandDTOs = brandsListToBrandDTO(pagedBrands.getContent());
+
+        sendBrandStatistic(name);
 
         return new PageImpl<>(brandDTOs, pageable, pagedBrands.getTotalElements());
     }
@@ -173,6 +185,8 @@ public class VehicleService {
         Page<Model> models = modelRepository.findAll(spec, pageable);
 
         List<ModelDTO> modelDTOS = modelsListToModelDTO(models.getContent());
+
+        sendModelStatistics(name);
 
         return new PageImpl<>(modelDTOS, PageRequest.of(models.getNumber(), models.getSize()), models.getTotalElements());
     }
@@ -211,5 +225,29 @@ public class VehicleService {
         }
 
         return modelsDto;
+    }
+
+    private void sendModelStatistics(String model){
+        if (model != null && !(model.isEmpty() || model.isBlank())) {
+            Optional<Model> res = modelRepository.findByName(model);
+
+            res.ifPresent(value -> statisticService.incrementSearch(value.getId(), EntityType.MODEL));
+        }
+    }
+
+    private void sendBrandStatistic(String brand){
+        if (brand != null && !(brand.isEmpty() || brand.isBlank())) {
+            Optional<Brand> res = brandRepository.findByName(brand);
+
+            res.ifPresent(value -> statisticService.incrementSearch(value.getId(), EntityType.BRAND));
+        }
+    }
+
+    private void sendVehicleStatistic(String id) {
+        if (id != null && !(id.isEmpty() || id.isBlank())) {
+            Optional<Vehicle> res = vehicleRepository.findById(UUID.fromString(id));
+
+            res.ifPresent(value -> statisticService.incrementSearch(value.getId(), EntityType.VEHICLE));
+        }
     }
 }
