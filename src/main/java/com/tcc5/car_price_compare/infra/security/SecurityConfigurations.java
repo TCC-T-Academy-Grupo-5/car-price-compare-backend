@@ -36,6 +36,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/vehicle").permitAll()
                         .requestMatchers(HttpMethod.POST, "/vehicle").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/vehicle/{id}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/vehicle/brand").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/vehicle/model").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/vehicle/brand").permitAll()
