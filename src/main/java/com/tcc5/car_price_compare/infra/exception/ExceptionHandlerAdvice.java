@@ -2,6 +2,7 @@ package com.tcc5.car_price_compare.infra.exception;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.tcc5.car_price_compare.domain.shared.ResourceNotFoundException;
 import com.tcc5.car_price_compare.domain.vehicle.exceptions.VehicleNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -51,8 +52,8 @@ public class ExceptionHandlerAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
-    @ExceptionHandler(VehicleNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleVehicleNotFoundException(VehicleNotFoundException ex) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleResourceNotFoundException(ResourceNotFoundException ex) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errors);
