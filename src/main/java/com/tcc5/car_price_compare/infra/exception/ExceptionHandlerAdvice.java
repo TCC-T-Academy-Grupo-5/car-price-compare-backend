@@ -3,7 +3,6 @@ package com.tcc5.car_price_compare.infra.exception;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.tcc5.car_price_compare.domain.shared.ResourceNotFoundException;
-import com.tcc5.car_price_compare.domain.vehicle.exceptions.VehicleNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import org.springframework.http.HttpStatus;
