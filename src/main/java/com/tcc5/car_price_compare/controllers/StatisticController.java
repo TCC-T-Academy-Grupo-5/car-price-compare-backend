@@ -1,6 +1,7 @@
 package com.tcc5.car_price_compare.controllers;
 
 import com.tcc5.car_price_compare.domain.response.statistic.StatisticResponseDto;
+import com.tcc5.car_price_compare.domain.response.statistic.StatisticVehicleResponse;
 import com.tcc5.car_price_compare.services.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class StatisticController {
     private StatisticService statisticService;
 
     @GetMapping("/vehicle")
-    public ResponseEntity<List<StatisticResponseDto>> getVehicleStats() {
+    public ResponseEntity<List<StatisticVehicleResponse>> getVehicleStats() {
         return ResponseEntity.status(HttpStatus.OK).body(statisticService.getVehicles());
     }
 
@@ -33,6 +34,10 @@ public class StatisticController {
     @GetMapping("/model")
     public ResponseEntity<List<StatisticResponseDto>> getModelStats() {
         return ResponseEntity.status(HttpStatus.OK).body(statisticService.getModels());
+    }
 
+    @GetMapping("/year")
+    public ResponseEntity<List<StatisticResponseDto>> getYears(){
+        return ResponseEntity.status(HttpStatus.OK).body(statisticService.getYears());
     }
 }

@@ -46,6 +46,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.GET, "/statistic/brand").permitAll()
                         .requestMatchers(HttpMethod.GET, "/statistic/model").permitAll()
                         .requestMatchers(HttpMethod.GET, "/statistic/vehicle").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/statistic/year").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
