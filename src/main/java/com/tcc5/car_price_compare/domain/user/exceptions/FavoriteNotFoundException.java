@@ -6,6 +6,6 @@ import java.util.UUID;
 
 public class FavoriteNotFoundException extends ResourceNotFoundException {
     public FavoriteNotFoundException(UUID favoriteId) {
-        super("Could not find favorite with id " + favoriteId);
+        super("favorite id " + favoriteId + " not found");
     }
 }
