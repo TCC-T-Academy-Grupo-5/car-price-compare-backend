@@ -28,9 +28,9 @@ public class NotificationController {
     public ResponseEntity<Page<NotificationResponseDTO>> getNotifications(
             @RequestParam(value = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-            @RequestParam(value = "notificationStatus", required = false) Integer notificationStatus
+            @RequestParam(value = "status", required = false) Integer status
     ) {
-        Page<NotificationResponseDTO> notifications = this.notificationService.findAll(pageNumber, pageSize, notificationStatus)
+        Page<NotificationResponseDTO> notifications = this.notificationService.findAll(pageNumber, pageSize, status)
                 .map(this.conversionService::convertToNotificationResponseDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(notifications);
