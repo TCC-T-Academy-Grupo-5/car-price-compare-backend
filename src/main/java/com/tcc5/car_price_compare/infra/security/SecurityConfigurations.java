@@ -42,6 +42,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.GET, "/vehicle/brand").permitAll()
                         .requestMatchers(HttpMethod.GET , "/vehicle/model").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user/notifications").authenticated()
+                        .requestMatchers(HttpMethod.GET, "user/favorites/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/user/favorites").authenticated()
                         .requestMatchers(HttpMethod.GET, "/statistic/brand").permitAll()
                         .requestMatchers(HttpMethod.GET, "/statistic/model").permitAll()

@@ -2,7 +2,7 @@ package com.tcc5.car_price_compare.infra.exception;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.tcc5.car_price_compare.domain.vehicle.exceptions.VehicleNotFoundException;
+import com.tcc5.car_price_compare.domain.shared.ResourceNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import org.springframework.http.HttpStatus;
@@ -12,6 +12,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,8 +51,8 @@ public class ExceptionHandlerAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
-    @ExceptionHandler(VehicleNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleVehicleNotFoundException(VehicleNotFoundException ex) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleResourceNotFoundException(ResourceNotFoundException ex) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errors);
@@ -63,6 +64,14 @@ public class ExceptionHandlerAdvice {
 
         errors.put("error", "Operation could not be completed due to a data integrity violation");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errors);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Map<String, String>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+        Map<String, String> errors = new HashMap<>();
+
+        errors.put(ex.getPropertyName(), ex.getValue() + " is not valid for " + ex.getPropertyName());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
     @ExceptionHandler(RuntimeException.class)

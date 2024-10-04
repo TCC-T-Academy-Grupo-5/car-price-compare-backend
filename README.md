@@ -223,6 +223,100 @@ Delete a specific notification associated with a user.
 ## Favorites
 
 ```http request
+GET /user/favorites
+```
+Returns a list of the current user's favorite vehicles
+
+### Query Parameters:
+
+| Parameter   | Type   | Description                                         |
+|-------------|--------|-----------------------------------------------------|
+| pageNumber  | number | The number of the page, which starts with 0         |
+| pageSize    | number | The number of elements by page                      |
+| vehicleType | number | Type of Vehicle. 0: cars, 1: motorcycles, 2: trucks |
+
+### Response Codes:
+
+- **200 OK**: Success
+
+```json
+{
+    "content": [
+        {
+            "favoriteId": "f0b26fd2-4e23-4c1c-99b9-1455ff53c383",
+            "vehicle": {
+                "vehicleId": "934f716e-88fa-428d-aa29-a0f0ee861eb8",
+                "fipeCode": "516041-3",
+                "year": "1989",
+                "model": "NL-10 340 4x2 2p (diesel)",
+                "brand": "Volvo",
+                "vehicleType": "TRUCK"
+            }
+        }
+    ],
+    "pageable": {
+        "pageNumber": 0,
+        "pageSize": 10,
+        "sort": {
+            "empty": true,
+            "sorted": false,
+            "unsorted": true
+        },
+        "offset": 0,
+        "paged": true,
+        "unpaged": false
+    },
+    "last": true,
+    "totalElements": 1,
+    "totalPages": 1,
+    "size": 10,
+    "number": 0,
+    "sort": {
+        "empty": true,
+        "sorted": false,
+        "unsorted": true
+    },
+    "first": true,
+    "numberOfElements": 1,
+    "empty": false
+}
+```
+---
+
+```http request
+GET /user/favorites/{favoriteId}
+```
+Returns a specific vehicle in the current user's favorites according to given ID.
+
+### Response codes
+
+- **200 OK**: Success
+
+```json
+{
+    "favoriteId": "f0b26fd2-4e23-4c1c-99b9-1455ff53c383",
+    "vehicle": {
+        "vehicleId": "934f716e-88fa-428d-aa29-a0f0ee861eb8",
+        "fipeCode": "516041-3",
+        "year": "1989",
+        "model": "NL-10 340 4x2 2p (diesel)",
+        "brand": "Volvo",
+        "vehicleType": "TRUCK"
+    }
+}
+```
+
+- **404 Not Found**: Resource not found
+
+```json
+{
+    "error": "Could not find favorite with id f0b26fd2-4e23-4c1c-99b9-1455ff53c382"
+}
+```
+
+---
+
+```http request
 POST /user/favorites
 ```
 
@@ -272,7 +366,7 @@ Add a vehicle to the current user's favorites. If the vehicle is already registe
 
 ```json
 {
-  "vehicleId": "não deve ser nulo"
+  "vehicleId": "vehicleId is required"
 }
 ```
 
@@ -284,6 +378,99 @@ Add a vehicle to the current user's favorites. If the vehicle is already registe
 }
 ```
 
+- **500 Internal Server Error**: An error occurred on the server
+
+```json
+{
+  "error": "Internal Server Error",
+  "message": "An unexpected error occurred while processing the request."
+}
+```
+---
+```http request
+PUT /user/favorites/{favoriteId}
+```
+### Request body (application/json):
+
+| Field     | Type   | Required | Description                                          |
+|-----------|--------|----------|------------------------------------------------------|
+| vehicleId | string | TRUE     | The ID of the vehicle to be replace the old favorite |
+
+### Response Codes:
+
+### Request example
+```http request
+PUT /user/favorites/f0b26fd2-4e23-4c1c-99b9-1455ff53c383
+```
+```json
+{
+    "vehicleId": "d0c8b862-16f4-4540-bee1-9324232622df"
+}
+```
+- **200 OK**: Success
+
+```json
+{
+    "favoriteId": "f0b26fd2-4e23-4c1c-99b9-1455ff53c383",
+    "vehicle": {
+        "vehicleId": "d0c8b862-16f4-4540-bee1-9324232622df",
+        "fipeCode": "024011-7",
+        "year": "1996 Gasolina",
+        "model": "405 SRi 1.8",
+        "brand": "Peugeot",
+        "vehicleType": "CAR"
+    }
+}
+```
+- **404 Not Found**: resource not found
+
+```json
+{
+  "error": "favorite id f0b26fd2-4e23-4c1c-99b9-1455ff53c382 not found"
+}
+```
+
+- **400 Bad Request**: The request could ot be understood or was missing required parameters
+
+```json
+{
+  "vehicleId": "vehicleId is required"
+}
+```
+
+- **409 Conflict**: The request conflicts with the current state of the server.
+
+```json
+{
+  "error": "Operation could not be completed due to a data integrity violation"
+}
+```
+
+- **500 Internal Server Error**: An error occurred on the server
+
+```json
+{
+  "error": "Internal Server Error",
+  "message": "An unexpected error occurred while processing the request."
+}
+```
+---
+```http request
+DELETE /user/favorites/{favoriteId}
+```
+Remove a vehicle from the user's favorites
+
+### Response codes:
+
+- **204 No Content**: Request was processed correctly, but there is no content to send
+
+- **404 Not Found**: resource not found
+
+```json
+{
+  "error": "favorite id f0b26fd2-4e23-4c1c-99b9-1455ff53c382 not found"
+}
+```
 - **500 Internal Server Error**: An error occurred on the server
 
 ```json
