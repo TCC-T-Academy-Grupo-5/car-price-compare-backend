@@ -1,6 +1,8 @@
 package com.tcc5.car_price_compare.services;
 
 
+import com.tcc5.car_price_compare.domain.price.FipePrice;
+import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponseDTO;
 import com.tcc5.car_price_compare.domain.user.converters.FavoriteRequestDTOToFavoriteConverter;
 import com.tcc5.car_price_compare.domain.user.converters.FavoriteToFavoriteResponseDTO;
 import com.tcc5.car_price_compare.domain.user.converters.NotificationRequestDTOToNotificationConverter;
@@ -14,12 +16,14 @@ import com.tcc5.car_price_compare.domain.user.features.Notification;
 import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
+import com.tcc5.car_price_compare.domain.vehicle.Year;
 import com.tcc5.car_price_compare.domain.vehicle.converters.BrandToBrandDTOConverter;
 import com.tcc5.car_price_compare.domain.vehicle.converters.ModelToModelDTOConverter;
 import com.tcc5.car_price_compare.domain.vehicle.converters.VehicleToVehicleDTOConverter;
 import com.tcc5.car_price_compare.domain.vehicle.dto.BrandDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.ModelDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO;
+import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
 import org.springframework.stereotype.Service;
 
 /**
@@ -141,5 +145,21 @@ public class ConversionService {
      */
     public ModelDTO convertToModelDTO(Model model) {
         return this.modelToModelDTOConverter.convert(model);
+    }
+
+    /**
+     * Converts a Vehicle entity to a VehicleResponseDTO object.
+     *
+     * @param vehicle The Vehicle entity to be converted
+     * @return The corresponding vehicle response DTO
+     */
+    public VehicleResponseDTO convertToVehicleResponse(Vehicle vehicle) {
+        Year year = vehicle.getYear();
+        Model model = year.getModel();
+        Brand brand = model.getBrand();
+        VehicleType vehicleType = brand.getVehicleType();
+        FipePrice fipePrice = vehicle.getFipePrice();
+
+        return new VehicleResponseDTO(vehicle.getId(), model.getName(), brand.getName(), fipePrice == null ? 0 : fipePrice.getPrice(), vehicleType.name(), year.getName().split(" ")[0]);
     }
 }

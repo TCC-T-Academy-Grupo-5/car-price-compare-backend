@@ -4,5 +4,5 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
-public record FavoriteRequestDTO(@NotNull UUID vehicleId) {
+public record FavoriteRequestDTO(@NotNull(message = "vehicleId is required") UUID vehicleId) {
 }
