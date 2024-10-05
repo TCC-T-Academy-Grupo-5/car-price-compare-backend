@@ -46,4 +46,17 @@ public class NotificationService {
     public Notification save(Notification notification) {
         return this.notificationRepository.save(notification);
     }
+
+    public Notification update(UUID notificationId, Notification notification) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return this.notificationRepository.findByIdAndUser(notificationId, currentUser)
+                .map(oldNotification -> {
+                    oldNotification.setNotificationType(notification.getNotificationType());
+                    oldNotification.setCurrentFipePrice(notification.getCurrentFipePrice());
+                    oldNotification.setVehicle(notification.getVehicle());
+                    return this.notificationRepository.save(oldNotification);
+                })
+                .orElseThrow(() -> new NotificationNotFoundException(notificationId));
+    }
 }

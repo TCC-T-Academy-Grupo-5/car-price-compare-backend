@@ -54,4 +54,14 @@ public class NotificationController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(notificationResponseDTO);
     }
+
+    @PutMapping("/{notificationId}")
+    public ResponseEntity<NotificationResponseDTO> updateFavorite(@PathVariable UUID notificationId,
+            @RequestBody @Valid NotificationRequestDTO notificationRequestDto) {
+        Notification update = this.conversionService.convertToNotificationEntity(notificationRequestDto);
+        Notification updatedNotification = this.notificationService.update(notificationId, update);
+        NotificationResponseDTO notificationResponseDTO = this.conversionService.convertToNotificationResponseDTO(updatedNotification);
+
+        return ResponseEntity.status(HttpStatus.OK).body(notificationResponseDTO);
+    }
 }
