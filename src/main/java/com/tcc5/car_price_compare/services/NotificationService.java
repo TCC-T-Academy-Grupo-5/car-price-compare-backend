@@ -1,6 +1,7 @@
 package com.tcc5.car_price_compare.services;
 
 import com.tcc5.car_price_compare.domain.user.User;
+import com.tcc5.car_price_compare.domain.user.exceptions.NotificationNotFoundException;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
 import com.tcc5.car_price_compare.repositories.NotificationRepository;
 import com.tcc5.car_price_compare.specifications.NotificationSpecification;
@@ -11,7 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class NotificationService {
@@ -34,8 +35,15 @@ public class NotificationService {
         return this.notificationRepository.findAll(spec, pageable);
     }
 
+    public Notification findById(UUID notificationId) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return this.notificationRepository
+                .findByIdAndUser(notificationId, currentUser)
+                .orElseThrow(() -> new NotificationNotFoundException(notificationId));
+    }
+
     public Notification save(Notification notification) {
         return this.notificationRepository.save(notification);
     }
-
 }

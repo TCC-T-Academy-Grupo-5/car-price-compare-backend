@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/user/notifications")
 public class NotificationController {
@@ -36,6 +38,13 @@ public class NotificationController {
         return ResponseEntity.status(HttpStatus.OK).body(notifications);
     }
 
+    @GetMapping("/{notificationId}")
+    public ResponseEntity<NotificationResponseDTO> getNotificationById(@PathVariable UUID notificationId) {
+        NotificationResponseDTO notificationResponseDTO = this.conversionService
+                .convertToNotificationResponseDTO(this.notificationService.findById(notificationId));
+        return ResponseEntity.status(HttpStatus.OK).body(notificationResponseDTO);
+    }
+
 
     @PostMapping
     public ResponseEntity<NotificationResponseDTO> createNotification(@RequestBody @Valid NotificationRequestDTO notificationRequestDto) {
@@ -43,7 +52,6 @@ public class NotificationController {
         NotificationResponseDTO notificationResponseDTO = this.conversionService
                 .convertToNotificationResponseDTO(this.notificationService.save(notification));
 
-        // TODO: change status to created with the uri of the new notification when GET notifications is implemented
         return ResponseEntity.status(HttpStatus.CREATED).body(notificationResponseDTO);
     }
 }
