@@ -18,126 +18,134 @@
 ## Notifications
 
 ```http request
-GET /user/{id}/notifications
+GET /user/notifications
 ```
 
-Retrieve notifications associated with a specific user.
+Retrieve notifications associated with the current user.
 
-### Path Parameters:
+### Query Parameters:
 
-| Parameter | Type   | Description           |
-|-----------|--------|-----------------------|
-| `id`      | string | The UUID of the user. |
+| Parameter    | Type   | Description                                   |
+|--------------|--------|-----------------------------------------------|
+| `pageNumber` | number | The number of the page, which starts at 0     |
+| `pageSize`   | number | The number of elements by page                |
+| `status`     | number | Notification status. 0: pending, 1: delivered |
 
 ### Response Schema (application/json):
 
-| Field               | Type    | Description                                                   |
-|---------------------|---------|---------------------------------------------------------------|
-| `id`                | string  | The UUID of the notification.                                 |
-| `title`             | string  | The title of the notification message.                        |
-| `priotity`          | enum    | priorities [HIGH, MEDIUM, LOW].                               |
-| `body`              | string  | The text body of the notification message.                    |
-| `status`            | string  | The status of the notification (e.g., SENT, PENDING, FAILED). |
-| `user_id`           | string  | The ID of the associated user.                                |
-| `vehicle_id`        | string  | The ID of the associated vehicle.                             |
-| `user_email`        | string  | The email of the associated user.                             |
-| `vehicle_brand`     | string  | The vehicle brand.                                            |
-| `vehicle_model`     | string  | The vehicle model.                                            |
-| `vehicle_year`      | integer | The year of the vehicle.                                      |
-| `timestamp`         | string  | When the notification was created.                            |
-| `current_min_price` | number  | The current minimum price for the vehicle.                    |
-| `fipe_price`        | number  | The current FIPE price for the vehicle.                       |
+| Field                | Type    | Description                                                          |
+|----------------------|---------|----------------------------------------------------------------------|
+| `notificationId`     | string  | The UUID of the notification.                                        |
+| `notificationType`   | string  | The type of notification (FIPE_PRICE_DROP, STORE_PRICE_BELLOW_FIPE). |
+| `notificationStatus` | string  | The status of the notification (e.g. PENDING, DELIVERED).            |
+| `currentFipePrice`   | number  | The vehicle FIPE price at the time of the notification creation.     |
+| `vehicle`            | string  | Information about the vehicle associated with the notification.      |
 
 ### Response Codes:
 
 - **200 OK**: Success
 
 ```json
-[
-  {
-    "id": "550e8400-e29b-41d4-a716-446655440000",
-    "title": "Price Drop Notification",
-    "priority": "HIGH",
-    "body": "The price of your selected vehicle has dropped.",
-    "status": "sent",
-    "user_id": "user1",
-    "vehicle_id": "vehicle1",
-    "user_email": "user1@email.com",
-    "vehicle_brand": "Toyota",
-    "vehicle_model": "Corolla",
-    "vehicle_year": 2021,
-    "timestamp": "2024-09-04T14:30:00Z",
-    "current_min_price": 45000,
-    "fipe_price": 50000
-  },
-  {
-    "id": "550e8400-e29b-41d4-a716-446655440001",
-    "title": "Price Drop Notification",
-    "priority": "MEDIUM",
-    "body": "The price of your selected vehicle has dropped.",
-    "status": "sent",
-    "user_id": "user2",
-    "vehicle_id": "vehicle2",
-    "user_email": "user2@email.com",
-    "vehicle_brand": "Fiat",
-    "vehicle_model": "Toro",
-    "vehicle_year": 2024,
-    "timestamp": "2024-09-04T15:00:00Z",
-    "current_min_price": 98000,
-    "fipe_price": 102000
-  }
-]
-
-```
-
-- **404 Not Found**: Resource not found
-
-```json
 {
-  "error": "User not found",
-  "message": "Check the ID and try again"
+  "content": [
+    {
+      "notificationId": "db1ae449-fefe-47c4-9c53-efea1151ee48",
+      "notificationType": "FIPE_PRICE_DROP",
+      "notificationStatus": "PENDING",
+      "currentFipePrice": 24000.0,
+      "vehicle": {
+        "vehicleId": "00616163-a29f-44eb-8176-752048421175",
+        "fipeCode": "516051-0",
+        "year": "1993",
+        "model": "NL-12 400 6x2 2p (diesel)",
+        "brand": "Volvo",
+        "vehicleType": "TRUCK"
+      }
+    },
+    {
+      "notificationId": "0abc534b-b38b-4ec7-b38a-23ae5d771c0b",
+      "notificationType": "FIPE_PRICE_DROP",
+      "notificationStatus": "PENDING",
+      "currentFipePrice": 75000.0,
+      "vehicle": {
+        "vehicleId": "7e295497-7779-4091-a7be-77d7189419c9",
+        "fipeCode": "516173-8",
+        "year": "2020",
+        "model": "VM 270 4x2 2p (diesel) (E5)",
+        "brand": "Volvo",
+        "vehicleType": "TRUCK"
+      }
+    }
+  ],
+  "pageable": {
+    "pageNumber": 0,
+    "pageSize": 10,
+    "sort": {
+      "empty": true,
+      "sorted": false,
+      "unsorted": true
+    },
+    "offset": 0,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": true,
+  "totalElements": 2,
+  "totalPages": 1,
+  "size": 10,
+  "number": 0,
+  "sort": {
+    "empty": true,
+    "sorted": false,
+    "unsorted": true
+  },
+  "numberOfElements": 2,
+  "first": true,
+  "empty": false
 }
-```
 
--
+```
 - **500 Internal Server Error**: An error occurred on the server
 
 ```json
 {
-  "error": "Internal server error",
-  "message": "An error has occurred. Please try again"
+  "error": "Internal Server Error",
+  "message": "An unexpected error occurred while processing the request."
 }
 ```
 
 ---
 
 ```http request
-GET /user/{user_id}/notifications
+GET /user/notifications/{notificationId}
 ```
 
-Create a new notification associated with a user.
+Returns a specific notification associated with the current user
 
-### Request Body (application/json):
+### Path parameters:
 
-| Field        | Type   | Required | Description                                                 |
-|--------------|--------|----------|-------------------------------------------------------------|
-| `title`      | string | FALSE    | The title of the notification message.                      |
-| `priority`   | string | TRUE     | The priority of the notification (e.g., HIGH, MEDIUM, LOW). |
-| `body`       | string | TRUE     | The text body of the notification message.                  |
-| `vehicle_id` | string | TRUE     | Vehicle ID to get data from the vehicle.                    |
+| Field            | Type   | Description                                                 |
+|------------------|--------|-------------------------------------------------------------|
+| `notificationId` | string | UUID of the notification.                                   |
 
 ### Response Codes:
 
-### Request Example:
-
+- **200 OK**: Success
 ```json
 {
-  "title": "Price Drop Alert",
-  "priority": "HIGH",
-  "body": "The price of the Toyota Corolla has dropped significantly.",
-  "vehicle_id": "123456789"
+    "notificationId": "4ecb82e1-d48e-4a85-9327-a39c8d534cf4",
+    "notificationType": "FIPE_PRICE_DROP",
+    "notificationStatus": "DELIVERED",
+    "currentFipePrice": 75000.0,
+    "vehicle": {
+        "vehicleId": "3eb97b2f-00e3-445d-bc29-f72ebd276850",
+        "fipeCode": "004259-5",
+        "year": "2008 Gasolina",
+        "model": "Astra Sed.Eleg.2.0 MPFI FlexPower 8V 4p",
+        "brand": "Chevrolet",
+        "vehicleType": "CAR"
+    }
 }
-
 ```
 
 - **201 Created**: Resource created successfully
@@ -152,22 +160,142 @@ Create a new notification associated with a user.
 
 ```json
 {
-  "error": "Not Found",
-  "message": "User ID not be found."
+  "error": "notification id 4ecb82e1-d48e-4a85-9327-a39c8d534cf3 not found"
 }
 ```
-
-- **400 Bad Request**: The request could not be understood or was missing required parameters
+- **500 Internal Server Error**: An error occurred on the server
 
 ```json
 {
-  "error": "Bad Request",
-  "message": "The request body is missing required fields or contains invalid data."
+  "error": "Internal Server Error",
+  "message": "An unexpected error occurred while processing the request."
+}
+```
+---
+
+```http request
+POST /user/notifications
+```
+Create a notification associated with the current user.
+
+### Request body (application/json):
+
+| Field            | Type   | Required | Description                                   |
+|------------------|--------|----------|-----------------------------------------------|
+| notificationType | number | TRUE     | 0: Fipe price drop, 1: Store price below Fipe |
+| currentFipePrice | number | TRUE     | The current fipe price for the vehicle        |
+| vehicleId        | string | TRUE     | The Id of the vehicle                         |
+
+### Response Codes:
+
+### Request Example:
+```json
+{
+    "notificationType": 0,
+    "currentFipePrice": 75000.0,
+    "vehicleId": "7e295497-7779-4091-a7be-77d7189419c9"
+}
+```
+- **201 Created**: Resource created successfully
+```json
+{
+    "notificationId": "1df61684-1b6b-4082-ab32-3df94b54163b",
+    "notificationType": "FIPE_PRICE_DROP",
+    "notificationStatus": "PENDING",
+    "currentFipePrice": 75000.0,
+    "vehicle": {
+        "vehicleId": "7e295497-7779-4091-a7be-77d7189419c9",
+        "fipeCode": "516173-8",
+        "year": "2020",
+        "model": "VM 270 4x2 2p (diesel) (E5)",
+        "brand": "Volvo",
+        "vehicleType": "TRUCK"
+    }
+}
+```
+- **404 Not Found**: Resource not found
+```json
+{
+    "error": "Vehicle id 934f716e-88fa-428d-aa29-a0f0ee861eb7 not found"
+}
+```
+
+- **400 Bad Request**: The request could ot be understood or was missing required parameters
+```json
+{
+  "vehicleId": "vehicleId is required"
 }
 ```
 
 - **500 Internal Server Error**: An error occurred on the server
+```json
+{
+  "error": "Internal Server Error",
+  "message": "An unexpected error occurred while processing the request."
+}
+```
+---
+```http request
+PUT /user/notifications/{notificationId}
+```
+Update a notification associated with the current user.
 
+### Path parameter
+
+| Field            | Type   | Description                                                 |
+|------------------|--------|-------------------------------------------------------------|
+| `notificationId` | string | UUID of the notification.                                   |
+
+### Request body (application/json):
+
+| Field            | Type   | Required | Description                                   |
+|------------------|--------|----------|-----------------------------------------------|
+| notificationType | number | TRUE     | 0: Fipe price drop, 1: Store price below Fipe |
+| currentFipePrice | number | TRUE     | The current fipe price for the vehicle        |
+| vehicleId        | string | TRUE     | The Id of the vehicle                         |
+
+### Response Codes:
+
+### Request Example:
+```json
+{
+    "notificationType": 0,
+    "currentFipePrice": 75000.0,
+    "vehicleId": "7e295497-7779-4091-a7be-77d7189419c9"
+}
+```
+- **200 OK**: Resource updated successfully
+```json
+{
+    "notificationId": "1df61684-1b6b-4082-ab32-3df94b54163b",
+    "notificationType": "FIPE_PRICE_DROP",
+    "notificationStatus": "PENDING",
+    "currentFipePrice": 75000.0,
+    "vehicle": {
+        "vehicleId": "7e295497-7779-4091-a7be-77d7189419c9",
+        "fipeCode": "516173-8",
+        "year": "2020",
+        "model": "VM 270 4x2 2p (diesel) (E5)",
+        "brand": "Volvo",
+        "vehicleType": "TRUCK"
+    }
+}
+```
+- **404 Not Found**: Resource not found
+```json
+{
+    "error": "Vehicle id 934f716e-88fa-428d-aa29-a0f0ee861eb7 not found"
+}
+```
+
+- **400 Bad Request**: The request could ot be understood or was missing required parameters
+```json
+{
+  "vehicleId": "vehicleId is required"
+}
+```
+
+- **500 Internal Server Error**: An error occurred on the server
 ```json
 {
   "error": "Internal Server Error",
@@ -178,34 +306,26 @@ Create a new notification associated with a user.
 ---
 
 ```http request
-DELETE /user/{id}/notifications/{notification_id}
+DELETE /user/notifications/{notificationId}
 ```
 
-Delete a specific notification associated with a user.
+Delete a specific notification associated with the current user.
 
 ### Path Parameters:
 
-| Parameter         | Type   | Description                   |
-|-------------------|--------|-------------------------------|
-| `id`              | string | The UUID of the user.         |
-| `notification_id` | string | The UUID of the notification. |
+| Parameter        | Type   | Description                   |
+|------------------|--------|-------------------------------|
+| `notificationId` | string | The UUID of the notification. |
 
 ### Response Codes:
 
 - **204 No Content**: The request was successful, but there is no content to send in the response.
 
-```json
-{
-  "message": "Notification deleted"
-}
-```
-
 - **404 Not Found**: Resource not found
 
 ```json
 {
-  "error": "Not Found",
-  "message": "User or notification ID not found."
+  "error": "notification id f0b26fd2-4e23-4c1c-99b9-1455ff53c382 not found"
 }
 ```
 
@@ -217,7 +337,6 @@ Delete a specific notification associated with a user.
   "message": "An unexpected error occurred while processing the request."
 }
 ```
-
 ---
 
 ## Favorites
@@ -231,7 +350,7 @@ Returns a list of the current user's favorite vehicles
 
 | Parameter   | Type   | Description                                         |
 |-------------|--------|-----------------------------------------------------|
-| pageNumber  | number | The number of the page, which starts with 0         |
+| pageNumber  | number | The number of the page, which starts at 0           |
 | pageSize    | number | The number of elements by page                      |
 | vehicleType | number | Type of Vehicle. 0: cars, 1: motorcycles, 2: trucks |
 
