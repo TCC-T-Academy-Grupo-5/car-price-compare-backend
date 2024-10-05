@@ -64,4 +64,10 @@ public class NotificationController {
 
         return ResponseEntity.status(HttpStatus.OK).body(notificationResponseDTO);
     }
+
+    @DeleteMapping("/{notificationId}")
+    public ResponseEntity<?> deleteNotification(@PathVariable UUID notificationId) {
+        this.notificationService.delete(notificationId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

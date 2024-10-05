@@ -59,4 +59,8 @@ public class NotificationService {
                 })
                 .orElseThrow(() -> new NotificationNotFoundException(notificationId));
     }
+
+    public void delete(UUID notificationId) {
+        this.notificationRepository.delete(this.findById(notificationId));
+    }
 }
