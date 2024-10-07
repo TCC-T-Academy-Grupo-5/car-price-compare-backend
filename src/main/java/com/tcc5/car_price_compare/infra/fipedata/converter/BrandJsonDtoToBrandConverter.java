@@ -17,6 +17,7 @@ public class BrandJsonDtoToBrandConverter implements Converter<BrandJsonDto, Bra
         brand.setName(source.name());
         brand.setUrlPathName(source.url_path_name());
         brand.setVehicleType(VehicleType.fromValue(source.vehicle_type()));
+        brand.setImageUrl(source.image_url());
         return brand;
     }
 }
