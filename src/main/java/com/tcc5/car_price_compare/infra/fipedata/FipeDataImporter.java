@@ -31,6 +31,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 @Component
 public class FipeDataImporter implements CommandLineRunner {
@@ -101,6 +102,36 @@ public class FipeDataImporter implements CommandLineRunner {
         this.importModels();
         this.importYears();
         this.importVehicles();
+
+        // Refactor
+
+        // import brands
+        this.importToDatabase(this.brandsNumPages, this.brandsUrl, "brands");
+    }
+
+    private <T, U> void importToDatabase(int numPages, String partialUrl, String entityName, Function<T, U>) {
+        List<Mono<Void>> importTasks = new ArrayList<>();
+
+        for (int i = 0; i < numPages; i++) {
+            int pageNum = i + 1;
+            String uri = partialUrl + "/" + entityName + "-" + pageNum + ".json";
+
+            Mono<Void> importTask = this.webClient.get()
+                    .uri(uri)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .flatMap(items -> {
+                        try {
+                            log.info("Importing " + entityName + ", page {}...", pageNum);
+
+                            List<T> dtoList = this.objectMapper.readValue(items, new TypeReference<>(){});
+                            List<U> entityList = dtoList.stream()
+                                    .map()
+                        } catch (JsonProcessingException e) {
+
+                        }
+                    })
+        }
     }
 
     private void importBrands() {
