@@ -29,7 +29,12 @@ public class Vehicle extends TimestampedEntity {
     @NotBlank
     private String fipeCode;
 
-    @OneToOne
+    @NotBlank
+    private String urlPathName;
+
+    private String fullUrl;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "year_id")
     private Year year;
 
