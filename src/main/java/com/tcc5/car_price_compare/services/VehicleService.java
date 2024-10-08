@@ -1,13 +1,11 @@
 package com.tcc5.car_price_compare.services;
 
-import com.tcc5.car_price_compare.domain.price.FipePrice;
 import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponseDTO;
 import com.tcc5.car_price_compare.domain.statistic.enums.EntityType;
 import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import com.tcc5.car_price_compare.domain.vehicle.Year;
-import com.tcc5.car_price_compare.domain.vehicle.converters.BrandToBrandDTOConverter;
 import com.tcc5.car_price_compare.domain.vehicle.dto.*;
 import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
 import com.tcc5.car_price_compare.domain.vehicle.exceptions.BrandNotFoundException;
