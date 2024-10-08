@@ -8,14 +8,12 @@ import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import com.tcc5.car_price_compare.domain.vehicle.Year;
 import com.tcc5.car_price_compare.domain.vehicle.exceptions.BrandNotFoundException;
-import com.tcc5.car_price_compare.infra.fipedata.converter.BrandJsonDtoToBrandConverter;
-import com.tcc5.car_price_compare.infra.fipedata.converter.ModelJsonDtoToModelConverter;
-import com.tcc5.car_price_compare.infra.fipedata.converter.VehicleJsonDtoToVehicleConverter;
-import com.tcc5.car_price_compare.infra.fipedata.converter.YearJsonDtoToYearConverter;
+import com.tcc5.car_price_compare.infra.fipedata.converter.*;
 import com.tcc5.car_price_compare.infra.fipedata.dto.BrandJsonDto;
 import com.tcc5.car_price_compare.infra.fipedata.dto.ModelJsonDto;
 import com.tcc5.car_price_compare.infra.fipedata.dto.VehicleJsonDto;
 import com.tcc5.car_price_compare.infra.fipedata.dto.YearJsonDto;
+import com.tcc5.car_price_compare.repositories.price.FipePriceRepository;
 import com.tcc5.car_price_compare.repositories.vehicle.BrandRepository;
 import com.tcc5.car_price_compare.repositories.vehicle.ModelRepository;
 import com.tcc5.car_price_compare.repositories.vehicle.VehicleRepository;
@@ -45,6 +43,7 @@ public class FipeDataImporter implements CommandLineRunner {
     private final ModelRepository modelRepository;
     private final YearRepository yearRepository;
     private final VehicleRepository vehicleRepository;
+    private final FipePriceRepository fipePriceRepository;
 
     private final ObjectMapper objectMapper;
 
@@ -52,6 +51,7 @@ public class FipeDataImporter implements CommandLineRunner {
     private final ModelJsonDtoToModelConverter modelJsonDtoToModelConverter;
     private final YearJsonDtoToYearConverter yearJsonDtoToYearConverter;
     private final VehicleJsonDtoToVehicleConverter vehicleJsonDtoToVehicleConverter;
+    private final FipePriceJsonDtoToFipePriceConverter fipePriceJsonDtoToFipePriceConverter;
 
     @Value("${fipe.data.import.baseurl}")
     private String baseUrl;
@@ -79,7 +79,9 @@ public class FipeDataImporter implements CommandLineRunner {
             BrandJsonDtoToBrandConverter brandJsonDtoToBrandConverter,
             ModelJsonDtoToModelConverter modelJsonDtoToModelConverter,
             YearJsonDtoToYearConverter yearJsonDtoToYearConverter,
-            VehicleJsonDtoToVehicleConverter vehicleJsonDtoToVehicleConverter) {
+            VehicleJsonDtoToVehicleConverter vehicleJsonDtoToVehicleConverter,
+            FipePriceRepository fipePriceRepository,
+            FipePriceJsonDtoToFipePriceConverter fipePriceJsonDtoToFipePriceConverter) {
         this.brandRepository = brandRepository;
         this.modelRepository = modelRepository;
         this.yearRepository = yearRepository;
@@ -89,6 +91,8 @@ public class FipeDataImporter implements CommandLineRunner {
         this.modelJsonDtoToModelConverter = modelJsonDtoToModelConverter;
         this.yearJsonDtoToYearConverter = yearJsonDtoToYearConverter;
         this.vehicleJsonDtoToVehicleConverter = vehicleJsonDtoToVehicleConverter;
+        this.fipePriceRepository = fipePriceRepository;
+        this.fipePriceJsonDtoToFipePriceConverter = fipePriceJsonDtoToFipePriceConverter;
     }
 
     @Override
@@ -102,7 +106,7 @@ public class FipeDataImporter implements CommandLineRunner {
 
     private <T, U> void importToDatabase(int numPages,
             String entityName,
-            Function<List<T>, List<U>> converterFunction,
+            Function<List<T>, List<U>> dtoToEntityconverterFunction,
             Consumer<List<U>> saveFunction,
             Class<T> dtoClass) {
         List<Mono<Void>> importTasks = new ArrayList<>();
@@ -120,9 +124,10 @@ public class FipeDataImporter implements CommandLineRunner {
                             log.info("Importing " + entityName + ", page {}...", pageNum);
 
                             List<T> dtoList = this.objectMapper.readValue(items,
-                                                                          this.objectMapper.getTypeFactory()
+                                                                          this.objectMapper
+                                                                                  .getTypeFactory()
                                                                                   .constructCollectionType(List.class, dtoClass));
-                            List<U> entityList = converterFunction.apply(dtoList);
+                            List<U> entityList = dtoToEntityconverterFunction.apply(dtoList);
 
                             saveFunction.accept(entityList);
                             log.info(entityName + " imported successfully", pageNum);
