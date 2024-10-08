@@ -1,6 +1,6 @@
 package com.tcc5.car_price_compare.repositories.price;
 
-import com.tcc5.car_price_compare.domain.price.FipePrice;
+import com.tcc5.car_price_compare.domain.vehicle.FipePrice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

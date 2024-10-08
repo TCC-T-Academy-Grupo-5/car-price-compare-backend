@@ -1,7 +1,7 @@
 package com.tcc5.car_price_compare.services;
 
 
-import com.tcc5.car_price_compare.domain.price.FipePrice;
+import com.tcc5.car_price_compare.domain.vehicle.FipePrice;
 import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponseDTO;
 import com.tcc5.car_price_compare.domain.user.converters.FavoriteRequestDTOToFavoriteConverter;
 import com.tcc5.car_price_compare.domain.user.converters.FavoriteToFavoriteResponseDTO;
@@ -25,6 +25,8 @@ import com.tcc5.car_price_compare.domain.vehicle.dto.ModelDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO;
 import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Service responsible for performing conversions between entities and DTOs.
@@ -158,8 +160,8 @@ public class ConversionService {
         Model model = year.getModel();
         Brand brand = model.getBrand();
         VehicleType vehicleType = brand.getVehicleType();
-        FipePrice fipePrice = vehicle.getFipePrice();
+        List<FipePrice> fipePrices = vehicle.getFipePrices();
 
-        return new VehicleResponseDTO(vehicle.getId(), model.getName(), brand.getName(), fipePrice == null ? 0 : fipePrice.getPrice(), vehicleType.name(), year.getName().split(" ")[0]);
+        return new VehicleResponseDTO(vehicle.getId(), model.getName(), brand.getName(), fipePrices, vehicleType.name(), year.getName().split(" ")[0]);
     }
 }
