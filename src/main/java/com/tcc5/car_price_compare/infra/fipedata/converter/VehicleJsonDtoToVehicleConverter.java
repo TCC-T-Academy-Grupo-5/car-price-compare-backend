@@ -26,6 +26,7 @@ public class VehicleJsonDtoToVehicleConverter implements Converter<VehicleJsonDt
 
         Vehicle vehicle = new Vehicle();
         vehicle.setId(UUID.fromString(source.id()));
+        vehicle.setName(source.name());
         vehicle.setFipeCode(source.fipe_code());
         vehicle.setUrlPathName(source.url_path_name());
         vehicle.setFullUrl(source.full_url());
