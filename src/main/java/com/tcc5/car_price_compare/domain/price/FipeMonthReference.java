@@ -25,8 +25,4 @@ public class FipeMonthReference {
     private String code;
 
     private String month;
-
-    @OneToMany(mappedBy = "fipeMonthReference")
-    @JsonIgnore
-    private List<FipePrice> fipePrices;
 }
