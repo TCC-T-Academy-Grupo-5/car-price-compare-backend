@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -31,6 +33,6 @@ public class Year extends TimestampedEntity {
     @JoinColumn(name = "model_id")
     private Model model;
 
-    @OneToOne(mappedBy = "year", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Vehicle vehicle;
+    @OneToMany(mappedBy = "year", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Vehicle> vehicles = new ArrayList<>();
 }

@@ -31,6 +31,8 @@ public class Brand extends TimestampedEntity {
     @NotBlank
     private String urlPathName;
 
+    private String imageUrl;
+
     @Enumerated(EnumType.ORDINAL)
     private VehicleType vehicleType;
 
