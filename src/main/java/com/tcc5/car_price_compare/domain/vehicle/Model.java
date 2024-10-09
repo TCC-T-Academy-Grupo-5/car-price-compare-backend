@@ -29,6 +29,8 @@ public class Model extends TimestampedEntity {
     @NotBlank
     private String urlPathName;
 
+    private String imageUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id")
     private Brand brand;

@@ -15,7 +15,7 @@ public interface ModelRepository extends CrudRepository<Model, UUID>, JpaSpecifi
     Optional<Model> findByName(String name);
 
     @Query(
-            "SELECT new com.tcc5.car_price_compare.domain.vehicle.dto.ModelDTO(m.id, m.name, m.urlPathName, m.brand.name) " +
+            "SELECT new com.tcc5.car_price_compare.domain.vehicle.dto.ModelDTO(m.id, m.name, m.urlPathName, m.imageUrl, m.brand.name) " +
                     "FROM Model m " +
                     "WHERE m.id = :id"
     )

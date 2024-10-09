@@ -1,13 +1,11 @@
 package com.tcc5.car_price_compare.services;
 
-import com.tcc5.car_price_compare.domain.price.FipePrice;
 import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponseDTO;
 import com.tcc5.car_price_compare.domain.statistic.enums.EntityType;
 import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import com.tcc5.car_price_compare.domain.vehicle.Year;
-import com.tcc5.car_price_compare.domain.vehicle.converters.BrandToBrandDTOConverter;
 import com.tcc5.car_price_compare.domain.vehicle.dto.*;
 import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
 import com.tcc5.car_price_compare.domain.vehicle.exceptions.BrandNotFoundException;
@@ -128,7 +126,7 @@ public class VehicleService {
 
         Model model = getModelByName(vehicleDTO.model());
         Brand brand = getBrandByName(vehicleDTO.brand());
-        Year year = yearConfig(vehicleDTO.year(), vehicle, model);
+        Year year = yearConfig(vehicleDTO.year(), model);
 
         vehicle.setId(UUID.randomUUID());
         vehicle.setYear(year);
@@ -191,12 +189,11 @@ public class VehicleService {
         return new PageImpl<>(modelDTOS, PageRequest.of(models.getNumber(), models.getSize()), models.getTotalElements());
     }
 
-    private Year yearConfig(String yearString, Vehicle vehicle, Model model){
+    private Year yearConfig(String yearString, Model model){
         Year year = new Year();
 
         year.setId(UUID.randomUUID());
         year.setName(yearString);
-        year.setVehicle(vehicle);
         year.setModel(model);
         year.setUrlPathName(yearString.replace(" ", "-"));
 

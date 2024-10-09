@@ -3,18 +3,11 @@ package com.tcc5.car_price_compare.infra.fipedata;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tcc5.car_price_compare.domain.vehicle.Brand;
-import com.tcc5.car_price_compare.domain.vehicle.Model;
-import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
-import com.tcc5.car_price_compare.domain.vehicle.Year;
-import com.tcc5.car_price_compare.infra.fipedata.converter.BrandJsonDtoToBrandConverter;
-import com.tcc5.car_price_compare.infra.fipedata.converter.ModelJsonDtoToModelConverter;
-import com.tcc5.car_price_compare.infra.fipedata.converter.VehicleJsonDtoToVehicleConverter;
-import com.tcc5.car_price_compare.infra.fipedata.converter.YearJsonDtoToYearConverter;
-import com.tcc5.car_price_compare.infra.fipedata.dto.BrandJsonDto;
-import com.tcc5.car_price_compare.infra.fipedata.dto.ModelJsonDto;
-import com.tcc5.car_price_compare.infra.fipedata.dto.VehicleJsonDto;
-import com.tcc5.car_price_compare.infra.fipedata.dto.YearJsonDto;
+import com.tcc5.car_price_compare.domain.vehicle.*;
+import com.tcc5.car_price_compare.domain.vehicle.exceptions.BrandNotFoundException;
+import com.tcc5.car_price_compare.infra.fipedata.converter.*;
+import com.tcc5.car_price_compare.infra.fipedata.dto.*;
+import com.tcc5.car_price_compare.repositories.price.FipePriceRepository;
 import com.tcc5.car_price_compare.repositories.vehicle.BrandRepository;
 import com.tcc5.car_price_compare.repositories.vehicle.ModelRepository;
 import com.tcc5.car_price_compare.repositories.vehicle.VehicleRepository;
@@ -31,6 +24,8 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 @Component
 public class FipeDataImporter implements CommandLineRunner {
@@ -42,6 +37,7 @@ public class FipeDataImporter implements CommandLineRunner {
     private final ModelRepository modelRepository;
     private final YearRepository yearRepository;
     private final VehicleRepository vehicleRepository;
+    private final FipePriceRepository fipePriceRepository;
 
     private final ObjectMapper objectMapper;
 
@@ -49,30 +45,25 @@ public class FipeDataImporter implements CommandLineRunner {
     private final ModelJsonDtoToModelConverter modelJsonDtoToModelConverter;
     private final YearJsonDtoToYearConverter yearJsonDtoToYearConverter;
     private final VehicleJsonDtoToVehicleConverter vehicleJsonDtoToVehicleConverter;
+    private final FipePriceJsonDtoToFipePriceConverter fipePriceJsonDtoToFipePriceConverter;
 
-    @Value("${fipe.data.brands.baseurl}")
-    private String brandsUrl;
+    @Value("${fipe.data.import.baseurl}")
+    private String baseUrl;
 
     @Value("${fipe.data.brands.numpages}")
     private int brandsNumPages;
 
-    @Value("${fipe.data.models.baseurl}")
-    private String modelsUrl;
-
     @Value("${fipe.data.models.numpages}")
     private int modelsNumPages;
-
-    @Value("${fipe.data.years.baseurl}")
-    private String yearsUrl;
 
     @Value("${fipe.data.years.numpages}")
     private int yearsNumPages;
 
-    @Value("${fipe.data.vehicles.baseurl}")
-    private String vehiclesUrl;
-
     @Value("${fipe.data.vehicles.numpages}")
     private int vehiclesNumPages;
+
+    @Value("${fipe.data.fipeprices.numpages}")
+    private int fipePricesNumPages;
 
     public FipeDataImporter(BrandRepository brandRepository,
             ModelRepository modelRepository,
@@ -82,7 +73,9 @@ public class FipeDataImporter implements CommandLineRunner {
             BrandJsonDtoToBrandConverter brandJsonDtoToBrandConverter,
             ModelJsonDtoToModelConverter modelJsonDtoToModelConverter,
             YearJsonDtoToYearConverter yearJsonDtoToYearConverter,
-            VehicleJsonDtoToVehicleConverter vehicleJsonDtoToVehicleConverter) {
+            VehicleJsonDtoToVehicleConverter vehicleJsonDtoToVehicleConverter,
+            FipePriceRepository fipePriceRepository,
+            FipePriceJsonDtoToFipePriceConverter fipePriceJsonDtoToFipePriceConverter) {
         this.brandRepository = brandRepository;
         this.modelRepository = modelRepository;
         this.yearRepository = yearRepository;
@@ -92,6 +85,8 @@ public class FipeDataImporter implements CommandLineRunner {
         this.modelJsonDtoToModelConverter = modelJsonDtoToModelConverter;
         this.yearJsonDtoToYearConverter = yearJsonDtoToYearConverter;
         this.vehicleJsonDtoToVehicleConverter = vehicleJsonDtoToVehicleConverter;
+        this.fipePriceRepository = fipePriceRepository;
+        this.fipePriceJsonDtoToFipePriceConverter = fipePriceJsonDtoToFipePriceConverter;
     }
 
     @Override
@@ -101,6 +96,49 @@ public class FipeDataImporter implements CommandLineRunner {
         this.importModels();
         this.importYears();
         this.importVehicles();
+        this.importFipePrices();
+    }
+
+    private <T, U> void importToDatabase(int numPages,
+            String entityName,
+            Function<List<T>, List<U>> dtoToEntityconverterFunction,
+            Consumer<List<U>> saveFunction,
+            Class<T> dtoClass) {
+        List<Mono<Void>> importTasks = new ArrayList<>();
+
+        for (int i = 0; i < numPages; i++) {
+            int pageNum = i + 1;
+            String uri = this.baseUrl + "/" + entityName + "/" + entityName + "-" + pageNum + ".json";
+
+            Mono<Void> importTask = this.webClient.get()
+                    .uri(uri)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .flatMap(items -> {
+                        try {
+                            log.info("Importing " + entityName + ", page {}...", pageNum);
+
+                            List<T> dtoList = this.objectMapper.readValue(items,
+                                                                          this.objectMapper
+                                                                                  .getTypeFactory()
+                                                                                  .constructCollectionType(List.class, dtoClass));
+                            List<U> entityList = dtoToEntityconverterFunction.apply(dtoList);
+
+                            saveFunction.accept(entityList);
+                            log.info(entityName + " imported successfully", pageNum);
+                            return Mono.empty();
+                        } catch (JsonProcessingException e) {
+                            log.error("Error processing {}, page {}", entityName, pageNum, e);
+                            return Mono.error(e);
+                        }
+                    })
+                    .doOnError(error -> log.error("Error getting {}, page {}: {}", entityName, pageNum, error.getMessage()))
+                    .then();
+
+            importTasks.add(importTask);
+        }
+
+        Mono.when(importTasks).block();
     }
 
     private void importBrands() {
@@ -109,42 +147,16 @@ public class FipeDataImporter implements CommandLineRunner {
             return;
         }
 
-        List<Mono<Void>> importTasks = new ArrayList<>();
+        Function<List<BrandJsonDto>, List<Brand>> brandConverter = brandJsonDtos -> brandJsonDtos.stream()
+                .map(this.brandJsonDtoToBrandConverter::convert)
+                .toList();
+        Consumer<List<Brand>> saveBrands = this.brandRepository::saveAll;
 
-        for (int i = 0; i < brandsNumPages; i++) {
-            int pageNum = i + 1;
-            String uri = this.brandsUrl + "/brand-" + pageNum + ".json";
-
-            Mono<Void> importTask = this.webClient.get()
-                    .uri(uri)
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .flatMap(brands -> {
-                        try {
-                            log.info("Importing brands, page {} ...", pageNum);
-
-                            List<BrandJsonDto> brandsFromJson = this.objectMapper.readValue(brands, new TypeReference<>() {
-                            });
-                            List<Brand> brandsToSave = brandsFromJson.stream()
-                                    .map(this.brandJsonDtoToBrandConverter::convert)
-                                    .toList();
-
-                            this.brandRepository.saveAll(brandsToSave);
-                            log.info("Brands page {} imported to database successfully", pageNum);
-                            return Mono.empty();
-                        } catch (JsonProcessingException e) {
-                            log.error("Error importing brands: {}, page: {}", e.getMessage(), pageNum);
-                            return Mono.error(e);
-
-                        }
-                    })
-                    .doOnError(error -> log.error("Error getting brands: {}, page: {}", error.getMessage(), pageNum))
-                    .then();
-
-            importTasks.add(importTask);
-        }
-
-        Mono.when(importTasks).block();
+        this.importToDatabase(this.brandsNumPages,
+                              "brands",
+                              brandConverter,
+                              saveBrands,
+                              BrandJsonDto.class);
     }
 
     private void importModels() {
@@ -153,41 +165,16 @@ public class FipeDataImporter implements CommandLineRunner {
             return;
         }
 
-        List<Mono<Void>> importTasks = new ArrayList<>();
+        Function<List<ModelJsonDto>, List<Model>> modelConverter = modelJsonDtos -> modelJsonDtos.stream()
+                .map(this.modelJsonDtoToModelConverter::convert)
+                .toList();
+        Consumer<List<Model>> saveModels = this.modelRepository::saveAll;
 
-        for (int i = 0; i < modelsNumPages; i++) {
-            int pageNum = i + 1;
-            String uri = this.modelsUrl + "/model-" + pageNum + ".json";
-
-            Mono<Void> importTask = this.webClient.get()
-                    .uri(uri)
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .publishOn(Schedulers.boundedElastic())
-                    .flatMap(models -> {
-                        try {
-                            log.info("Importing models, page {}...", pageNum);
-
-                            List<ModelJsonDto> modelsFromJson = this.objectMapper.readValue(models, new TypeReference<>() {});
-                            List<Model> modelsToSave = modelsFromJson.stream()
-                                    .map(this.modelJsonDtoToModelConverter::convert)
-                                    .toList();
-
-                            this.modelRepository.saveAll(modelsToSave);
-                            log.info("Models page {} imported to database successfully", pageNum);
-                            return Mono.empty();
-                        } catch (JsonProcessingException e) {
-                            log.error("Error importing models: {}, page: {}", e.getMessage(), pageNum);
-                            return Mono.error(e);
-                        }
-                    })
-                    .doOnError(error -> log.error("Error getting models: {}, page: {}", error.getMessage(), pageNum))
-                    .then();
-
-            importTasks.add(importTask);
-        }
-
-        Mono.when(importTasks).block();
+        this.importToDatabase(this.modelsNumPages,
+                              "models",
+                              modelConverter,
+                              saveModels,
+                              ModelJsonDto.class);
     }
 
     public void importYears() {
@@ -196,82 +183,51 @@ public class FipeDataImporter implements CommandLineRunner {
             return;
         }
 
-        List<Mono<Void>> importTasks = new ArrayList<>();
+        Function<List<YearJsonDto>, List<Year>> yearConverter = yearJsonDtos -> yearJsonDtos.stream()
+                .map(this.yearJsonDtoToYearConverter::convert)
+                .toList();
+        Consumer<List<Year>> saveYears = this.yearRepository::saveAll;
 
-        for (int i = 0; i < yearsNumPages; i++) {
-            int pageNum = i + 1;
-            String uri = this.yearsUrl + "/year-" + pageNum + ".json";
-
-            Mono<Void> importTask = this.webClient.get()
-                    .uri(uri)
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .flatMap(years -> {
-                        try {
-                            log.info("Importing years, page {}...", pageNum);
-
-                            List<YearJsonDto> yearsFromJson = this.objectMapper.readValue(years, new TypeReference<>() {});
-                            List<Year> yearsToSave = yearsFromJson.stream()
-                                    .map(this.yearJsonDtoToYearConverter::convert)
-                                    .toList();
-
-                            this.yearRepository.saveAll(yearsToSave);
-                            log.info("Years page {} imported to database successfully", pageNum);
-                            return Mono.empty();
-                        } catch (JsonProcessingException e) {
-                            log.error("Error importing years: {}, page: {}", e.getMessage(), pageNum);
-                            return Mono.error(e);
-
-                        }
-                    })
-                    .doOnError(error -> log.error("Error getting years: {}, page: {}", error.getMessage(), pageNum))
-                    .then();
-
-            importTasks.add(importTask);
-        }
-
-        Mono.when(importTasks).block();
+        this.importToDatabase(this.yearsNumPages,
+                              "years",
+                              yearConverter,
+                              saveYears,
+                              YearJsonDto.class);
     }
 
     public void importVehicles() {
         if (this.vehicleRepository.count() != 0) {
-            log.info("Skipping vehicles import. Already imported.");
+            log.info("Skipping vehicle import. Already imported.");
             return;
         }
 
-        List<Mono<Void>> importTasks = new ArrayList<>();
+        Function<List<VehicleJsonDto>, List<Vehicle>> vehicleConverter = vehicleJsonDtos -> vehicleJsonDtos.stream()
+                .map(this.vehicleJsonDtoToVehicleConverter::convert)
+                .toList();
+        Consumer<List<Vehicle>> saveVehicles = this.vehicleRepository::saveAll;
 
-        for (int i = 0; i < vehiclesNumPages; i++) {
-            int pageNum = i + 1;
-            String uri = this.vehiclesUrl + "/vehicle-" + pageNum + ".json";
+        this.importToDatabase(this.vehiclesNumPages,
+                              "versions",
+                              vehicleConverter,
+                              saveVehicles,
+                              VehicleJsonDto.class);
+    }
 
-            Mono<Void> imporTask = this.webClient.get()
-                    .uri(uri)
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .flatMap(vehicles -> {
-                        try {
-                            log.info("Importing vehicles, page {}...", pageNum);
-
-                            List<VehicleJsonDto> vehiclesFromJson = this.objectMapper.readValue(vehicles, new TypeReference<>() {});
-                            List<Vehicle> vehiclesToSave = vehiclesFromJson.stream()
-                                    .map(this.vehicleJsonDtoToVehicleConverter::convert)
-                                    .toList();
-
-                            this.vehicleRepository.saveAll(vehiclesToSave);
-                            log.info("Vehicles page {} imported to database successfully", pageNum);
-                            return Mono.empty();
-                        } catch (JsonProcessingException e) {
-                            log.error("Error importing vehicles: {}, page: {}", e.getMessage(), pageNum);
-                            return Mono.error(e);
-                        }
-                    })
-                    .doOnError(error -> log.error("Error getting vehicles: {}, page: {}", error.getMessage(), pageNum))
-                    .then();
-
-            importTasks.add(imporTask);
+    public void importFipePrices() {
+        if (this.fipePriceRepository.count() != 0) {
+            log.info("Skipping fipe prices import. Already imported.");
+            return;
         }
 
-        Mono.when(importTasks).block();
+        Function<List<FipePriceJsonDto>, List<FipePrice>> fipePriceConverter = fipePriceJsonDtos -> fipePriceJsonDtos.stream()
+                .map(this.fipePriceJsonDtoToFipePriceConverter::convert)
+                .toList();
+        Consumer<List<FipePrice>> saveFipePrices = this.fipePriceRepository::saveAll;
+
+        this.importToDatabase(this.fipePricesNumPages,
+                              "fipeprices",
+                              fipePriceConverter,
+                              saveFipePrices,
+                              FipePriceJsonDto.class);
     }
 }

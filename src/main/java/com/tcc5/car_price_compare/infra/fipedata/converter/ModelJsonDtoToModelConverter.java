@@ -29,6 +29,7 @@ public class ModelJsonDtoToModelConverter implements Converter<ModelJsonDto, Mod
         model.setName(source.name());
         model.setUrlPathName(source.url_path_name());
         model.setBrand(brand);
+        model.setImageUrl(brand.getImageUrl());
 
         return model;
     }

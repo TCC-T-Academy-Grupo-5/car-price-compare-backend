@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public interface VehicleRepository extends JpaRepository<Vehicle, UUID>, JpaSpecificationExecutor<Vehicle> {
     @Query(
-        "SELECT new com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO(v.id, v.fipeCode, y.name, m.name, b.name, b.vehicleType) " +
+        "SELECT new com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO(v.id, v.fipeCode, v.name, y.name, m.name, b.name, b.vehicleType) " +
         "FROM Vehicle v " +
         "JOIN v.year y " +
         "JOIN y.model m " +
@@ -23,7 +23,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, UUID>, JpaSpec
     List<VehicleDTO> findAllVehicleDTOs();
 
     @Query(
-        "SELECT new com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO(v.id, v.fipeCode, y.name, m.name, b.name, b.vehicleType) " +
+        "SELECT new com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO(v.id, v.fipeCode, v.name, y.name, m.name, b.name, b.vehicleType) " +
         "FROM Vehicle v " +
         "JOIN v.year y " +
         "JOIN y.model m " +

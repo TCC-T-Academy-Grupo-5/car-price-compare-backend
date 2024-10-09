@@ -1,7 +1,7 @@
-package com.tcc5.car_price_compare.domain.price;
+package com.tcc5.car_price_compare.domain.vehicle;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
+import com.tcc5.car_price_compare.domain.price.FipeMonthReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,15 +19,14 @@ public class FipePrice {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private double price;
+    private Double price;
+
+    private Integer month;
+
+    private Integer year;
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
     @JsonIgnore
     private Vehicle vehicle;
-
-    @ManyToOne
-    @JoinColumn(name = "fipe_month_reference_id")
-    @JsonIgnore
-    private FipeMonthReference fipeMonthReference;
 }

@@ -1,6 +1,7 @@
 package com.tcc5.car_price_compare.domain.price;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tcc5.car_price_compare.domain.vehicle.FipePrice;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -24,8 +25,4 @@ public class FipeMonthReference {
     private String code;
 
     private String month;
-
-    @OneToMany(mappedBy = "fipeMonthReference")
-    @JsonIgnore
-    private List<FipePrice> fipePrices;
 }
