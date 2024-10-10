@@ -1,10 +1,8 @@
 package com.tcc5.car_price_compare.infra.fipedata;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tcc5.car_price_compare.domain.vehicle.*;
-import com.tcc5.car_price_compare.domain.vehicle.exceptions.BrandNotFoundException;
 import com.tcc5.car_price_compare.infra.fipedata.converter.*;
 import com.tcc5.car_price_compare.infra.fipedata.dto.*;
 import com.tcc5.car_price_compare.repositories.price.FipePriceRepository;
@@ -20,7 +18,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;

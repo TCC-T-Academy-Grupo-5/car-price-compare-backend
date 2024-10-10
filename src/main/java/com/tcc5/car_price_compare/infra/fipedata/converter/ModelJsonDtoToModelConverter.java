@@ -25,11 +25,13 @@ public class ModelJsonDtoToModelConverter implements Converter<ModelJsonDto, Mod
             return new RuntimeException("Error converting ModelJsonDto to Model: no brand with id " + source.brand_id());
         });
 
+        ModelCategory category = source.category() == null ? null : ModelCategory.valueOf(source.category());
+
         Model model = new Model();
         model.setId(UUID.fromString(source.id()));
         model.setName(source.name());
         model.setUrlPathName(source.url_path_name());
-        model.setCategory(ModelCategory.fromString(source.categoryString()));
+        model.setCategory(category);
         model.setBrand(brand);
         model.setImageUrl(brand.getImageUrl());
 
