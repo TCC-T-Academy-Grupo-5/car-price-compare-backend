@@ -1,7 +1,6 @@
 package com.tcc5.car_price_compare.repositories.vehicle;
 
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
-import org.springframework.data.jpa.domain.Specification;
 import com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
