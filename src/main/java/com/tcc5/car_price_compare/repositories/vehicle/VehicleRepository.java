@@ -1,7 +1,6 @@
 package com.tcc5.car_price_compare.repositories.vehicle;
 
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
-import org.springframework.data.jpa.domain.Specification;
 import com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -14,7 +13,7 @@ import java.util.UUID;
 
 public interface VehicleRepository extends JpaRepository<Vehicle, UUID>, JpaSpecificationExecutor<Vehicle> {
     @Query(
-        "SELECT new com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO(v.id, v.fipeCode, v.name, y.name, m.name, b.name, b.vehicleType) " +
+        "SELECT new com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO(v.id, v.fipeCode, v.name, y.name, m.name, b.name, b.vehicleType, m.category) " +
         "FROM Vehicle v " +
         "JOIN v.year y " +
         "JOIN y.model m " +
@@ -23,7 +22,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, UUID>, JpaSpec
     List<VehicleDTO> findAllVehicleDTOs();
 
     @Query(
-        "SELECT new com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO(v.id, v.fipeCode, v.name, y.name, m.name, b.name, b.vehicleType) " +
+        "SELECT new com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO(v.id, v.fipeCode, v.name, y.name, m.name, b.name, b.vehicleType, m.category) " +
         "FROM Vehicle v " +
         "JOIN v.year y " +
         "JOIN y.model m " +
