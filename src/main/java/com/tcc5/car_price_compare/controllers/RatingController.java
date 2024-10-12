@@ -26,7 +26,7 @@ public class RatingController {
     public ResponseEntity<Page<Rating>> getRatings(
             @RequestParam(value = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-            @RequestParam(value = "vehicle", required = false) String vehicleId
+            @RequestParam(value = "vehicle") String vehicleId
     ) {
        return ResponseEntity.status(HttpStatus.OK).body(ratingService.getRatingsByVehicle(pageNumber, pageSize, vehicleId));
     }
