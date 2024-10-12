@@ -1,6 +1,7 @@
 package com.tcc5.car_price_compare.domain.vehicle;
 
 import com.tcc5.car_price_compare.domain.shared.TimestampedEntity;
+import com.tcc5.car_price_compare.domain.vehicle.enums.ModelCategory;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,8 @@ public class Model extends TimestampedEntity {
     private String urlPathName;
 
     private String imageUrl;
+
+    private ModelCategory category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id")
