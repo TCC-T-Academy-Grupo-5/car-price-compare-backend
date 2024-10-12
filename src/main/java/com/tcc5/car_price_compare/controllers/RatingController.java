@@ -26,9 +26,10 @@ public class RatingController {
     public ResponseEntity<Page<Rating>> getRatings(
             @RequestParam(value = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-            @RequestParam(value = "vehicle") String vehicleId
+            @RequestParam(value = "vehicle") String vehicleId,
+            @RequestParam(value = "rate", required = false) Integer rate
     ) {
-       return ResponseEntity.status(HttpStatus.OK).body(ratingService.getRatingsByVehicle(pageNumber, pageSize, vehicleId));
+       return ResponseEntity.status(HttpStatus.OK).body(ratingService.getRatingsByVehicle(pageNumber, pageSize, vehicleId, rate));
     }
 
     @DeleteMapping("/{id}")

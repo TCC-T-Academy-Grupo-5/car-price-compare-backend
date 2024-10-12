@@ -45,13 +45,13 @@ public class RatingService {
         return ratingRepository.save(rating);
     }
 
-    public Page<Rating> getRatingsByVehicle(Integer pageNumber, Integer pageSize, String vehicleId) {
+    public Page<Rating> getRatingsByVehicle(Integer pageNumber, Integer pageSize, String vehicleId, Integer rate) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
         var vehicle = vehicleRepository.findById(UUID.fromString(vehicleId));
         if (vehicle.isEmpty()) throw new VehicleNotFoundException(UUID.fromString(vehicleId));
 
-        return ratingRepository.findAll(pageable);
+        return rate == null ? ratingRepository.findAll(pageable) : ratingRepository.findAllByRateEquals(rate, pageable);
     }
 
     public void deleteRatingById(String id) {
