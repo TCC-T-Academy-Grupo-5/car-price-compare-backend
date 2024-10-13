@@ -2,7 +2,7 @@ package com.tcc5.car_price_compare.repositories.vehicle;
 
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO;
-import com.tcc5.car_price_compare.domain.vehicle.dto.StorePricesRequestDto;
+import com.tcc5.car_price_compare.domain.price.dto.StorePricesRequestDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -38,7 +38,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, UUID>, JpaSpec
 
     @Query(
             """
-                SELECT new com.tcc5.car_price_compare.domain.vehicle.dto.StorePricesRequestDto(v.id, b.vehicleType, b.name, m.name, y.name, v.name)
+                SELECT new com.tcc5.car_price_compare.domain.price.dto.StorePricesRequestDTO(v.id, b.vehicleType, b.name, m.name, y.name, v.name)
                 FROM Vehicle v \
                 JOIN v.year y \
                 JOIN y.model m \
@@ -46,5 +46,5 @@ public interface VehicleRepository extends JpaRepository<Vehicle, UUID>, JpaSpec
                 WHERE v.id = :id
             """
     )
-    Optional<StorePricesRequestDto> findStorePricesRequestDtoById(@Param("id") UUID id);
+    Optional<StorePricesRequestDTO> createStorePricesRequestDtoFromVehicleId(@Param("id") UUID id);
 }
