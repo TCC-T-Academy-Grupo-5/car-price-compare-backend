@@ -2,6 +2,7 @@ package com.tcc5.car_price_compare.repositories.vehicle;
 
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO;
+import com.tcc5.car_price_compare.domain.vehicle.dto.StorePricesRequestDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -13,21 +14,37 @@ import java.util.UUID;
 
 public interface VehicleRepository extends JpaRepository<Vehicle, UUID>, JpaSpecificationExecutor<Vehicle> {
     @Query(
-        "SELECT new com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO(v.id, v.fipeCode, v.name, y.name, m.name, b.name, b.vehicleType, m.category) " +
-        "FROM Vehicle v " +
-        "JOIN v.year y " +
-        "JOIN y.model m " +
-        "JOIN m.brand b"
+            """
+                SELECT new com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO(v.id, v.fipeCode, v.name, y.name, m.name, b.name, b.vehicleType, m.category) \
+                FROM Vehicle v \
+                JOIN v.year y \
+                JOIN y.model m \
+                JOIN m.brand b
+            """
     )
     List<VehicleDTO> findAllVehicleDTOs();
 
     @Query(
-        "SELECT new com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO(v.id, v.fipeCode, v.name, y.name, m.name, b.name, b.vehicleType, m.category) " +
-        "FROM Vehicle v " +
-        "JOIN v.year y " +
-        "JOIN y.model m " +
-        "JOIN m.brand b " +
-        "WHERE v.id = :id"
+            """
+                SELECT new com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO(v.id, v.fipeCode, v.name, y.name, m.name, b.name, b.vehicleType, m.category) \
+                FROM Vehicle v \
+                JOIN v.year y \
+                JOIN y.model m \
+                JOIN m.brand b \
+                WHERE v.id = :id
+            """
     )
     Optional<VehicleDTO> findVehicleDTOById(@Param("id") UUID id);
+
+    @Query(
+            """
+                SELECT new com.tcc5.car_price_compare.domain.vehicle.dto.StorePricesRequestDto(v.id, b.vehicleType, b.name, m.name, y.name, v.name)
+                FROM Vehicle v \
+                JOIN v.year y \
+                JOIN y.model m \
+                JOIN m.brand b \
+                WHERE v.id = :id
+            """
+    )
+    Optional<StorePricesRequestDto> findStorePricesRequestDtoById(@Param("id") UUID id);
 }

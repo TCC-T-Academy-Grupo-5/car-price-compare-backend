@@ -1,16 +1,21 @@
 package com.tcc5.car_price_compare.controllers;
 
+import com.tcc5.car_price_compare.domain.price.StorePrice;
 import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponseDTO;
 import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.dto.*;
 import com.tcc5.car_price_compare.services.VehicleService;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("vehicle")
@@ -36,6 +41,12 @@ public class VehicleController {
     @GetMapping("/{id}")
     public ResponseEntity<VehicleResponseDTO> getVehicle(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getVehicleById(id));
+    }
+
+    @GetMapping("/{vehicleId}/prices")
+    public ResponseEntity<List<StorePrice>> getVehicleStorePrices(@PathVariable UUID id) {
+        // TODO: finish implementation
+        return ResponseEntity.ok(List.of());
     }
 
     @PostMapping()

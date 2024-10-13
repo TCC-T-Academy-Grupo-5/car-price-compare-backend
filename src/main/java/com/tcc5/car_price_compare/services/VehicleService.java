@@ -1,5 +1,6 @@
 package com.tcc5.car_price_compare.services;
 
+import com.tcc5.car_price_compare.domain.price.StorePrice;
 import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponseDTO;
 import com.tcc5.car_price_compare.domain.statistic.enums.EntityType;
 import com.tcc5.car_price_compare.domain.vehicle.Brand;
@@ -116,6 +117,12 @@ public class VehicleService {
             return modelRepository.save(model);
         else
             throw new RuntimeException("Brand not found");
+    }
+
+    public List<StorePrice> getVehicleStorePrices(String vehicleId) {
+        // TODO: finish implementation
+
+        return List.of();
     }
 
 
