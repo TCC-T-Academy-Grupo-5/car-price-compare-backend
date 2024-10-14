@@ -1,5 +1,8 @@
 package com.tcc5.car_price_compare.services;
 
+import com.tcc5.car_price_compare.domain.price.StorePrice;
+import com.tcc5.car_price_compare.domain.price.dto.StorePriceDTO;
+import com.tcc5.car_price_compare.domain.price.dto.StorePricesRequestDTO;
 import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponseDTO;
 import com.tcc5.car_price_compare.domain.statistic.enums.EntityType;
 import com.tcc5.car_price_compare.domain.vehicle.Brand;
@@ -19,15 +22,22 @@ import com.tcc5.car_price_compare.repositories.vehicle.YearRepository;
 import com.tcc5.car_price_compare.specifications.BrandSpecification;
 import com.tcc5.car_price_compare.specifications.ModelSpecification;
 import com.tcc5.car_price_compare.specifications.VehicleSpecification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +46,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class VehicleService {
+    private static final Logger log = LoggerFactory.getLogger(VehicleService.class);
 
     //TODO: add price into addVehicle
 
@@ -59,6 +70,15 @@ public class VehicleService {
 
     @Autowired
     private StatisticService statisticService;
+
+    @Autowired
+    private StorePriceService storePriceService;
+
+    @Autowired
+    private WebClient webClient;
+
+    @Value("${storepricescraping.url}")
+    private String scrapingUrl;
 
     public Page<VehicleResponseDTO> getVehicles(Integer pageNumber, Integer pageSize, String model, String brand, Double fipePrice, Integer type, String year) {
         Specification<Vehicle> spec = Specification
@@ -89,7 +109,43 @@ public class VehicleService {
         return conversionService.convertToVehicleResponse(vehicle.get());
     }
 
-    private Page<VehicleResponseDTO> vehicleToList(Page<Vehicle> vehicles){
+    public List<StorePriceDTO> getVehicleStorePrices(UUID vehicleId) {
+        List<StorePrice> storePrices = this.storePriceService.getCurrentDayDeals(vehicleId);
+
+        if (!storePrices.isEmpty()) {
+            return storePrices.stream().map(deal -> this.conversionService.convertToStorePriceDTO(deal)).toList();
+        }
+
+        StorePricesRequestDTO storePriceRequest = this.vehicleRepository
+                .createStorePricesRequestDtoFromVehicleId(vehicleId)
+                .orElseThrow(() -> new VehicleNotFoundException(vehicleId));
+
+        List<StorePriceDTO> storePriceDTOS = this.webClient.post()
+                .uri(this.scrapingUrl)
+                .bodyValue(storePriceRequest)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<List<StorePriceDTO>>() {
+                })
+                .timeout(Duration.ofSeconds(10))
+                .onErrorResume(throwable -> {
+                    log.error("Error getting data from scraping microservice: {}", throwable.getMessage());
+                    return Mono.just(List.of());
+                })
+                .block();
+
+        if (storePriceDTOS != null && !storePriceDTOS.isEmpty()) {
+            storePrices = storePriceDTOS.stream()
+                    .map(storePrice -> this.conversionService.convertToStorePrice(storePrice))
+                    .toList();
+
+            this.storePriceService.saveStorePrices(storePrices);
+        }
+
+        return storePriceDTOS;
+    }
+
+
+    private Page<VehicleResponseDTO> vehicleToList(Page<Vehicle> vehicles) {
         List<VehicleResponseDTO> vehicleResponses = vehicles.stream()
                 .map(v -> conversionService.convertToVehicleResponse(v))
                 .collect(Collectors.toList());
@@ -118,7 +174,6 @@ public class VehicleService {
             throw new RuntimeException("Brand not found");
     }
 
-
     public VehicleResponseDTO addVehicle(AddVehicleDTO vehicleDTO) {
         Vehicle vehicle = new Vehicle();
 
@@ -141,7 +196,7 @@ public class VehicleService {
         return conversionService.convertToVehicleResponse(vehicle);
     }
 
-    public Brand getBrandByName(String name){
+    public Brand getBrandByName(String name) {
         var brand = brandRepository.findByName(name);
 
         if (brand.isEmpty()) throw new BrandNotFoundException(name);
@@ -165,7 +220,7 @@ public class VehicleService {
         return new PageImpl<>(brandDTOs, pageable, pagedBrands.getTotalElements());
     }
 
-    public Model getModelByName(String name){
+    public Model getModelByName(String name) {
         var model = modelRepository.findByName(name);
 
         if (model.isEmpty()) throw new ModelNotFoundException(name);
@@ -189,7 +244,7 @@ public class VehicleService {
         return new PageImpl<>(modelDTOS, PageRequest.of(models.getNumber(), models.getSize()), models.getTotalElements());
     }
 
-    private Year yearConfig(String yearString, Model model){
+    private Year yearConfig(String yearString, Model model) {
         Year year = new Year();
 
         year.setId(UUID.randomUUID());
@@ -204,7 +259,7 @@ public class VehicleService {
         yearRepository.save(year);
     }
 
-    private List<BrandDTO> brandsListToBrandDTO(List<Brand> brands){
+    private List<BrandDTO> brandsListToBrandDTO(List<Brand> brands) {
         List<BrandDTO> brandsDto = new ArrayList<>();
 
         for (Brand b : brands) {
@@ -217,14 +272,14 @@ public class VehicleService {
     private List<ModelDTO> modelsListToModelDTO(List<Model> models) {
         List<ModelDTO> modelsDto = new ArrayList<>();
 
-        for (Model m : models){
+        for (Model m : models) {
             modelsDto.add(conversionService.convertToModelDTO(m));
         }
 
         return modelsDto;
     }
 
-    private void sendModelStatistics(String model){
+    private void sendModelStatistics(String model) {
         if (model != null && !(model.isEmpty() || model.isBlank())) {
             Optional<Model> res = modelRepository.findByName(model);
 
@@ -232,7 +287,7 @@ public class VehicleService {
         }
     }
 
-    private void sendBrandStatistic(String brand){
+    private void sendBrandStatistic(String brand) {
         if (brand != null && !(brand.isEmpty() || brand.isBlank())) {
             Optional<Brand> res = brandRepository.findByName(brand);
 

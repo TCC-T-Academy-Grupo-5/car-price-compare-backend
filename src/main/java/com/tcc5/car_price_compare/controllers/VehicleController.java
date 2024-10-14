@@ -1,5 +1,6 @@
 package com.tcc5.car_price_compare.controllers;
 
+import com.tcc5.car_price_compare.domain.price.dto.StorePriceDTO;
 import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponseDTO;
 import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
@@ -11,6 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("vehicle")
@@ -36,6 +40,11 @@ public class VehicleController {
     @GetMapping("/{id}")
     public ResponseEntity<VehicleResponseDTO> getVehicle(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getVehicleById(id));
+    }
+
+    @GetMapping("/{id}/deals")
+    public ResponseEntity<List<StorePriceDTO>> getVehicleStorePrices(@PathVariable UUID id) {
+        return ResponseEntity.ok(this.service.getVehicleStorePrices(id));
     }
 
     @PostMapping()
