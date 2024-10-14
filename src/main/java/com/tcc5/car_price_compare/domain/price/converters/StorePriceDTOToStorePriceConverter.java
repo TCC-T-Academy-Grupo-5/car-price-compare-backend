@@ -26,6 +26,8 @@ public class StorePriceDTOToStorePriceConverter implements Converter<StorePriceD
         storePrice.setPrice(source.price());
         storePrice.setScrappingDate(source.scrapedAt());
         storePrice.setStore(source.store());
+        storePrice.setMileageInKm(source.mileageInKm());
+        storePrice.setImageUrl(source.imageUrl());
         storePrice.setDealUrl(source.dealUrl());
         storePrice.setVehicle(vehicle);
 
