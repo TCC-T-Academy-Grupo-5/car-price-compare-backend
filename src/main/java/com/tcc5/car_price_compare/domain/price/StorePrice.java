@@ -22,12 +22,16 @@ public class StorePrice {
 
     private Double price;
 
+    private Double mileageInKm;
+
     @Column(name = "scrapping_date")
     private LocalDateTime scrappingDate;
 
     private String store;
 
     private String dealUrl;
+
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
