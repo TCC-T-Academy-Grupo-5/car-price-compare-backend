@@ -80,15 +80,13 @@ public class VehicleService {
     @Value("${storepricescraping.url}")
     private String scrapingUrl;
 
-    public Page<VehicleResponseDTO> getVehicles(Integer pageNumber, Integer pageSize, String model, String brand, Double fipePrice, Integer type, String year) {
+    public Page<VehicleResponseDTO> getVehicles(String model, String brand, Double fipePrice, Integer type, String year, Pageable pageable) {
         Specification<Vehicle> spec = Specification
                 .where(VehicleSpecification.hasModel(model))
                 .and(VehicleSpecification.hasBrand(brand))
                 .and(VehicleSpecification.hasFipeMaxPrice(fipePrice))
                 .and(VehicleSpecification.hasType(type))
                 .and(VehicleSpecification.hasYear(year));
-
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
         Page<Vehicle> vehicles = vehicleRepository.findAll(spec, pageable);
 
