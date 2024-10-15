@@ -25,6 +25,7 @@ public record StorePricesRequestDTO(
         String brand,
         String model,
         String year,
-        String version
+        String version,
+        String fipeCode
 ) {
 }
