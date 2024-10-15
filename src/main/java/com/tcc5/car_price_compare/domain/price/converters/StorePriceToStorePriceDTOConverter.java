@@ -14,8 +14,14 @@ public class StorePriceToStorePriceDTOConverter implements Converter<StorePrice,
                 source.getStore(),
                 source.getPrice(),
                 source.getMileageInKm(),
+                source.getModelName(),
+                source.getVersionName(),
+                source.getYear(),
                 source.getDealUrl(),
                 source.getImageUrl(),
+                source.getIsFullMatch(),
+                source.getCity(),
+                source.getState(),
                 source.getScrappingDate()
         );
     }

@@ -20,18 +20,30 @@ public class StorePrice {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    private String store;
+
     private Double price;
 
     private Double mileageInKm;
 
-    @Column(name = "scrapping_date")
-    private LocalDateTime scrappingDate;
+    private String modelName;
 
-    private String store;
+    private String versionName;
+
+    private String year;
 
     private String dealUrl;
 
     private String imageUrl;
+
+    private Boolean isFullMatch;
+
+    private String city;
+
+    private String state;
+
+    @Column(name = "scrapping_date")
+    private LocalDateTime scrappingDate;
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id")

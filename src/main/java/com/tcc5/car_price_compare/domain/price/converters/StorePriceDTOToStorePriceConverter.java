@@ -23,12 +23,18 @@ public class StorePriceDTOToStorePriceConverter implements Converter<StorePriceD
                 .orElseThrow(() -> new VehicleNotFoundException(source.vehicleId()));
 
         StorePrice storePrice = new StorePrice();
-        storePrice.setPrice(source.price());
-        storePrice.setScrappingDate(source.scrapedAt());
         storePrice.setStore(source.store());
+        storePrice.setPrice(source.price());
         storePrice.setMileageInKm(source.mileageInKm());
-        storePrice.setImageUrl(source.imageUrl());
+        storePrice.setModelName(source.modelName());
+        storePrice.setVersionName(source.versionName());
+        storePrice.setYear(source.year());
         storePrice.setDealUrl(source.dealUrl());
+        storePrice.setImageUrl(source.imageUrl());
+        storePrice.setIsFullMatch(source.isFullMatch());
+        storePrice.setCity(source.city());
+        storePrice.setState(source.state());
+        storePrice.setScrappingDate(source.scrapedAt());
         storePrice.setVehicle(vehicle);
 
         return storePrice;

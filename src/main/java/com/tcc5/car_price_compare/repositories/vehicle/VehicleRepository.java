@@ -38,7 +38,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, UUID>, JpaSpec
 
     @Query(
             """
-                SELECT new com.tcc5.car_price_compare.domain.price.dto.StorePricesRequestDTO(v.id, b.vehicleType, b.name, m.name, y.name, v.name)
+                SELECT new com.tcc5.car_price_compare.domain.price.dto.StorePricesRequestDTO(v.id, b.vehicleType, b.name, m.name, y.name, v.name, v.fipeCode)
                 FROM Vehicle v \
                 JOIN v.year y \
                 JOIN y.model m \

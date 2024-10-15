@@ -24,8 +24,14 @@ public record StorePriceDTO (
         String store,
         Double price,
         Double mileageInKm,
+        String modelName,
+        String versionName,
+        String year,
         String dealUrl,
         String imageUrl,
+        Boolean isFullMatch,
+        String city,
+        String state,
         LocalDateTime scrapedAt
 ) {
 }
