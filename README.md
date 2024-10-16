@@ -191,26 +191,28 @@ Create a notification associated with the current user.
 ### Request Example:
 ```json
 {
-    "notificationType": 0,
-    "currentFipePrice": 75000.0,
-    "vehicleId": "7e295497-7779-4091-a7be-77d7189419c9"
+  "notificationType": 0,
+  "currentFipePrice": 30000.0,
+  "vehicleId": "1d329d10-3500-4644-9cc9-e4b00bddf016"
 }
 ```
 - **201 Created**: Resource created successfully
 ```json
 {
-    "notificationId": "1df61684-1b6b-4082-ab32-3df94b54163b",
-    "notificationType": "FIPE_PRICE_DROP",
-    "notificationStatus": "PENDING",
-    "currentFipePrice": 75000.0,
-    "vehicle": {
-        "vehicleId": "7e295497-7779-4091-a7be-77d7189419c9",
-        "fipeCode": "516173-8",
-        "year": "2020",
-        "model": "VM 270 4x2 2p (diesel) (E5)",
-        "brand": "Volvo",
-        "vehicleType": "TRUCK"
-    }
+  "notificationId": "86b62e0a-4bba-4fe4-a74b-cfe809bb4a41",
+  "notificationType": "FIPE_PRICE_DROP",
+  "notificationStatus": "PENDING",
+  "currentFipePrice": 30000.0,
+  "vehicle": {
+    "vehicleId": "1d329d10-3500-4644-9cc9-e4b00bddf016",
+    "fipeCode": "008178-7",
+    "name": "A6 3.0 TFSI V6 Quattro S tronic 4p",
+    "year": "2018 Gasolina",
+    "model": "A6",
+    "brand": "Audi",
+    "vehicleType": "CAR",
+    "modelCategory": "LARGE_SEDAN"
+  }
 }
 ```
 - **404 Not Found**: Resource not found
@@ -259,27 +261,30 @@ Update a notification associated with the current user.
 ### Request Example:
 ```json
 {
-    "notificationType": 0,
-    "currentFipePrice": 75000.0,
-    "vehicleId": "7e295497-7779-4091-a7be-77d7189419c9"
+  "notificationType": 0,
+  "currentFipePrice": 30000.0,
+  "vehicleId": "1d329d10-3500-4644-9cc9-e4b00bddf016"
 }
 ```
 - **200 OK**: Resource updated successfully
 ```json
 {
-    "notificationId": "1df61684-1b6b-4082-ab32-3df94b54163b",
-    "notificationType": "FIPE_PRICE_DROP",
-    "notificationStatus": "PENDING",
-    "currentFipePrice": 75000.0,
-    "vehicle": {
-        "vehicleId": "7e295497-7779-4091-a7be-77d7189419c9",
-        "fipeCode": "516173-8",
-        "year": "2020",
-        "model": "VM 270 4x2 2p (diesel) (E5)",
-        "brand": "Volvo",
-        "vehicleType": "TRUCK"
-    }
+  "notificationId": "86b62e0a-4bba-4fe4-a74b-cfe809bb4a41",
+  "notificationType": "FIPE_PRICE_DROP",
+  "notificationStatus": "PENDING",
+  "currentFipePrice": 30000.0,
+  "vehicle": {
+    "vehicleId": "1d329d10-3500-4644-9cc9-e4b00bddf016",
+    "fipeCode": "008178-7",
+    "name": "A6 3.0 TFSI V6 Quattro S tronic 4p",
+    "year": "2018 Gasolina",
+    "model": "A6",
+    "brand": "Audi",
+    "vehicleType": "CAR",
+    "modelCategory": "LARGE_SEDAN"
+  }
 }
+
 ```
 - **404 Not Found**: Resource not found
 ```json

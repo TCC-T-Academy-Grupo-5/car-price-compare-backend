@@ -1,6 +1,10 @@
 package com.tcc5.car_price_compare.services;
 
 
+import com.tcc5.car_price_compare.domain.price.StorePrice;
+import com.tcc5.car_price_compare.domain.price.converters.StorePriceDTOToStorePriceConverter;
+import com.tcc5.car_price_compare.domain.price.converters.StorePriceToStorePriceDTOConverter;
+import com.tcc5.car_price_compare.domain.price.dto.StorePriceDTO;
 import com.tcc5.car_price_compare.domain.vehicle.FipePrice;
 import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponseDTO;
 import com.tcc5.car_price_compare.domain.user.converters.FavoriteRequestDTOToFavoriteConverter;
@@ -49,13 +53,19 @@ public class ConversionService {
 
     private final ModelToModelDTOConverter modelToModelDTOConverter;
 
+    private final StorePriceDTOToStorePriceConverter storePriceDTOToStorePriceConverter;
+
+    private final StorePriceToStorePriceDTOConverter storePriceToStorePriceDTOConverter;
+
     public ConversionService(NotificationRequestDTOToNotificationConverter notificationRequestDTOToNotificationConverter,
             NotificationToNotificationResponseDTOConverter notificationToNotificationResponseDTOConverter,
             VehicleToVehicleDTOConverter vehicleToVehicleDTOConverter,
             FavoriteRequestDTOToFavoriteConverter favoriteRequestDTOToFavoriteConverter,
             FavoriteToFavoriteResponseDTO favoriteToFavoriteResponseDTO,
             BrandToBrandDTOConverter brandToBrandDTOConverter,
-            ModelToModelDTOConverter modelToModelDTOConverter) {
+            ModelToModelDTOConverter modelToModelDTOConverter,
+            StorePriceDTOToStorePriceConverter storePriceDTOToStorePriceConverter,
+            StorePriceToStorePriceDTOConverter storePriceToStorePriceDTOConverter) {
         this.notificationRequestDTOToNotificationConverter = notificationRequestDTOToNotificationConverter;
         this.notificationToNotificationResponseDTOConverter = notificationToNotificationResponseDTOConverter;
         this.vehicleToVehicleDTOConverter = vehicleToVehicleDTOConverter;
@@ -63,6 +73,8 @@ public class ConversionService {
         this.favoriteToFavoriteResponseDTO = favoriteToFavoriteResponseDTO;
         this.brandToBrandDTOConverter = brandToBrandDTOConverter;
         this.modelToModelDTOConverter = modelToModelDTOConverter;
+        this.storePriceDTOToStorePriceConverter = storePriceDTOToStorePriceConverter;
+        this.storePriceToStorePriceDTOConverter = storePriceToStorePriceDTOConverter;
     }
 
     /**
@@ -163,5 +175,25 @@ public class ConversionService {
         List<FipePrice> fipePrices = vehicle.getFipePrices();
 
         return new VehicleResponseDTO(vehicle.getId(), model.getName(), vehicle.getName(), brand.getName(), fipePrices, vehicleType.name(), year.getName().split(" ")[0]);
+    }
+
+    /**
+     * Converts a StorePriceDTO object to a StorePrice entity.
+     *
+     * @param storePriceDTO The storePrice DTO to be converted
+     * @return The corresponding StorePrice entity
+     */
+    public StorePrice convertToStorePrice(StorePriceDTO storePriceDTO) {
+        return this.storePriceDTOToStorePriceConverter.convert(storePriceDTO);
+    }
+
+    /**
+     * Converts a StorePrice entity to a StorePriceDTO object.
+     *
+     * @param storePrice The storePrice entity to be converted
+     * @return The corresponding StorePrice DTO
+     */
+    public StorePriceDTO convertToStorePriceDTO(StorePrice storePrice) {
+        return this.storePriceToStorePriceDTOConverter.convert(storePrice);
     }
 }
