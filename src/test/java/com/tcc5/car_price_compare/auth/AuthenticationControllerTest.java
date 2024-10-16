@@ -1,9 +1,11 @@
 package com.tcc5.car_price_compare.auth;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tcc5.car_price_compare.controllers.AuthenticationController;
 import com.tcc5.car_price_compare.domain.user.User;
 import com.tcc5.car_price_compare.domain.user.dto.AuthenticationDTO;
+import com.tcc5.car_price_compare.domain.user.dto.RegisterDTO;
 import com.tcc5.car_price_compare.infra.security.TokenService;
 import com.tcc5.car_price_compare.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -59,5 +62,40 @@ public class AuthenticationControllerTest {
         this.mockMvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").value("test-jwt-token"));
+    }
+
+    @Test
+    void testLoginWithInvalidCredentials() throws Exception {
+        given(this.authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .willThrow(new BadCredentialsException("Invalid credentials"));
+        AuthenticationDTO authenticationDTO = new AuthenticationDTO("invalid@example.com", "invalidpassword");
+        String json = this.objectMapper.writeValueAsString(authenticationDTO);
+
+        this.mockMvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON).content(json))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void testRegisterSuccess() throws Exception {
+        RegisterDTO registerDTO = new RegisterDTO("John", "Doe", "johndoe@example.com", "password", "11999998888");
+        given(this.userRepository.findByEmail(registerDTO.email())).willReturn(null);
+        String json = this.objectMapper.writeValueAsString(registerDTO);
+
+        this.mockMvc.perform(post("/auth/register").contentType(MediaType.APPLICATION_JSON).content(json))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.firstName").value("John"))
+                .andExpect(jsonPath("$.lastName").value("Doe"))
+                .andExpect(jsonPath("$.email").value("johndoe@example.com"))
+                .andExpect(jsonPath("$.message").value("User created successfully"));
+    }
+
+    @Test
+    void testRegisterEmailAlreadyExists() throws Exception {
+        RegisterDTO registerDTO = new RegisterDTO("John", "Doe", "johndoe@example.com", "password", "11999998888");
+        given(this.userRepository.findByEmail(registerDTO.email())).willReturn(new User());
+        String json = this.objectMapper.writeValueAsString(registerDTO);
+
+        this.mockMvc.perform(post("/auth/register").contentType(MediaType.APPLICATION_JSON).content(json))
+                .andExpect(status().isBadRequest());
     }
 }

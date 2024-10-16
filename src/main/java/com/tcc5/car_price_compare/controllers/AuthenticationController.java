@@ -49,7 +49,7 @@ public class AuthenticationController {
 
         this.repository.save(user);
 
-        RegisterResponse res = new RegisterResponse(user.getFirstName(), user.getLastName(), user.getEmail(), "User created succesfully");
+        RegisterResponse res = new RegisterResponse(user.getFirstName(), user.getLastName(), user.getEmail(), "User created successfully");
 
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
