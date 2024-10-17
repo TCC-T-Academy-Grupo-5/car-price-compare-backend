@@ -8,7 +8,6 @@ import com.tcc5.car_price_compare.domain.vehicle.dto.*;
 import com.tcc5.car_price_compare.services.VehicleService;
 import com.tcc5.car_price_compare.shared.utils.PaginationHeaders;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,7 +47,7 @@ public class VehicleController {
         return ResponseEntity.ok().headers(headers).body(vehicles.getContent());
     }
 
-        @GetMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<VehicleResponseDTO> getVehicle(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getVehicleById(id));
     }
