@@ -10,15 +10,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class BrandToBrandDTOConverter implements Converter<Brand, BrandDTO> {
 
-    private final BrandRepository brandRepository;
-
-    public BrandToBrandDTOConverter(BrandRepository brandRepository) {
-        this.brandRepository = brandRepository;
-    }
-
     @Override
     public BrandDTO convert(Brand source) {
-        return this.brandRepository.findBrandDTOById(source.getId())
-                .orElseThrow(() -> new BrandNotFoundException(source.getId()));
+        return new BrandDTO(
+                source.getId(),
+                source.getName(),
+                source.getUrlPathName(),
+                source.getImageUrl(),
+                source.getVehicleType()
+        );
     }
 }
