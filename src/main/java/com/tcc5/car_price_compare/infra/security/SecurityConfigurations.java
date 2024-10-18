@@ -48,6 +48,9 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.GET, "/statistic/model").permitAll()
                         .requestMatchers(HttpMethod.GET, "/statistic/vehicle").permitAll()
                         .requestMatchers(HttpMethod.GET, "/statistic/year").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/price/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/price/store").permitAll()
+                        .requestMatchers("/ws-notification/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -67,7 +70,7 @@ public class SecurityConfigurations {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
