@@ -1,5 +1,6 @@
 package com.tcc5.car_price_compare.services;
 
+import com.tcc5.car_price_compare.domain.response.user.NotificationResponseDTO;
 import com.tcc5.car_price_compare.domain.user.User;
 import com.tcc5.car_price_compare.domain.user.exceptions.NotificationNotFoundException;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +20,13 @@ import java.util.UUID;
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final SimpMessagingTemplate messagingTemplate;
+    private final ConversionService conversionService;
 
-    public NotificationService(NotificationRepository notificationRepository) {
+    public NotificationService(NotificationRepository notificationRepository, SimpMessagingTemplate messagingTemplate, ConversionService conversionService) {
        this.notificationRepository = notificationRepository;
+        this.messagingTemplate = messagingTemplate;
+        this.conversionService = conversionService;
     }
 
     public Page<Notification> findAll(Integer pageNumber, Integer pageSize, Integer notificationStatus) {
@@ -44,7 +50,12 @@ public class NotificationService {
     }
 
     public Notification save(Notification notification) {
-        return this.notificationRepository.save(notification);
+        Notification savedNotification = notificationRepository.save(notification);
+
+        NotificationResponseDTO notificationDTO = conversionService.convertToNotificationResponseDTO(savedNotification);
+        messagingTemplate.convertAndSend("/topic/notification", notificationDTO);
+
+        return savedNotification;
     }
 
     public Notification update(UUID notificationId, Notification notification) {
