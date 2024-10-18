@@ -22,6 +22,7 @@ import com.tcc5.car_price_compare.repositories.vehicle.YearRepository;
 import com.tcc5.car_price_compare.specifications.BrandSpecification;
 import com.tcc5.car_price_compare.specifications.ModelSpecification;
 import com.tcc5.car_price_compare.specifications.VehicleSpecification;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -90,10 +91,11 @@ public class VehicleService {
 
         Page<Vehicle> vehicles = vehicleRepository.findAll(spec, pageable);
 
-        sendModelStatistics(model);
-        sendBrandStatistic(brand);
+        List<VehicleResponseDTO> vehicleResponses = vehicles.stream()
+                .map(conversionService::convertToVehicleResponse)
+                .collect(Collectors.toList());
 
-        return vehicleToList(vehicles);
+        return new PageImpl<>(vehicleResponses, pageable, vehicles.getTotalElements());
     }
 
     public VehicleResponseDTO getVehicleById(String id) {
@@ -151,6 +153,7 @@ public class VehicleService {
         return new PageImpl<>(vehicleResponses, PageRequest.of(vehicles.getNumber(), vehicles.getSize()), vehicles.getTotalElements());
     }
 
+    @Transactional
     public Brand addBrand(AddBrandDTO brandDTO) {
         Brand brand = new Brand();
 
@@ -159,6 +162,7 @@ public class VehicleService {
         return brandRepository.save(brand);
     }
 
+    @Transactional
     public Model addModel(AddModelDTO modelDTO) {
         Model model = new Model();
 
@@ -172,6 +176,7 @@ public class VehicleService {
             throw new RuntimeException("Brand not found");
     }
 
+    @Transactional
     public VehicleResponseDTO addVehicle(AddVehicleDTO vehicleDTO) {
         Vehicle vehicle = new Vehicle();
 
@@ -224,20 +229,16 @@ public class VehicleService {
         return model.get();
     }
 
-    public Page<ModelDTO> getModels(Integer pageNumber, Integer pageSize, String name, String brand) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-
+    public Page<ModelDTO> getModels(String name, String brand, Pageable pageable) {
         Specification<Model> spec = Specification
                 .where(ModelSpecification.hasModel(name))
                 .and(ModelSpecification.hasBrand(brand));
 
-        Page<Model> models = modelRepository.findAll(spec, pageable);
+        Page<Model> pagedModels = modelRepository.findAll(spec, pageable);
 
-        List<ModelDTO> modelDTOS = modelsListToModelDTO(models.getContent());
+        List<ModelDTO> modelDTOs = modelsListToModelDTO(pagedModels.getContent());
 
-        sendModelStatistics(name);
-
-        return new PageImpl<>(modelDTOS, PageRequest.of(models.getNumber(), models.getSize()), models.getTotalElements());
+        return new PageImpl<>(modelDTOs, pageable, pagedModels.getTotalElements());
     }
 
     private Year yearConfig(String yearString, Model model) {
