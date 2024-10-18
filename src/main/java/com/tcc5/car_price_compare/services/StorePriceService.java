@@ -4,15 +4,11 @@ import com.tcc5.car_price_compare.domain.price.StorePrice;
 import com.tcc5.car_price_compare.domain.price.dto.FipePriceDTO;
 import com.tcc5.car_price_compare.domain.price.dto.StorePriceDTO;
 import com.tcc5.car_price_compare.domain.price.exceptions.PriceNotFoundException;
-import com.tcc5.car_price_compare.domain.user.enums.NotificationStatus;
-import com.tcc5.car_price_compare.domain.user.enums.NotificationType;
-import com.tcc5.car_price_compare.domain.user.features.Notification;
 import com.tcc5.car_price_compare.domain.vehicle.exceptions.VehicleNotFoundException;
 import com.tcc5.car_price_compare.repositories.price.FipePriceRepository;
 import com.tcc5.car_price_compare.repositories.price.StorePriceRepository;
 import com.tcc5.car_price_compare.repositories.vehicle.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -25,16 +21,14 @@ public class StorePriceService {
     private final StorePriceRepository storePriceRepository;
     private final ConversionService conversionService;
     private final FipePriceRepository fipePriceRepository;
-    private final SimpMessagingTemplate messagingTemplate;
     private final NotificationService notificationService;
     private final VehicleRepository vehicleRepository;
 
     @Autowired
-    public StorePriceService(StorePriceRepository storePriceRepository, ConversionService conversionService, FipePriceRepository fipePriceRepository, SimpMessagingTemplate messagingTemplate, NotificationService notificationService, VehicleRepository vehicleRepository) {
+    public StorePriceService(StorePriceRepository storePriceRepository, ConversionService conversionService, FipePriceRepository fipePriceRepository, NotificationService notificationService, VehicleRepository vehicleRepository) {
         this.storePriceRepository = storePriceRepository;
         this.conversionService = conversionService;
         this.fipePriceRepository = fipePriceRepository;
-        this.messagingTemplate = messagingTemplate;
         this.notificationService = notificationService;
         this.vehicleRepository = vehicleRepository;
     }
@@ -80,15 +74,7 @@ public class StorePriceService {
                 var vehicle = vehicleRepository.findById(UUID.fromString(fipePriceDTO.vehicleId()))
                         .orElseThrow(() -> new VehicleNotFoundException(UUID.fromString(fipePriceDTO.vehicleId())));
 
-                Notification notification = new Notification();
-                notification.setNotificationType(NotificationType.STORE_PRICE_BELLOW_FIPE);
-                notification.setNotificationStatus(NotificationStatus.PENDING);
-                notification.setCurrentFipePrice(fipePriceDTO.price());
-                notification.setVehicle(vehicle);
-
-                notificationService.save(notification);
-
-                messagingTemplate.convertAndSend("/topic/notification", notification);
+                notificationService.sendVehicleNotifications(vehicle, fipePriceDTO.price());
             }
         } catch (PriceNotFoundException | VehicleNotFoundException e) {
             e.printStackTrace();
