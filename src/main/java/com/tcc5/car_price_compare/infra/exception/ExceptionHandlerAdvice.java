@@ -2,6 +2,7 @@ package com.tcc5.car_price_compare.infra.exception;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.tcc5.car_price_compare.domain.price.exceptions.PriceNotFoundException;
 import com.tcc5.car_price_compare.domain.shared.ResourceNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -28,7 +29,7 @@ public class ExceptionHandlerAdvice {
         if (ex.getCause() instanceof MismatchedInputException mismatchedInputException) {
             List<JsonMappingException.Reference> path = mismatchedInputException.getPath();
             if (!path.isEmpty()) {
-                String fieldName = path.getFirst().getFieldName();
+                String fieldName = path.get(0).getFieldName();
                 errors.put(fieldName, "Invalid value for field " + fieldName);
             }
         } else {
@@ -81,5 +82,10 @@ public class ExceptionHandlerAdvice {
         errors.put("message", "An unexpected error occurred while processing the request.");
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errors);
+    }
+
+    @ExceptionHandler(PriceNotFoundException.class)
+    public ResponseEntity<String> handlePriceNotFoundException(PriceNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }
