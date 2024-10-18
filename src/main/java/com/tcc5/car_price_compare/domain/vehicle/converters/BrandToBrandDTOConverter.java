@@ -2,8 +2,6 @@ package com.tcc5.car_price_compare.domain.vehicle.converters;
 
 import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.dto.BrandDTO;
-import com.tcc5.car_price_compare.domain.vehicle.exceptions.BrandNotFoundException;
-import com.tcc5.car_price_compare.repositories.vehicle.BrandRepository;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
