@@ -7,10 +7,12 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface StorePriceRepository extends JpaRepository<StorePrice, UUID> {
 
     @Query("SELECT sp FROM StorePrice sp WHERE DATE(sp.scrappingDate) = :currentDate AND sp.vehicle.id = :vehicleId")
     List<StorePrice> findByScrapingDateAndVehicleId(@Param("currentDate") LocalDate currentDate, @Param("vehicleId") UUID vehicleId);
+    Optional<StorePrice> findByPriceEqualsAndVehicle_Id(Double price, UUID vehicleId);
 }
