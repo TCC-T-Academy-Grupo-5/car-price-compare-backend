@@ -58,11 +58,6 @@ public class VehicleController {
         return ResponseEntity.ok(this.service.getVehicleStorePrices(id));
     }
 
-    @PostMapping()
-    public ResponseEntity<VehicleResponseDTO> addVehicle(@RequestBody @Valid AddVehicleDTO vehicleDTO){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.addVehicle(vehicleDTO));
-    }
-
     @GetMapping("/brand")
     public ResponseEntity<List<BrandDTO>> getBrands(
             @RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber,
@@ -79,21 +74,30 @@ public class VehicleController {
         return ResponseEntity.ok().headers(headers).body(brands.getContent());
     }
 
-    @PostMapping("/brand")
-    public ResponseEntity<Brand> addBrand(@RequestBody @Valid AddBrandDTO brandDTO){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.addBrand(brandDTO));
-
-    }
-
     @GetMapping("/model")
-    public ResponseEntity<Page<ModelDTO>> getModels(
-            @RequestParam(value = "pageNumber", defaultValue = "0") Integer pageNumber,
+    public ResponseEntity<List<ModelDTO>> getModels(
+            @RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "brand", required = false) String brand
     ){
+        pageNumber = Math.max(1, pageNumber);
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        Page<ModelDTO> models = service.getModels(name, brand, pageable);
+        HttpHeaders headers = PaginationHeaders.createPaginationHeaders(models);
 
-        return ResponseEntity.status(HttpStatus.OK).body(service.getModels(pageNumber, pageSize, name, brand));
+        return ResponseEntity.ok().headers(headers).body(models.getContent());
+    }
+
+    @PostMapping()
+    public ResponseEntity<VehicleResponseDTO> addVehicle(@RequestBody @Valid AddVehicleDTO vehicleDTO){
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.addVehicle(vehicleDTO));
+    }
+
+    @PostMapping("/brand")
+    public ResponseEntity<Brand> addBrand(@RequestBody @Valid AddBrandDTO brandDTO){
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.addBrand(brandDTO));
+
     }
 
     @PostMapping("/model")
