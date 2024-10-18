@@ -202,9 +202,7 @@ public class VehicleService {
         return brand.get();
     }
 
-    public Page<BrandDTO> getBrands(Integer pageNumber, Integer pageSize, String name, Integer type) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-
+    public Page<BrandDTO> getBrands(String name, Integer type, Pageable pageable) {
         Specification<Brand> spec = Specification
                 .where(BrandSpecification.hasBrand(name))
                 .and(BrandSpecification.hasType(type));
@@ -215,7 +213,7 @@ public class VehicleService {
 
         sendBrandStatistic(name);
 
-        return new PageImpl<>(brandDTOs, pageable, pagedBrands.getTotalElements());
+        return new PageImpl<>(brandDTOs, PageRequest.of(pagedBrands.getNumber(), pagedBrands.getSize()), pagedBrands.getTotalElements());
     }
 
     public Model getModelByName(String name) {

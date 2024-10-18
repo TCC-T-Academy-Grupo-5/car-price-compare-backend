@@ -48,7 +48,7 @@ public class VehicleController {
         return ResponseEntity.ok().headers(headers).body(vehicles.getContent());
     }
 
-        @GetMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<VehicleResponseDTO> getVehicle(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getVehicleById(id));
     }
@@ -64,14 +64,19 @@ public class VehicleController {
     }
 
     @GetMapping("/brand")
-    public ResponseEntity<Page<BrandDTO>> getBrands(
-            @RequestParam(value = "pageNumber", defaultValue = "0") Integer pageNumber,
+    public ResponseEntity<List<BrandDTO>> getBrands(
+            @RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "vehicleType", required = false) Integer type
             ){
 
-        return ResponseEntity.status(HttpStatus.OK).body(service.getBrands(pageNumber, pageSize, name, type));
+        pageNumber = Math.max(1, pageNumber);
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        Page<BrandDTO> brands = service.getBrands(name, type, pageable);
+        HttpHeaders headers = PaginationHeaders.createPaginationHeaders(brands);
+
+        return ResponseEntity.ok().headers(headers).body(brands.getContent());
     }
 
     @PostMapping("/brand")
