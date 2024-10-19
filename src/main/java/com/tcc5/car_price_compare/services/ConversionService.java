@@ -179,7 +179,17 @@ public class ConversionService {
         VehicleType vehicleType = brand.getVehicleType();
         List<FipePrice> fipePrices = vehicle.getFipePrices();
 
-        return new VehicleResponseDTO(vehicle.getId(), model.getName(), vehicle.getName(), brand.getName(), fipePrices, vehicleType.name(), year.getName().split(" ")[0]);
+        return new VehicleResponseDTO(vehicle.getId(),
+                                      vehicle.getFipeCode(),
+                                      vehicle.getName(),
+                                      model.getName(),
+                                      model.getImageUrl(),
+                                      brand.getName(),
+                                      brand.getImageUrl(),
+                                      year.getName(),
+                                      vehicleType.name(),
+                                      model.getCategory().getPortugueseTranslation(),
+                                      fipePrices);
     }
 
     /**
