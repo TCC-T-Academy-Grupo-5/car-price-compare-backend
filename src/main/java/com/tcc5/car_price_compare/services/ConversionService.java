@@ -32,6 +32,7 @@ import com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO;
 import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -178,6 +179,7 @@ public class ConversionService {
         Brand brand = model.getBrand();
         VehicleType vehicleType = brand.getVehicleType();
         List<FipePrice> fipePrices = vehicle.getFipePrices();
+        this.sortPrices(fipePrices);
 
         return new VehicleResponseDTO(vehicle.getId(),
                                       vehicle.getFipeCode(),
@@ -220,5 +222,10 @@ public class ConversionService {
      */
     public FipePriceDTO convertToFipePriceDTO(FipePrice fipePrice) {
         return this.fipePriceToFipePriceDTOConverter.convert(fipePrice);
+    }
+
+    private void sortPrices(List<FipePrice> fipePrices) {
+        fipePrices.sort(Comparator.comparing(FipePrice::getYear).reversed()
+                      .thenComparing(FipePrice::getMonth).reversed());
     }
 }
