@@ -177,6 +177,7 @@ public class ConversionService {
         Year year = vehicle.getYear();
         Model model = year.getModel();
         Brand brand = model.getBrand();
+        String category = model.getCategory() == null ? "" : model.getCategory().getPortugueseTranslation();
         VehicleType vehicleType = brand.getVehicleType();
         List<FipePrice> fipePrices = vehicle.getFipePrices();
         this.sortPrices(fipePrices);
@@ -190,7 +191,7 @@ public class ConversionService {
                                       brand.getImageUrl(),
                                       year.getName(),
                                       vehicleType.name(),
-                                      model.getCategory().getPortugueseTranslation(),
+                                      category,
                                       fipePrices);
     }
 
