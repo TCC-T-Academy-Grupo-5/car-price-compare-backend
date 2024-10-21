@@ -1,6 +1,6 @@
 package com.tcc5.car_price_compare.infra.security;
 
-import com.tcc5.car_price_compare.repositories.UserRepository;
+import com.tcc5.car_price_compare.infra.persistence.repositories.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

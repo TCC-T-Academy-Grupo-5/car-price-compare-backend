@@ -1,5 +1,4 @@
 package com.tcc5.car_price_compare.domain.vehicle;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tcc5.car_price_compare.domain.shared.TimestampedEntity;
 import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
@@ -26,9 +25,11 @@ public class Brand extends TimestampedEntity {
     private UUID id;
 
     @NotBlank
+    @Column(name = "name", unique = true)
     private String name;
 
     @NotBlank
+    @Column(name = "url_path_name", unique = true)
     private String urlPathName;
 
     private String imageUrl;

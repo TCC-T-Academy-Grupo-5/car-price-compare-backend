@@ -3,7 +3,7 @@ package com.tcc5.car_price_compare.infra.fipedata.converter;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import com.tcc5.car_price_compare.domain.vehicle.Year;
 import com.tcc5.car_price_compare.infra.fipedata.dto.VehicleJsonDto;
-import com.tcc5.car_price_compare.repositories.vehicle.YearRepository;
+import com.tcc5.car_price_compare.infra.persistence.repositories.vehicle.YearRepository;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 

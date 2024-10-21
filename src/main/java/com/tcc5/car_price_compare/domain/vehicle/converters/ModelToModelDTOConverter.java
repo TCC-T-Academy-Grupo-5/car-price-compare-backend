@@ -3,7 +3,7 @@ package com.tcc5.car_price_compare.domain.vehicle.converters;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.dto.ModelDTO;
 import com.tcc5.car_price_compare.domain.vehicle.exceptions.ModelNotFoundException;
-import com.tcc5.car_price_compare.repositories.vehicle.ModelRepository;
+import com.tcc5.car_price_compare.infra.persistence.repositories.vehicle.ModelRepository;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
