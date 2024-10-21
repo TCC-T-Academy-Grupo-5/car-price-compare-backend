@@ -20,4 +20,5 @@ public interface BrandRepository extends JpaRepository<Brand, UUID>, JpaSpecific
     )
     Optional<BrandDTO> findBrandDTOById(@Param("id") UUID id);
 
+    Optional<Brand> findByUrlPathName(@Param("slug") String urlPathName);
 }

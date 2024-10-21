@@ -1,5 +1,6 @@
-services:
+version: '3.8'
 
+services:
   backend:
     build:
       context: .
@@ -28,6 +29,20 @@ services:
       - "5431:5432"
     networks:
       - app-network
+
+  test:
+    build:
+      context: .
+    networks:
+      - app-network
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/precificar
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+      JWT_SECRET: BboUQ8xAZoO6iLizC9FK1XgNhVhA+UeB4AlQ6GNrrLA==
+    command: ["./mvnw", "test"]
 
 networks:
   app-network:

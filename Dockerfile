@@ -7,7 +7,10 @@ WORKDIR /app
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
 COPY src ./src
-RUN rm -rf /app/target && mvn clean package -DskipTests
+
+RUN mvn clean test -Dmaven.test.failure.ignore=false | tee test-results.log
+
+RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app
