@@ -42,7 +42,8 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: admin
       JWT_SECRET: BboUQ8xAZoO6iLizC9FK1XgNhVhA+UeB4AlQ6GNrrLA==
-    command: ["./mvnw", "test"]
+    command: [ "./mvnw", "test" ]
+
 
 networks:
   app-network:
