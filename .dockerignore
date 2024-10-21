@@ -18,3 +18,6 @@ src/main/test
 **/tests
 *.test
 *.spec.js
+
+cookies.*
+*/cookies*

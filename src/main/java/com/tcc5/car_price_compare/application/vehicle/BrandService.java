@@ -17,7 +17,7 @@ public class BrandService {
     }
 
     public BrandDTO findByUrlPathName(String urlPathName) {
-        var brand = brandRepository.findByUrlPathName(urlPathName)
+        var brand = brandRepository.findFirstByUrlPathName(urlPathName)
                 .orElseThrow(() -> new BrandNotFoundException(urlPathName));
 
         return conversionService.convertToBrandDTO(brand);
