@@ -6,7 +6,7 @@ import com.tcc5.car_price_compare.domain.user.enums.NotificationStatus;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import com.tcc5.car_price_compare.domain.vehicle.exceptions.VehicleNotFoundException;
-import com.tcc5.car_price_compare.repositories.vehicle.VehicleRepository;
+import com.tcc5.car_price_compare.infra.persistence.repositories.vehicle.VehicleRepository;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
