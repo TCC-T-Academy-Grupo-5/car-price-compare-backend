@@ -25,11 +25,9 @@ public class Brand extends TimestampedEntity {
     private UUID id;
 
     @NotBlank
-    @Column(name = "name", unique = true)
     private String name;
 
     @NotBlank
-    @Column(name = "url_path_name", unique = true)
     private String urlPathName;
 
     private String imageUrl;
