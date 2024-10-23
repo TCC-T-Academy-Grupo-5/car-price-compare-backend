@@ -3,6 +3,8 @@ package com.tcc5.car_price_compare.infra.persistence.repositories.vehicle;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.dto.BrandDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.ModelDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -20,4 +22,6 @@ public interface ModelRepository extends CrudRepository<Model, UUID>, JpaSpecifi
                     "WHERE m.id = :id"
     )
     Optional<ModelDTO> findModelDTOById(@Param("id") UUID id);
+
+    Page<Model> findModelsByBrandId(UUID brandId, Pageable pageable);
 }
