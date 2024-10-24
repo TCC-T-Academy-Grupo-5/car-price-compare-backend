@@ -1,6 +1,8 @@
 package com.tcc5.car_price_compare.application.vehicle;
 
-import com.tcc5.car_price_compare.application.user.ConversionService;
+import com.tcc5.car_price_compare.application.ConversionService;
+import com.tcc5.car_price_compare.application.vehicle.price.StorePriceService;
+import com.tcc5.car_price_compare.application.vehicle.statistics.StatisticService;
 import com.tcc5.car_price_compare.domain.price.StorePrice;
 import com.tcc5.car_price_compare.domain.price.dto.StorePriceDTO;
 import com.tcc5.car_price_compare.domain.price.dto.StorePricesRequestDTO;

@@ -1,6 +1,6 @@
 package com.tcc5.car_price_compare.application.user.notification;
 
-import com.tcc5.car_price_compare.application.user.ConversionService;
+import com.tcc5.car_price_compare.application.ConversionService;
 import com.tcc5.car_price_compare.domain.response.user.NotificationResponseDTO;
 import com.tcc5.car_price_compare.domain.user.User;
 import com.tcc5.car_price_compare.domain.user.enums.NotificationStatus;
