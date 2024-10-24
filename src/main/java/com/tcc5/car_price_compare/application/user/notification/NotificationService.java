@@ -10,7 +10,6 @@ import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import com.tcc5.car_price_compare.infra.persistence.repositories.NotificationRepository;
 import com.tcc5.car_price_compare.infra.persistence.specifications.NotificationSpecification;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -28,19 +27,17 @@ public class NotificationService {
     private final ConversionService conversionService;
 
     public NotificationService(NotificationRepository notificationRepository, SimpMessagingTemplate messagingTemplate, ConversionService conversionService) {
-       this.notificationRepository = notificationRepository;
+        this.notificationRepository = notificationRepository;
         this.messagingTemplate = messagingTemplate;
         this.conversionService = conversionService;
     }
 
-    public Page<Notification> findAll(Integer pageNumber, Integer pageSize, Integer notificationStatus) {
+    public Page<Notification> findAll(Pageable pageable, Integer notificationStatus) {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Specification<Notification> spec = Specification
                 .where(NotificationSpecification.hasStatus(notificationStatus))
                 .and(NotificationSpecification.hasUser(currentUser));
-
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
         return this.notificationRepository.findAll(spec, pageable);
     }
@@ -87,4 +84,11 @@ public class NotificationService {
         });
     }
 
+    public Notification findPendingByVehicleId(UUID vehicleId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return this.notificationRepository
+                .findByUserIdAndVehicleIdAndNotificationStatus(user.getId(), vehicleId, NotificationStatus.PENDING)
+                .orElse(null);
+    }
 }

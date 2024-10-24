@@ -11,7 +11,10 @@ import lombok.*;
 
 import java.util.UUID;
 
-@Table(name = "notification")
+@Table(name = "notification", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "vehicle_id", "notification_status", "notification_type"},
+                          name = "unique_user_vehicle_status_type_notification")
+})
 @Entity(name = "notification")
 @Getter
 @Setter
