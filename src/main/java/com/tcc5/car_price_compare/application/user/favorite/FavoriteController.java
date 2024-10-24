@@ -1,6 +1,6 @@
 package com.tcc5.car_price_compare.application.user.favorite;
 
-import com.tcc5.car_price_compare.application.user.ConversionService;
+import com.tcc5.car_price_compare.application.ConversionService;
 import com.tcc5.car_price_compare.domain.request.user.FavoriteRequestDTO;
 import com.tcc5.car_price_compare.domain.response.user.FavoriteResponseDTO;
 import com.tcc5.car_price_compare.domain.user.features.Favorite;

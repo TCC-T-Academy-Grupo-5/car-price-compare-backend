@@ -1,4 +1,4 @@
-package com.tcc5.car_price_compare.application.vehicle;
+package com.tcc5.car_price_compare.application.user.notification;
 
 import com.tcc5.car_price_compare.domain.response.user.NotificationResponseDTO;
 import org.springframework.messaging.handler.annotation.MessageMapping;

@@ -2,9 +2,7 @@ package com.tcc5.car_price_compare.application.vehicle;
 
 import com.tcc5.car_price_compare.domain.price.dto.StorePriceDTO;
 import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponseDTO;
-import com.tcc5.car_price_compare.domain.vehicle.Brand;
-import com.tcc5.car_price_compare.domain.vehicle.Model;
-import com.tcc5.car_price_compare.domain.vehicle.dto.*;
+import com.tcc5.car_price_compare.domain.vehicle.dto.AddVehicleDTO;
 import com.tcc5.car_price_compare.shared.utils.PaginationHeaders;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -19,12 +17,11 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("vehicle")
-public class VehicleController {
-
+@RequestMapping("car")
+public class FutureVehicleController {
     private final VehicleService service;
 
-    public VehicleController(VehicleService service) {
+    public FutureVehicleController(VehicleService service) {
         this.service = service;
     }
 
@@ -56,51 +53,8 @@ public class VehicleController {
         return ResponseEntity.ok(this.service.getVehicleStorePrices(id));
     }
 
-    @GetMapping("/brand")
-    public ResponseEntity<List<BrandDTO>> getBrands(
-            @RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-            @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "vehicleType", required = false) Integer type
-    ){
-
-        pageNumber = Math.max(1, pageNumber);
-        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
-        Page<BrandDTO> brands = service.getBrands(name, type, pageable);
-        HttpHeaders headers = PaginationHeaders.createPaginationHeaders(brands);
-
-        return ResponseEntity.ok().headers(headers).body(brands.getContent());
-    }
-
-    @GetMapping("/model")
-    public ResponseEntity<List<ModelDTO>> getModels(
-            @RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-            @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "brand", required = false) String brand
-    ){
-        pageNumber = Math.max(1, pageNumber);
-        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
-        Page<ModelDTO> models = service.getModels(name, brand, pageable);
-        HttpHeaders headers = PaginationHeaders.createPaginationHeaders(models);
-
-        return ResponseEntity.ok().headers(headers).body(models.getContent());
-    }
-
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<VehicleResponseDTO> addVehicle(@RequestBody @Valid AddVehicleDTO vehicleDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.addVehicle(vehicleDTO));
     }
-
-    @PostMapping("/brand")
-    public ResponseEntity<Brand> addBrand(@RequestBody @Valid AddBrandDTO brandDTO){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.addBrand(brandDTO));
-
-    }
-
-    @PostMapping("/model")
-    public ResponseEntity<Model> addModel(@RequestBody @Valid AddModelDTO modelDTO){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.addModel(modelDTO));
-    }
 }
-

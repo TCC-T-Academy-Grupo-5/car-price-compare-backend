@@ -1,4 +1,4 @@
-package com.tcc5.car_price_compare.application.vehicle;
+package com.tcc5.car_price_compare.application.vehicle.price;
 
 import com.tcc5.car_price_compare.domain.price.dto.FipePriceDTO;
 import com.tcc5.car_price_compare.domain.price.dto.StorePriceDTO;

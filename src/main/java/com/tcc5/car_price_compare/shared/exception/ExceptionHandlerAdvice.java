@@ -1,4 +1,4 @@
-package com.tcc5.car_price_compare.infra.exception;
+package com.tcc5.car_price_compare.shared.exception;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
