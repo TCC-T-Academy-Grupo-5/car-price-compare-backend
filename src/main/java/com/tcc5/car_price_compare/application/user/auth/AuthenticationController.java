@@ -53,4 +53,12 @@ public class AuthenticationController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
+
+    @PostMapping("/token")
+    public ResponseEntity<?> validateToken(@RequestBody String token) {
+        String subject = tokenService.validateToken(token);
+
+        boolean isValid = !subject.isEmpty();
+        return ResponseEntity.ok(isValid);
+    }
 }
