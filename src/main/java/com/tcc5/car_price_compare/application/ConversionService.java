@@ -1,4 +1,4 @@
-package com.tcc5.car_price_compare.application.user;
+package com.tcc5.car_price_compare.application;
 
 
 import com.tcc5.car_price_compare.domain.price.StorePrice;

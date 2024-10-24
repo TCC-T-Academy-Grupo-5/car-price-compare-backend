@@ -1,6 +1,6 @@
-package com.tcc5.car_price_compare.application.vehicle;
+package com.tcc5.car_price_compare.application.vehicle.price;
 
-import com.tcc5.car_price_compare.application.user.ConversionService;
+import com.tcc5.car_price_compare.application.ConversionService;
 import com.tcc5.car_price_compare.application.user.notification.NotificationService;
 import com.tcc5.car_price_compare.domain.price.StorePrice;
 import com.tcc5.car_price_compare.domain.price.dto.FipePriceDTO;

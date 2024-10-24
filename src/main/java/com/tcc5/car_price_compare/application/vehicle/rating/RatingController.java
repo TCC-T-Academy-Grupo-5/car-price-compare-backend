@@ -1,4 +1,4 @@
-package com.tcc5.car_price_compare.application.vehicle;
+package com.tcc5.car_price_compare.application.vehicle.rating;
 
 import com.tcc5.car_price_compare.domain.user.dto.RatingDTO;
 import com.tcc5.car_price_compare.domain.user.features.Rating;

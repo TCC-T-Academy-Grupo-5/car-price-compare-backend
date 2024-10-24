@@ -1,4 +1,4 @@
-package com.tcc5.car_price_compare.application.vehicle;
+package com.tcc5.car_price_compare.application.vehicle.statistics;
 
 import com.tcc5.car_price_compare.domain.response.statistic.StatisticResponseDto;
 import com.tcc5.car_price_compare.domain.response.statistic.StatisticVehicleResponse;
