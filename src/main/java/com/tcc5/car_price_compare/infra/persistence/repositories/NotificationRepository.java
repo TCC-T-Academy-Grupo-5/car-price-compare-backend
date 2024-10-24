@@ -1,6 +1,7 @@
 package com.tcc5.car_price_compare.infra.persistence.repositories;
 
 import com.tcc5.car_price_compare.domain.user.User;
+import com.tcc5.car_price_compare.domain.user.enums.NotificationStatus;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +16,6 @@ public interface NotificationRepository extends JpaRepository<Notification, UUID
     Optional<Notification> findByIdAndUser(UUID notificationId, User user);
 
     List<Notification> findAllByVehicle(Vehicle vehicle);
+
+    Optional<Notification> findByUserIdAndVehicleIdAndNotificationStatus(UUID userId, UUID vehicleId, NotificationStatus notificationStatus);
 }

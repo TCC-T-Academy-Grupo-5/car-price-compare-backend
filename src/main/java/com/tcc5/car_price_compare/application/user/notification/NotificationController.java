@@ -4,13 +4,20 @@ import com.tcc5.car_price_compare.application.ConversionService;
 import com.tcc5.car_price_compare.domain.request.user.NotificationRequestDTO;
 import com.tcc5.car_price_compare.domain.response.user.NotificationResponseDTO;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
+import com.tcc5.car_price_compare.shared.utils.PaginationHeaders;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -26,15 +33,18 @@ public class NotificationController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<NotificationResponseDTO>> getNotifications(
+    public ResponseEntity<List<NotificationResponseDTO>> getNotifications(
             @RequestParam(value = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
             @RequestParam(value = "status", required = false) Integer status
     ) {
-        Page<NotificationResponseDTO> notifications = this.notificationService.findAll(pageNumber, pageSize, status)
+        pageNumber = Math.max(1, pageNumber);
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        Page<NotificationResponseDTO> notifications = this.notificationService.findAll(pageable, status)
                 .map(this.conversionService::convertToNotificationResponseDTO);
+        HttpHeaders headers = PaginationHeaders.createPaginationHeaders(notifications);
 
-        return ResponseEntity.status(HttpStatus.OK).body(notifications);
+        return ResponseEntity.ok().headers(headers).body(notifications.getContent());
     }
 
     @GetMapping("/{notificationId}")
@@ -44,6 +54,18 @@ public class NotificationController {
         return ResponseEntity.status(HttpStatus.OK).body(notificationResponseDTO);
     }
 
+    @GetMapping("/existsPendingByVehicleId/{vehicleId}")
+    public ResponseEntity<Map<String, String>> existsByVehicleId(@PathVariable UUID vehicleId) {
+        Notification notification = this.notificationService.findPendingByVehicleId(vehicleId);
+        boolean exists = notification != null;
+        Map<String, String> response = new HashMap<>();
+        response.put("exists", String.valueOf(exists));
+        if (exists) {
+            response.put("notificationId", notification.getId().toString());
+        }
+
+        return ResponseEntity.ok().body(response);
+    }
 
     @PostMapping
     public ResponseEntity<NotificationResponseDTO> createNotification(@RequestBody @Valid NotificationRequestDTO notificationRequestDto) {
