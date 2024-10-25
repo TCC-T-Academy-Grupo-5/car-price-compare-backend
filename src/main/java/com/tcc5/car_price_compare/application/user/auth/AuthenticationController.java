@@ -1,11 +1,17 @@
 package com.tcc5.car_price_compare.application.user.auth;
 
+import com.tcc5.car_price_compare.application.user.favorite.FavoriteService;
+import com.tcc5.car_price_compare.application.vehicle.VehicleService;
+import com.tcc5.car_price_compare.application.vehicle.rating.RatingService;
 import com.tcc5.car_price_compare.domain.response.user.RegisterResponse;
+import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponseDTO;
 import com.tcc5.car_price_compare.domain.user.dto.AuthenticationDTO;
 import com.tcc5.car_price_compare.domain.response.user.LoginResponse;
 import com.tcc5.car_price_compare.domain.user.dto.RegisterDTO;
 import com.tcc5.car_price_compare.domain.user.User;
 import com.tcc5.car_price_compare.domain.user.dto.UserDTO;
+import com.tcc5.car_price_compare.domain.user.features.Favorite;
+import com.tcc5.car_price_compare.domain.user.features.Rating;
 import com.tcc5.car_price_compare.infra.security.TokenService;
 import com.tcc5.car_price_compare.infra.persistence.repositories.UserRepository;
 import jakarta.validation.Valid;
@@ -17,15 +23,29 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("auth")
 public class AuthenticationController {
+    private final AuthenticationManager authenticationManager;
+    private final UserRepository repository;
+    private final TokenService tokenService;
+    private final FavoriteService favoriteService;
+    private final RatingService ratingService;
+    private final VehicleService vehicleService;
+
     @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private UserRepository repository;
-    @Autowired
-    private TokenService tokenService;
+    public AuthenticationController(AuthenticationManager authenticationManager, UserRepository repository, TokenService tokenService, FavoriteService favoriteService, RatingService ratingService, VehicleService vehicleService) {
+        this.authenticationManager = authenticationManager;
+        this.repository = repository;
+        this.tokenService = tokenService;
+        this.favoriteService = favoriteService;
+        this.ratingService = ratingService;
+        this.vehicleService = vehicleService;
+    }
+
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid AuthenticationDTO data){
@@ -76,6 +96,14 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        return ResponseEntity.ok(new UserDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getCellphone()));
+        List<Favorite> favorites = favoriteService.findAll(0, 5, 0).getContent();
+
+        List<VehicleResponseDTO> favoriteVehicles = new ArrayList<>();
+
+        favorites.forEach(f -> favoriteVehicles.add(vehicleService.getVehicleById(f.getVehicle().getId().toString())));
+
+        List<Rating> ratings = ratingService.getRatingsByUser(user.getId());
+
+        return ResponseEntity.ok(new UserDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getCellphone(), favoriteVehicles, ratings));
     }
 }
