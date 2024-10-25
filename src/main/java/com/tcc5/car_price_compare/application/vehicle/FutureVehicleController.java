@@ -4,6 +4,7 @@ import com.tcc5.car_price_compare.domain.price.dto.StorePriceDTO;
 import com.tcc5.car_price_compare.domain.response.vehicle.VehicleResponseDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.AddVehicleDTO;
 import com.tcc5.car_price_compare.shared.utils.PaginationHeaders;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("car")
+@Hidden
 public class FutureVehicleController {
     private final VehicleService service;
 

@@ -14,6 +14,8 @@ import com.tcc5.car_price_compare.domain.user.features.Favorite;
 import com.tcc5.car_price_compare.domain.user.features.Rating;
 import com.tcc5.car_price_compare.infra.security.TokenService;
 import com.tcc5.car_price_compare.infra.persistence.repositories.UserRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("auth")
+@Tag(name = "Authentication", description = "Endpoints for user authentication and profile management")
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final UserRepository repository;
@@ -48,6 +51,7 @@ public class AuthenticationController {
 
 
     @PostMapping("/login")
+    @Operation(summary = "Authenticate user and generate token", description = "This endpoint authenticates the user using email and password, and returns a JWT token upon successful authentication.")
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid AuthenticationDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
@@ -58,6 +62,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
+    @Operation(summary = "Register a new user", description = "This endpoint registers a new user with the provided details and returns a success message upon successful registration.")
     public ResponseEntity<RegisterResponse> register(@RequestBody @Valid RegisterDTO data){
         if(this.repository.findByEmail(data.email()) != null) return ResponseEntity.badRequest().build();
 
@@ -73,6 +78,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/token")
+    @Operation(summary = "Validate JWT token", description = "This endpoint validates the provided JWT token and returns whether it is valid or not.")
     public ResponseEntity<?> validateToken(@RequestBody String token) {
         String subject = tokenService.validateToken(token);
 
@@ -81,6 +87,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/profile")
+    @Operation(summary = "Get user profile from token", description = "This endpoint retrieves the user profile based on the provided JWT token.")
     public ResponseEntity<UserDTO> getUserFromToken(@RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
 

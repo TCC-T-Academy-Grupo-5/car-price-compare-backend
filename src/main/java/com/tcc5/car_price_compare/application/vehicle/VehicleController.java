@@ -6,6 +6,8 @@ import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.dto.*;
 import com.tcc5.car_price_compare.shared.utils.PaginationHeaders;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +22,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("vehicle")
+@Tag(name = "Vehicles", description = "Endpoints for managing vehicles")
 public class VehicleController {
 
     private final VehicleService service;
@@ -29,6 +32,7 @@ public class VehicleController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all vehicles", description = "This endpoint retrieves a paginated list of all vehicles, optionally filtered by model, brand, fipe price, type and year.")
     public ResponseEntity<List<VehicleResponseDTO>> getVehicles(
             @RequestParam(value = "pageNumber", defaultValue = "1", required = false) Integer pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
@@ -47,16 +51,19 @@ public class VehicleController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get vehicle by ID", description = "This endpoint retrieves a vehicle by its ID.")
     public ResponseEntity<VehicleResponseDTO> getVehicle(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getVehicleById(id));
     }
 
     @GetMapping("/{id}/deals")
+    @Operation(summary = "Get vehicle store prices", description = "This endpoint retrieves a list of store prices for a vehicle.")
     public ResponseEntity<List<StorePriceDTO>> getVehicleStorePrices(@PathVariable UUID id) {
         return ResponseEntity.ok(this.service.getVehicleStorePrices(id));
     }
 
     @GetMapping("/brand")
+    @Operation(summary = "Get all brands", description = "This endpoint retrieves a paginated list of all brands, optionally filtered by name and vehicle type.")
     public ResponseEntity<List<BrandDTO>> getBrands(
             @RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
@@ -73,6 +80,7 @@ public class VehicleController {
     }
 
     @GetMapping("/model")
+    @Operation(summary = "Get all models", description = "This endpoint retrieves a paginated list of all models, optionally filtered by name and brand.")
     public ResponseEntity<List<ModelDTO>> getModels(
             @RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
@@ -88,17 +96,20 @@ public class VehicleController {
     }
 
     @PostMapping()
+    @Operation(summary = "Add vehicle", description = "This endpoint adds a new vehicle.")
     public ResponseEntity<VehicleResponseDTO> addVehicle(@RequestBody @Valid AddVehicleDTO vehicleDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.addVehicle(vehicleDTO));
     }
 
     @PostMapping("/brand")
+    @Operation(summary = "Add brand", description = "This endpoint adds a new brand.")
     public ResponseEntity<Brand> addBrand(@RequestBody @Valid AddBrandDTO brandDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.addBrand(brandDTO));
 
     }
 
     @PostMapping("/model")
+    @Operation(summary = "Add model", description = "This endpoint adds a new model.")
     public ResponseEntity<Model> addModel(@RequestBody @Valid AddModelDTO modelDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.addModel(modelDTO));
     }

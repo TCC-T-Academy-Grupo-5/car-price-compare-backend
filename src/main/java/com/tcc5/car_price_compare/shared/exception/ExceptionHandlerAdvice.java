@@ -12,6 +12,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -23,6 +24,7 @@ import java.util.Map;
 public class ExceptionHandlerAdvice {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         Map<String, String> errors = new HashMap<>();
 
@@ -40,6 +42,7 @@ public class ExceptionHandlerAdvice {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Map<String, String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
 
@@ -53,6 +56,7 @@ public class ExceptionHandlerAdvice {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Map<String, String>> handleResourceNotFoundException(ResourceNotFoundException ex) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", ex.getMessage());
@@ -60,6 +64,7 @@ public class ExceptionHandlerAdvice {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<Map<String, String>> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
         Map<String, String> errors = new HashMap<>();
 
@@ -67,6 +72,7 @@ public class ExceptionHandlerAdvice {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errors);
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Map<String, String>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -76,6 +82,7 @@ public class ExceptionHandlerAdvice {
     }
 
     @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<Map<String, String>> handleRuntimeException(RuntimeException ex) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", "Internal server error");
@@ -85,6 +92,7 @@ public class ExceptionHandlerAdvice {
     }
 
     @ExceptionHandler(PriceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> handlePriceNotFoundException(PriceNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
