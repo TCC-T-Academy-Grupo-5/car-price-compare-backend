@@ -5,6 +5,8 @@ import com.tcc5.car_price_compare.domain.request.user.NotificationRequestDTO;
 import com.tcc5.car_price_compare.domain.response.user.NotificationResponseDTO;
 import com.tcc5.car_price_compare.domain.user.features.Notification;
 import com.tcc5.car_price_compare.shared.utils.PaginationHeaders;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +24,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/user/notifications")
+@Tag(name = "Notifications", description = "Endpoints for managing user notifications")
 public class NotificationController {
 
     private final NotificationService notificationService;
@@ -33,6 +36,7 @@ public class NotificationController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all notifications", description = "This endpoint retrieves a paginated list of all notifications, optionally filtered by status.")
     public ResponseEntity<List<NotificationResponseDTO>> getNotifications(
             @RequestParam(value = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
@@ -48,6 +52,7 @@ public class NotificationController {
     }
 
     @GetMapping("/{notificationId}")
+    @Operation(summary = "Get notification by ID", description = "This endpoint retrieves a notification by its ID.")
     public ResponseEntity<NotificationResponseDTO> getNotificationById(@PathVariable UUID notificationId) {
         NotificationResponseDTO notificationResponseDTO = this.conversionService
                 .convertToNotificationResponseDTO(this.notificationService.findById(notificationId));
@@ -55,6 +60,7 @@ public class NotificationController {
     }
 
     @GetMapping("/existsPendingByVehicleId/{vehicleId}")
+    @Operation(summary = "Check if notification exists by vehicle ID", description = "This endpoint checks if there is a pending notification for a vehicle by its ID.")
     public ResponseEntity<Map<String, String>> existsByVehicleId(@PathVariable UUID vehicleId) {
         Notification notification = this.notificationService.findPendingByVehicleId(vehicleId);
         boolean exists = notification != null;
@@ -68,6 +74,7 @@ public class NotificationController {
     }
 
     @PostMapping
+    @Operation(summary = "Add notification", description = "This endpoint adds a new notification.")
     public ResponseEntity<NotificationResponseDTO> createNotification(@RequestBody @Valid NotificationRequestDTO notificationRequestDto) {
         Notification notification = this.conversionService.convertToNotificationEntity(notificationRequestDto);
         NotificationResponseDTO notificationResponseDTO = this.conversionService
@@ -77,6 +84,7 @@ public class NotificationController {
     }
 
     @PutMapping("/{notificationId}")
+    @Operation(summary = "Update notification", description = "This endpoint updates a notification.")
     public ResponseEntity<NotificationResponseDTO> updateFavorite(@PathVariable UUID notificationId,
             @RequestBody @Valid NotificationRequestDTO notificationRequestDto) {
         Notification update = this.conversionService.convertToNotificationEntity(notificationRequestDto);
@@ -87,6 +95,7 @@ public class NotificationController {
     }
 
     @DeleteMapping("/{notificationId}")
+    @Operation(summary = "Delete notification", description = "This endpoint deletes a notification.")
     public ResponseEntity<?> deleteNotification(@PathVariable UUID notificationId) {
         this.notificationService.delete(notificationId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
