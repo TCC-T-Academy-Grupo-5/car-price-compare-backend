@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -69,5 +70,9 @@ public class RatingService {
         if (ratingDTO.message() != null) repoRating.setMessage(ratingDTO.message());
 
         return ratingRepository.save(repoRating);
+    }
+
+    public List<Rating> getRatingsByUser(UUID id) {
+        return ratingRepository.findAllByUserId(id);
     }
 }
