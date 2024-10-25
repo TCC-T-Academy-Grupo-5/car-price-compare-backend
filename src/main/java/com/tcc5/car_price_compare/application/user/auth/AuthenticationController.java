@@ -9,7 +9,7 @@ import com.tcc5.car_price_compare.domain.user.dto.AuthenticationDTO;
 import com.tcc5.car_price_compare.domain.response.user.LoginResponse;
 import com.tcc5.car_price_compare.domain.user.dto.RegisterDTO;
 import com.tcc5.car_price_compare.domain.user.User;
-import com.tcc5.car_price_compare.domain.user.dto.UserDTO;
+import com.tcc5.car_price_compare.domain.user.dto.UserInformationDTO;
 import com.tcc5.car_price_compare.domain.user.features.Favorite;
 import com.tcc5.car_price_compare.domain.user.features.Rating;
 import com.tcc5.car_price_compare.infra.security.TokenService;
@@ -81,7 +81,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<UserDTO> getUserFromToken(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<UserInformationDTO> getUserFromToken(@RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
 
         String subject = tokenService.validateToken(token);
@@ -104,6 +104,6 @@ public class AuthenticationController {
 
         List<Rating> ratings = ratingService.getRatingsByUser(user.getId());
 
-        return ResponseEntity.ok(new UserDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getCellphone(), favoriteVehicles, ratings));
+        return ResponseEntity.ok(new UserInformationDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getCellphone(), favoriteVehicles, ratings));
     }
 }
