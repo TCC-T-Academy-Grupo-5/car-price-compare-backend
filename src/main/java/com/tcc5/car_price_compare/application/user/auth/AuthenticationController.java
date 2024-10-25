@@ -5,6 +5,7 @@ import com.tcc5.car_price_compare.domain.user.dto.AuthenticationDTO;
 import com.tcc5.car_price_compare.domain.response.user.LoginResponse;
 import com.tcc5.car_price_compare.domain.user.dto.RegisterDTO;
 import com.tcc5.car_price_compare.domain.user.User;
+import com.tcc5.car_price_compare.domain.user.dto.UserDTO;
 import com.tcc5.car_price_compare.infra.security.TokenService;
 import com.tcc5.car_price_compare.infra.persistence.repositories.UserRepository;
 import jakarta.validation.Valid;
@@ -14,10 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("auth")
@@ -60,5 +58,24 @@ public class AuthenticationController {
 
         boolean isValid = !subject.isEmpty();
         return ResponseEntity.ok(isValid);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<UserDTO> getUserFromToken(@RequestHeader("Authorization") String token) {
+        token = token.replace("Bearer ", "");
+
+        String subject = tokenService.validateToken(token);
+
+        if (subject == null || subject.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        User user = (User) repository.findByEmail(subject);
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(new UserDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getCellphone()));
     }
 }
