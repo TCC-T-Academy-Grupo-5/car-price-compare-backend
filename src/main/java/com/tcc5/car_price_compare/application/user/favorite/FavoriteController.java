@@ -4,6 +4,8 @@ import com.tcc5.car_price_compare.application.ConversionService;
 import com.tcc5.car_price_compare.domain.request.user.FavoriteRequestDTO;
 import com.tcc5.car_price_compare.domain.response.user.FavoriteResponseDTO;
 import com.tcc5.car_price_compare.domain.user.features.Favorite;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/user/favorites")
+@Tag(name = "Favorites", description = "Endpoints for managing user favorites")
 public class FavoriteController {
 
     private final FavoriteService favoriteService;
@@ -25,6 +28,7 @@ public class FavoriteController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all favorites", description = "This endpoint retrieves a paginated list of all favorite items, optionally filtered by vehicle type.")
     public ResponseEntity<Page<FavoriteResponseDTO>> getFavorites(
             @RequestParam(value = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
@@ -37,6 +41,7 @@ public class FavoriteController {
     }
 
     @GetMapping("/{favoriteId}")
+    @Operation(summary = "Get favorite by ID", description = "This endpoint retrieves a favorite item by its ID.")
     public ResponseEntity<FavoriteResponseDTO> getFavoriteById(@PathVariable UUID favoriteId) {
         FavoriteResponseDTO favoriteResponseDTO = this.conversionService
                 .convertToFavoriteResponseDTO(this.favoriteService.findById(favoriteId));
@@ -44,6 +49,7 @@ public class FavoriteController {
     }
 
     @PostMapping
+    @Operation(summary = "Add favorite", description = "This endpoint adds a new favorite item.")
     public ResponseEntity<FavoriteResponseDTO> addFavorite(@RequestBody @Valid FavoriteRequestDTO favoriteDTO) {
         Favorite favoriteToSave = this.conversionService.convertToFavoriteEntity(favoriteDTO);
         FavoriteResponseDTO favoriteResponseDTO = this.conversionService
@@ -53,6 +59,7 @@ public class FavoriteController {
     }
 
     @PutMapping("/{favoriteId}")
+    @Operation(summary = "Update favorite", description = "This endpoint updates a favorite item.")
     public ResponseEntity<FavoriteResponseDTO> updateFavorite(@PathVariable UUID favoriteId,
             @RequestBody @Valid FavoriteRequestDTO favoriteRequestDTO) {
         Favorite update = this.conversionService.convertToFavoriteEntity(favoriteRequestDTO);
@@ -63,6 +70,7 @@ public class FavoriteController {
     }
 
     @DeleteMapping("/{favoriteId}")
+    @Operation(summary = "Delete favorite", description = "This endpoint deletes a favorite item.")
     public ResponseEntity<?> deleteFavorite(@PathVariable UUID favoriteId) {
         this.favoriteService.delete(favoriteId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

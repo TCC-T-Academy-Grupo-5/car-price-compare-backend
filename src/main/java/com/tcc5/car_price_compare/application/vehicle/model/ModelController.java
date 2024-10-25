@@ -4,6 +4,8 @@ import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.dto.AddModelDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.ModelDTO;
 import com.tcc5.car_price_compare.shared.utils.PaginationHeaders;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("model")
+@Tag(name = "Models", description = "Endpoints for managing vehicle models")
 public class ModelController {
 
     private final ModelService service;
@@ -27,6 +30,7 @@ public class ModelController {
     }
 
     @GetMapping("/brand/{brandId}")
+    @Operation(summary = "Get models by brand ID", description = "This endpoint retrieves a paginated list of models by brand ID.")
     public ResponseEntity<List<ModelDTO>> getModelsByBrandId(
             @PathVariable UUID brandId,
             @RequestParam(required = false, value = "pageNumber", defaultValue = "1") Integer pageNumber,
@@ -41,6 +45,7 @@ public class ModelController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all models", description = "This endpoint retrieves a paginated list of all models, optionally filtered by name and brand.")
     public ResponseEntity<List<ModelDTO>> getModels(
             @RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
@@ -56,6 +61,7 @@ public class ModelController {
     }
 
     @PostMapping
+    @Operation(summary = "Add model", description = "This endpoint adds a new model.")
     public ResponseEntity<Model> addModel(@RequestBody @Valid AddModelDTO modelDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.add(modelDTO));
     }
