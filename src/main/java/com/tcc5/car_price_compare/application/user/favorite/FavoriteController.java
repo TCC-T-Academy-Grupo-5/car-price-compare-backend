@@ -48,6 +48,12 @@ public class FavoriteController {
         return ResponseEntity.status(HttpStatus.OK).body(favoriteResponseDTO);
     }
 
+    @GetMapping("/vehicle/{id}")
+    @Operation(summary = "Get favorite by a vehicle ID", description = "This endpoint retrieves a favorite item using the vehicle id.")
+    public ResponseEntity<Favorite> getFavoriteByVehicleId(@PathVariable UUID id) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.favoriteService.findByVehicleId(id));
+    }
+
     @PostMapping
     @Operation(summary = "Add favorite", description = "This endpoint adds a new favorite item.")
     public ResponseEntity<FavoriteResponseDTO> addFavorite(@RequestBody @Valid FavoriteRequestDTO favoriteDTO) {

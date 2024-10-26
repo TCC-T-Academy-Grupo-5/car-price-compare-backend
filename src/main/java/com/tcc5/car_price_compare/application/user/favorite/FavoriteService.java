@@ -43,6 +43,14 @@ public class FavoriteService {
                 .orElseThrow(() -> new FavoriteNotFoundException(favoriteId));
     }
 
+    public Favorite findByVehicleId(UUID vehicleId) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return this.favoriteRepository
+                .findByVehicleIdAndUser(vehicleId, currentUser)
+                .orElseThrow(() -> new FavoriteNotFoundException(vehicleId));
+    }
+
     public Favorite save(Favorite favorite) {
         return this.favoriteRepository.save(favorite);
     }

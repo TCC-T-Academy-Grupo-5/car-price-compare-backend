@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface FavoriteRepository extends JpaRepository<Favorite, UUID>, JpaSpecificationExecutor<Favorite> {
 
     Optional<Favorite> findByIdAndUser(UUID favoriteId, User user);
+
+    Optional<Favorite> findByVehicleIdAndUser(UUID vehicleId, User user);
 }
