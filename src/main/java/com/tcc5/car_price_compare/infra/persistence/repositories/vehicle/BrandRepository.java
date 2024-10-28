@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.Optional;
 
@@ -21,4 +22,7 @@ public interface BrandRepository extends JpaRepository<Brand, UUID>, JpaSpecific
     Optional<BrandDTO> findBrandDTOById(@Param("id") UUID id);
 
     Optional<Brand> findFirstByUrlPathName(@Param("slug") String urlPathName);
+
+    @Query("SELECT b FROM Brand b WHERE b.name IN :popularBrandNames")
+    List<Brand> findPopularBrands(@Param("popularBrandNames") List<String> popularBrandNames);
 }

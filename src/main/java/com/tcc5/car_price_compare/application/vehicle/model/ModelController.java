@@ -2,6 +2,7 @@ package com.tcc5.car_price_compare.application.vehicle.model;
 
 import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.dto.AddModelDTO;
+import com.tcc5.car_price_compare.domain.vehicle.dto.BrandDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.ModelDTO;
 import com.tcc5.car_price_compare.shared.utils.PaginationHeaders;
 import io.swagger.v3.oas.annotations.Operation;
@@ -58,6 +59,12 @@ public class ModelController {
         HttpHeaders headers = PaginationHeaders.createPaginationHeaders(models);
 
         return ResponseEntity.ok().headers(headers).body(models.getContent());
+    }
+
+    @GetMapping("/{modelId}")
+    @Operation(summary = "Get model by ID", description = "This endpoint retrieves a model by its ID.")
+    public ResponseEntity<ModelDTO> getById(@PathVariable UUID modelId) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.findById(modelId));
     }
 
     @PostMapping

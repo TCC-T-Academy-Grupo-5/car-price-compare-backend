@@ -18,7 +18,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -129,6 +131,8 @@ public class FipeDataImporter implements CommandLineRunner {
                             return Mono.error(e);
                         }
                     })
+                    .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(2))
+                    .doBeforeRetry(retrySignal -> log.warn("Retrying to get {}, page {}", entityName, pageNum, retrySignal.failure())))
                     .doOnError(error -> log.error("Error getting {}, page {}: {}", entityName, pageNum, error.getMessage()))
                     .then();
 

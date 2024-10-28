@@ -5,7 +5,9 @@ import com.tcc5.car_price_compare.application.vehicle.statistics.StatisticServic
 import com.tcc5.car_price_compare.domain.statistic.enums.EntityType;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.dto.AddModelDTO;
+import com.tcc5.car_price_compare.domain.vehicle.dto.BrandDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.ModelDTO;
+import com.tcc5.car_price_compare.domain.vehicle.exceptions.BrandNotFoundException;
 import com.tcc5.car_price_compare.domain.vehicle.exceptions.ModelNotFoundException;
 import com.tcc5.car_price_compare.infra.persistence.repositories.vehicle.BrandRepository;
 import com.tcc5.car_price_compare.infra.persistence.repositories.vehicle.ModelRepository;
@@ -59,6 +61,11 @@ public class ModelService {
         var model = modelRepository.findByName(name);
         if (model.isEmpty()) throw new ModelNotFoundException(name);
         return model.get();
+    }
+
+    public ModelDTO findById(UUID id) {
+        var model = modelRepository.findById(id).orElseThrow(() -> new BrandNotFoundException(id));
+        return conversionService.convertToModelDTO(model);
     }
 
     @Transactional
