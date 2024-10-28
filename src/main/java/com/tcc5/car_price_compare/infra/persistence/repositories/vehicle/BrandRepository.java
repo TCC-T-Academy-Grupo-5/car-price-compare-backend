@@ -31,4 +31,7 @@ public interface BrandRepository extends JpaRepository<Brand, UUID>, JpaSpecific
                     "WHERE b.vehicleType = :vehicleType"
     )
     List<OptionDTO> findOptionsByVehicleType(VehicleType vehicleType);
+
+    @Query("SELECT b FROM Brand b WHERE b.name IN :popularBrandNames")
+    List<Brand> findPopularBrands(@Param("popularBrandNames") List<String> popularBrandNames);
 }
