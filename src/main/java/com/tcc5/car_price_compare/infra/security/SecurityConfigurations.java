@@ -58,6 +58,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.DELETE, "/rating/{id}").authenticated()
                         .requestMatchers(HttpMethod.GET, "/price/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/price/store").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/year/**").permitAll()
                         .requestMatchers("/ws-notification/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
