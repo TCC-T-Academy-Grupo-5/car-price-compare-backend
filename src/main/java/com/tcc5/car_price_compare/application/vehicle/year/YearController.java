@@ -1,6 +1,7 @@
 package com.tcc5.car_price_compare.application.vehicle.year;
 
 import com.tcc5.car_price_compare.domain.vehicle.dto.OptionDTO;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ public class YearController {
     }
 
     @GetMapping("/model/{modelId}/options")
+    @Operation(summary = "Get year options by model ID", description = "This endpoint retrieves a list of year options by model ID.")
     public ResponseEntity<List<OptionDTO>> getYearOptionsByModelId(@PathVariable UUID modelId) {
         return ResponseEntity.ok(service.findOptionsByModelId(modelId));
     }

@@ -302,4 +302,8 @@ public class VehicleService {
             res.ifPresent(value -> statisticService.incrementSearch(value.getId(), EntityType.VEHICLE));
         }
     }
+
+    public List<OptionDTO> getVehicleOptionsByYearId(UUID yearId) {
+        return vehicleRepository.findOptionsByYearId(yearId);
+    }
 }

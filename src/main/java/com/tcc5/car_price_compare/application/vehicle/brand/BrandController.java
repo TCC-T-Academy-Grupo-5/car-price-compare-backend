@@ -47,7 +47,7 @@ public class BrandController {
     }
 
     @GetMapping("/{vehicleType}/options")
-    @Operation(summary = "Get brand options", description = "This endpoint retrieves a list of brand options.")
+    @Operation(summary = "Get brand options", description = "This endpoint retrieves a list of brand options by vehicle type.")
     public ResponseEntity<List<OptionDTO>> getBrandOptionsByVehicleType(@PathVariable Integer vehicleType) {
         return ResponseEntity.status(HttpStatus.OK).body(service.findOptionsByVehicleType(vehicleType));
     }
