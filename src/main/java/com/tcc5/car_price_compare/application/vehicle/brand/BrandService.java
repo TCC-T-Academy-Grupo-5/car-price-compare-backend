@@ -37,13 +37,12 @@ public class BrandService {
 
     private static final List<String> popularBrands = List.of(
             "Aprilia", "Agrale", "Alfa Romeo", "Aston Martin", "Audi",
-            "BMW", "Bugre",
-            "Caloi", "Chevrolet", "Chery", "Chevrolet", "Citroën", "Chrysler",
+            "BMW",
+            "Chevrolet", "Chery", "Chevrolet", "Citroën", "Chrysler",
             "Daewoo", "Drafa", "Ducati", "DAF", "Dodge",
-            "Ferrari", "Fiat", "Ford", "Foton",
-            "GMC",
-            "Harley-Davidson", "Hero", "Honda", "Hyundai",
-            "International", "Isuzu", "Iveco",
+            "Ferrari", "Fiat", "Ford",
+            "Harley-Davidson", "Honda", "Hyundai",
+            "International",
             "Jack", "Jaguar", "Jeep",
             "Kawasaki", "Kasinski", "Kia", "KTM",
             "Lamborghini", "Lexus", "Lifan",
