@@ -3,15 +3,11 @@ package com.tcc5.car_price_compare.application.vehicle.brand;
 import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.dto.AddBrandDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.BrandDTO;
-import com.tcc5.car_price_compare.shared.utils.PaginationHeaders;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +25,7 @@ public class BrandController {
         this.service = service;
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get all brands", description = "This endpoint retrieves a paginated list of all brands, optionally filtered by name and vehicle type.")
     public ResponseEntity<List<BrandDTO>> getBrands(
             @RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber,
@@ -37,12 +33,18 @@ public class BrandController {
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "vehicleType", required = false) Integer type
     ) {
-        pageNumber = Math.max(1, pageNumber);
-        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
-        Page<BrandDTO> brands = service.findAll(name, type, pageable);
-        HttpHeaders headers = PaginationHeaders.createPaginationHeaders(brands);
+        return service.getBrandsResponse(pageNumber, pageSize, name, type, false);
+    }
 
-        return ResponseEntity.ok().headers(headers).body(brands.getContent());
+    @GetMapping("/popular")
+    @Operation(summary = "Get popular brands", description = "This endpoint retrieves a paginated list of popular brands.")
+    public ResponseEntity<List<BrandDTO>> getPopularBrands(
+            @RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "vehicleType", required = false) Integer type
+    ) {
+        return service.getBrandsResponse(pageNumber, pageSize, name, type, true);
     }
 
     @GetMapping("/{brandId}")
