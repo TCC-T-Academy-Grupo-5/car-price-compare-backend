@@ -59,6 +59,14 @@ public class NotificationController {
         return ResponseEntity.status(HttpStatus.OK).body(notificationResponseDTO);
     }
 
+    @PostMapping("/{notificationId}")
+    @Operation(summary = "Update a notification status", description = "This endpoint updates a notification status by its ID.")
+    public ResponseEntity<NotificationResponseDTO> updateNotificationById(@PathVariable UUID notificationId) {
+        NotificationResponseDTO notificationResponseDTO = this.conversionService
+                .convertToNotificationResponseDTO(this.notificationService.updateNotificationById(notificationId));
+        return ResponseEntity.status(HttpStatus.OK).body(notificationResponseDTO);
+    }
+
     @GetMapping("/existsPendingByVehicleId/{vehicleId}")
     @Operation(summary = "Check if notification exists by vehicle ID", description = "This endpoint checks if there is a pending notification for a vehicle by its ID.")
     public ResponseEntity<Map<String, String>> existsByVehicleId(@PathVariable UUID vehicleId) {
