@@ -2,6 +2,7 @@ package com.tcc5.car_price_compare.application.vehicle.model;
 
 import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.dto.AddModelDTO;
+import com.tcc5.car_price_compare.domain.vehicle.dto.BrandDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.ModelDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.OptionDTO;
 import com.tcc5.car_price_compare.shared.utils.PaginationHeaders;
@@ -65,6 +66,12 @@ public class ModelController {
     @Operation(summary = "Get model options by brand ID", description = "This endpoint retrieves a list of model options by brand ID.")
     public ResponseEntity<List<OptionDTO>> getModelOptionsByBrandId(@PathVariable UUID brandId){
         return ResponseEntity.status(HttpStatus.OK).body(service.findOptionsByBrandId(brandId));
+    }
+
+    @GetMapping("/{modelId}")
+    @Operation(summary = "Get model by ID", description = "This endpoint retrieves a model by its ID.")
+    public ResponseEntity<ModelDTO> getById(@PathVariable UUID modelId) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.findById(modelId));
     }
 
     @PostMapping
