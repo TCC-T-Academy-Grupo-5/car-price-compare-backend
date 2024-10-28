@@ -6,6 +6,7 @@ import com.tcc5.car_price_compare.domain.statistic.enums.EntityType;
 import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.dto.AddModelDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.ModelDTO;
+import com.tcc5.car_price_compare.domain.vehicle.dto.OptionDTO;
 import com.tcc5.car_price_compare.domain.vehicle.exceptions.ModelNotFoundException;
 import com.tcc5.car_price_compare.infra.persistence.repositories.vehicle.BrandRepository;
 import com.tcc5.car_price_compare.infra.persistence.repositories.vehicle.ModelRepository;
@@ -85,5 +86,9 @@ public class ModelService {
         List<ModelDTO> modelsDto = new ArrayList<>();
         models.forEach(m -> modelsDto.add(conversionService.convertToModelDTO(m)));
         return modelsDto;
+    }
+
+    public List<OptionDTO> findOptionsByBrandId(UUID brandId) {
+        return this.modelRepository.findOptionsByBrandId(brandId);
     }
 }

@@ -6,6 +6,8 @@ import com.tcc5.car_price_compare.domain.statistic.enums.EntityType;
 import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.dto.AddBrandDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.BrandDTO;
+import com.tcc5.car_price_compare.domain.vehicle.dto.OptionDTO;
+import com.tcc5.car_price_compare.domain.vehicle.enums.VehicleType;
 import com.tcc5.car_price_compare.domain.vehicle.exceptions.BrandNotFoundException;
 import com.tcc5.car_price_compare.infra.persistence.repositories.vehicle.BrandRepository;
 import com.tcc5.car_price_compare.infra.persistence.specifications.BrandSpecification;
@@ -58,6 +60,10 @@ public class BrandService {
     public Brand findByName(String name) {
         return brandRepository.findByName(name)
                 .orElseThrow(() -> new BrandNotFoundException(name));
+    }
+
+    public List<OptionDTO> findOptionsByVehicleType(Integer vehicleType) {
+        return brandRepository.findOptionsByVehicleType(VehicleType.fromValue(vehicleType));
     }
 
     @Transactional
