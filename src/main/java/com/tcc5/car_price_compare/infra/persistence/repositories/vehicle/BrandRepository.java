@@ -20,9 +20,4 @@ public interface BrandRepository extends JpaRepository<Brand, UUID>, JpaSpecific
                     "WHERE b.id = :id"
     )
     Optional<BrandDTO> findBrandDTOById(@Param("id") UUID id);
-
-    Optional<Brand> findFirstByUrlPathName(@Param("slug") String urlPathName);
-
-    @Query("SELECT b FROM Brand b WHERE b.name IN :popularBrandNames")
-    List<Brand> findPopularBrands(@Param("popularBrandNames") List<String> popularBrandNames);
 }

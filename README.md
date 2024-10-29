@@ -10,7 +10,7 @@
 
 ### Base Server - Swagger Documentation
 ```http request
-http://localhost:8080
+GET http://localhost:8080
 ```
 - you will be redirected to `http://localhost:8080/swagger-ui/swagger-ui/index.html`
 ---
@@ -20,7 +20,14 @@ http://localhost:8080
 <details>
 <summary>Endpoints for managing vehicle brands.</summary>
 
-- **GET** `/brand` - List all brands
+### 1. List Brands
+- **GET** `/brand` - List brands based on the specified filter
+    - **Query Parameters**:
+        - `pageNumber` (optional, default: `1`): The page number for pagination.
+        - `pageSize` (optional, default: `10`): The number of brands to return per page.
+        - `name` (optional): Filter brands by name.
+        - `vehicleType` (optional): Filter brands by vehicle type (use the corresponding integer).
+        - `brandType` (optional, default: `ALL`): Specify the type of brands to filter (`ALL`, `POPULAR`, or `NOT_POPULAR`).
 - **POST** `/brand` - Add a new brand
 - **GET** `/brand/{brandId}` - Get brand by ID
 - **GET** `/brand/popular` - List popular brands
