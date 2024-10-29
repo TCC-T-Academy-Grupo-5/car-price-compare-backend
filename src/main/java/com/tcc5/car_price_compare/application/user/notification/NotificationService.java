@@ -91,4 +91,16 @@ public class NotificationService {
                 .findByUserIdAndVehicleIdAndNotificationStatus(user.getId(), vehicleId, NotificationStatus.PENDING)
                 .orElse(null);
     }
+
+    public Notification updateNotificationById(UUID notificationId) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var notification = this.notificationRepository
+                .findByIdAndUser(notificationId, currentUser)
+                .orElseThrow(() -> new NotificationNotFoundException(notificationId));
+
+        notification.setNotificationStatus(NotificationStatus.DELIVERED);
+
+        return notificationRepository.save(notification);
+    }
 }
