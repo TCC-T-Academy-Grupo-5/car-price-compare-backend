@@ -31,25 +31,22 @@ public class BrandService {
     private final StatisticService statisticService;
 
     private static final List<String> popularBrands = List.of(
-             "Aprilia", "Agrale", "Alfa Romeo", "Aston Martin", "Audi",
+            "Aprilia", "Audi",
             "BMW",
-            "Chevrolet", "Chery", "Chevrolet", "Citroën", "Chrysler",
-            "Daewoo", "Drafa", "Ducati", "DAF", "Dodge",
-            "Ferrari", "Fiat", "Ford",
+            "Chevrolet", "Chery", "Chevrolet", "Citroën",
+            "Drafa", "Ducati", "Dodge",
+            "Fiat", "Ford",
             "Harley-Davidson", "Honda", "Hyundai",
-            "International",
             "Jack", "Jaguar", "Jeep",
-            "Kawasaki", "Kasinski", "Kia", "KTM",
-            "Lamborghini", "Lexus", "Lifan",
-            "Mack", "Mclaren", "MAN", "Mazda", "Mercedes-Benz", "Mitsubishi", "Moto Guzzi", "MV Agusta",
+            "Kawasaki", "Kasinski", "Kia",
+            "Lexus", "Lifan",
+            "Mclaren", "MAN", "Mazda", "Mercedes-Benz", "Mitsubishi",
             "Nissan",
-            "Porsche", "Peugeot",
-            "RAM", "Renault", "Rolls-Royce", "Royal Enfield",
-            "Scania", "Sinotruk", "Subaru", "Sundown", "Suzuki",
-            "Toyota", "Triumph", "Troller",
-            "UD Trucks",
-            "Vespa", "Volkswagen", "Volvo",
-            "Western Star",
+            "Peugeot",
+            "RAM", "Renault",
+            "Scania", "Subaru", "Suzuki",
+            "Toyota", "Triumph",
+            "Volkswagen", "Volvo",
             "Yamaha"
     );
 
