@@ -4,6 +4,7 @@ import com.tcc5.car_price_compare.domain.vehicle.Model;
 import com.tcc5.car_price_compare.domain.vehicle.dto.AddModelDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.BrandDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.ModelDTO;
+import com.tcc5.car_price_compare.domain.vehicle.dto.OptionDTO;
 import com.tcc5.car_price_compare.shared.utils.PaginationHeaders;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -59,6 +60,12 @@ public class ModelController {
         HttpHeaders headers = PaginationHeaders.createPaginationHeaders(models);
 
         return ResponseEntity.ok().headers(headers).body(models.getContent());
+    }
+
+    @GetMapping("/brand/{brandId}/options")
+    @Operation(summary = "Get model options by brand ID", description = "This endpoint retrieves a list of model options by brand ID.")
+    public ResponseEntity<List<OptionDTO>> getModelOptionsByBrandId(@PathVariable UUID brandId){
+        return ResponseEntity.status(HttpStatus.OK).body(service.findOptionsByBrandId(brandId));
     }
 
     @GetMapping("/{modelId}")

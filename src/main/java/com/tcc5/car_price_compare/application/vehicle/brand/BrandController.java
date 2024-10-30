@@ -3,6 +3,8 @@ package com.tcc5.car_price_compare.application.vehicle.brand;
 import com.tcc5.car_price_compare.domain.vehicle.Brand;
 import com.tcc5.car_price_compare.domain.vehicle.dto.AddBrandDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.BrandDTO;
+import com.tcc5.car_price_compare.domain.vehicle.dto.OptionDTO;
+import com.tcc5.car_price_compare.shared.utils.PaginationHeaders;
 import com.tcc5.car_price_compare.domain.vehicle.enums.BrandFilterType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,6 +39,12 @@ public class BrandController {
             @RequestParam(value = "brandType", defaultValue = "ALL") BrandFilterType brandType
     ) {
         return brandsResponseEntityService.getBrands(pageNumber, pageSize, name, vehicleType, brandType);
+    }
+
+    @GetMapping("/{vehicleType}/options")
+    @Operation(summary = "Get brand options", description = "This endpoint retrieves a list of brand options by vehicle type.")
+    public ResponseEntity<List<OptionDTO>> getBrandOptionsByVehicleType(@PathVariable Integer vehicleType) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.findOptionsByVehicleType(vehicleType));
     }
 
     @GetMapping("/{brandId}")

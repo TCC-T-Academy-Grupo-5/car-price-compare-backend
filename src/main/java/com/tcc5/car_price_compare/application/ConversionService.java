@@ -70,7 +70,8 @@ public class ConversionService {
                              BrandToBrandDTOConverter brandToBrandDTOConverter,
                              ModelToModelDTOConverter modelToModelDTOConverter,
                              StorePriceDTOToStorePriceConverter storePriceDTOToStorePriceConverter,
-                             StorePriceToStorePriceDTOConverter storePriceToStorePriceDTOConverter, FipePriceToFipePriceDTOConverter fipePriceToFipePriceDTOConverter) {
+                             StorePriceToStorePriceDTOConverter storePriceToStorePriceDTOConverter,
+            FipePriceToFipePriceDTOConverter fipePriceToFipePriceDTOConverter) {
         this.notificationRequestDTOToNotificationConverter = notificationRequestDTOToNotificationConverter;
         this.notificationToNotificationResponseDTOConverter = notificationToNotificationResponseDTOConverter;
         this.vehicleToVehicleDTOConverter = vehicleToVehicleDTOConverter;

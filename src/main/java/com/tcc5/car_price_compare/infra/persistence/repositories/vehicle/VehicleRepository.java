@@ -1,6 +1,7 @@
 package com.tcc5.car_price_compare.infra.persistence.repositories.vehicle;
 
 import com.tcc5.car_price_compare.domain.vehicle.Vehicle;
+import com.tcc5.car_price_compare.domain.vehicle.dto.OptionDTO;
 import com.tcc5.car_price_compare.domain.vehicle.dto.VehicleDTO;
 import com.tcc5.car_price_compare.domain.price.dto.StorePricesRequestDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -47,4 +48,13 @@ public interface VehicleRepository extends JpaRepository<Vehicle, UUID>, JpaSpec
             """
     )
     Optional<StorePricesRequestDTO> createStorePricesRequestDtoFromVehicleId(@Param("id") UUID id);
+
+    @Query(
+            """
+                SELECT new com.tcc5.car_price_compare.domain.vehicle.dto.OptionDTO(v.id, v.name) \
+                FROM Vehicle v \
+                WHERE v.year.id = :yearId
+            """
+    )
+    List<OptionDTO> findOptionsByYearId(UUID yearId);
 }

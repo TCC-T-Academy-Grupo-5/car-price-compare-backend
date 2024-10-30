@@ -95,6 +95,12 @@ public class VehicleController {
         return ResponseEntity.ok().headers(headers).body(models.getContent());
     }
 
+    @GetMapping("/year/{yearId}/options")
+    @Operation(summary = "Get vehicle options by ID", description = "This endpoint retrieves a list of vehicle options by year ID.")
+    public ResponseEntity<List<OptionDTO>> getVehicleOptionsByYearId(@PathVariable UUID yearId){
+        return ResponseEntity.status(HttpStatus.OK).body(service.getVehicleOptionsByYearId(yearId));
+    }
+
     @PostMapping()
     @Operation(summary = "Add vehicle", description = "This endpoint adds a new vehicle.")
     public ResponseEntity<VehicleResponseDTO> addVehicle(@RequestBody @Valid AddVehicleDTO vehicleDTO){
